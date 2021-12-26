@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{@types/oracledb, @types/react, @types/react-app, @types/react-autocomplete, @types/react-bootstrap, @types/react-datepicker, @types/react-dom, @types/react-redux, bootstrap}" />
+  </component>
+</project>

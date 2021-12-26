@@ -1,0 +1,81 @@
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .content {
+    padding: 15px;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  color: #eaeaea;
+}
+
+.logo {
+  margin-top: 1rem;
+  text-align: center;
+  animation: moveInDown 1s ease-out;
+}
+
+.summary {
+  z-index: 10;
+}
+
+.header {
+  backface-visibility: hidden;
+  animation: moveInLeft 1s ease-out;
+}
+
+.subHeader {
+  backface-visibility: hidden;
+  animation: moveInRight 1s ease-out;
+}
+
+// For animation
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem);
+  }
+
+  80% {
+    transform: translateX(1rem);
+  }
+
+  100% {
+    opacity: 100;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(10rem);
+  }
+
+  80% {
+    transform: translateX(-1rem);
+  }
+
+  100% {
+    opacity: 100;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  100% {
+    opacity: 100;
+    transform: translate(0);
+  }
+}
