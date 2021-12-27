@@ -3,8 +3,9 @@ import React from "react";
 import {BsFillHddStackFill, BsFillPatchPlusFill} from "react-icons/bs";
 import BatchInfo from "./BatchInfo";
 import {useRouter} from "next/router";
+import {BatchInfoView} from "../../../models/University/Batch";
 
-const Batches: React.FC<{ batches: string[], userId: string }> = (props) => {
+const Batches: React.FC<{ batches: BatchInfoView[], userId: string }> = (props) => {
 
     const router = useRouter();
 
@@ -25,9 +26,9 @@ const Batches: React.FC<{ batches: string[], userId: string }> = (props) => {
                     <Accordion className='p-2'>
                         {props.batches.map((batch, i) => {
                             return (
-                                <Accordion.Item eventKey={`${i}`} key={batch}>
-                                    <Accordion.Header>Batch {batch}</Accordion.Header>
-                                    <BatchInfo  batch='2015' batchName='Pounopunik'/>
+                                <Accordion.Item eventKey={`${i}`} key={i + batch.batch_name}>
+                                    <Accordion.Header>Batch {batch.batch_year}</Accordion.Header>
+                                    <BatchInfo batch={batch}/>
                                 </Accordion.Item>
                             )
                         })}

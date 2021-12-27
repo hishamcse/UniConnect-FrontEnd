@@ -9,14 +9,7 @@ type User = {
     university: string
 }
 
-const UserPage: React.FC<{userId: string}> = (props) => {
-
-    const user = {
-        name: 'Mihad',
-        id: props.userId,
-        university: 'BUET'
-    };
-
+const UserPage: React.FC<{ userId: string }> = (props) => {
     return (
         <LayoutWrapper>
             <UserNavigation id={props.userId} mode='admin'/>
@@ -52,7 +45,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(context:any) {
+export async function getStaticProps(context: any) {
 
     const userId = context.params.userId;
 

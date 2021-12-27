@@ -3,8 +3,9 @@ import {BsFillHddStackFill, BsFillPatchPlusFill} from "react-icons/bs";
 import React from "react";
 import DeptInfo from "./DeptInfo";
 import {useRouter} from "next/router";
+import {DeptInfoView} from "../../../models/University/Department";
 
-const Departments: React.FC<{ departments: string[], userId: string }> = (props) => {
+const Departments: React.FC<{ departments: DeptInfoView[], userId: string }> = (props) => {
 
     const router = useRouter();
 
@@ -27,9 +28,9 @@ const Departments: React.FC<{ departments: string[], userId: string }> = (props)
                     <Accordion className='p-2'>
                         {props.departments.map((dept, i) => {
                             return (
-                                <Accordion.Item eventKey={`${i}`} key={dept}>
-                                    <Accordion.Header>{dept}</Accordion.Header>
-                                    <DeptInfo deptName='Computer Science & Engineering'/>
+                                <Accordion.Item eventKey={`${i}`} key={i + dept.dept_short}>
+                                    <Accordion.Header>{dept.dept_short}</Accordion.Header>
+                                    <DeptInfo deptInfo={dept}/>
                                 </Accordion.Item>
                             )
                         })}

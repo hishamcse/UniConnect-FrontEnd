@@ -1,20 +1,23 @@
 import {Accordion} from "react-bootstrap";
 import React from "react";
+import {DeptInfoView} from "../../../models/University/Department";
 
-const DeptInfo: React.FC<{deptName: string}> = (props) => {
+const DeptInfo: React.FC<{deptInfo: DeptInfoView}> = (props) => {
+
+    const department: DeptInfoView = props.deptInfo;
+
     return (
         <Accordion.Body>
-            <h5>{props.deptName}</h5>
+            <h5>{department.dept_full}</h5>
             <h6 className='text-secondary text-left'>Faculties:</h6>
-            <p className='lead'>There are 53 faculties in this department</p>
+            <p className='lead'>There are {department.faculties} faculties in this department</p>
             <h6 className='text-secondary text-left'>Students:</h6>
-            <p className='lead'>There are 453 students in this department</p>
+            <p className='lead'>There are {department.total_students} students in this department</p>
             <h6 className='text-secondary text-left'>Students by batch:</h6>
             <p className='lead'>
-                <li><b>Batch 2015:</b>&nbsp; 120</li>
-                <li><b>Batch 2016:</b>&nbsp; 117</li>
-                <li><b>Batch 2017:</b>&nbsp; 118</li>
-                <li><b>Batch 2018:</b>&nbsp; 118</li>
+                {department.students_by_year.map((data, i) =>
+                    <li key={i + data.year}><b>{data.year}:</b>&nbsp; {data.students_count}</li>)
+                }
             </p>
         </Accordion.Body>
     );
