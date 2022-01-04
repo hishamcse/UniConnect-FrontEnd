@@ -5,15 +5,19 @@ import {
     BsFillArrowRightCircleFill
 } from "react-icons/bs";
 import AdminOptions from "../contents/options/AdminOptions";
-import React from "react";
+import React, {useContext} from "react";
+import AuthContext from "../../store/auth-context";
 
 const UserNavigation: React.FC<{ id: string, mode: string }> = (props) => {
+
+    const authCtx = useContext(AuthContext);
 
     const router = useRouter();
 
     const logoutHandler = async (e: React.MouseEvent) => {
         e.preventDefault();
 
+        authCtx.logout();
         await router.push('/');
     }
 

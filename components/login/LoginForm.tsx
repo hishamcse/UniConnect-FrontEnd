@@ -1,12 +1,21 @@
 import styles from './LoginForm.module.scss';
-import {Form, Image, Button} from "react-bootstrap";
-import React, {useRef, useState} from "react";
+import {Form, Image, Button, Container, Spinner} from "react-bootstrap";
+import React, {useContext, useRef, useState} from "react";
 import {useRouter} from "next/router";
+import {BiMailSend} from "react-icons/bi";
+import AuthContext from "../../store/auth-context";
+import {LoginData} from "../../models/LoginData";
 
-const idValidity = (inp: string): boolean => inp.trim() !== '';
-const passwordValidity = (inp: string): boolean => inp.trim().length >= 6;
+const server = 'http://localhost:3000';
+
+const emailValidity = (inp: string): boolean => inp.trim() !== '';
+const passwordValidity = (inp: string): boolean => inp.trim() !== '';
 
 const LoginForm = () => {
+
+    const authCtx = useContext(AuthContext);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const inputIdRef = useRef<HTMLInputElement | null>(null);
     const inputPasswordRef = useRef<HTMLInputElement | null>(null);
@@ -14,21 +23,43 @@ const LoginForm = () => {
 
     const router = useRouter();
 
+    const loginDataHandler = async (data: LoginData) => {
+        const time = new Date(new Date().getTime() + (300000 * 1000));
+        authCtx.login(data.personInfo.personId.toString(), time.toISOString(), data);
+        await router.push(`/login`);
+    }
+
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const id = inputIdRef.current?.value;
+        const email = inputIdRef.current?.value;
         const password = inputPasswordRef.current?.value;
 
-        if (!id || !password || !idValidity(id) || !passwordValidity(password)) {
+        if (!email || !password || !emailValidity(email) || !passwordValidity(password)) {
             setFormValid(false);
             return;
         }
 
-        console.log(id, password)
-
         setFormValid(true);
-        await router.push(`/${id}`);
+        setIsSubmitting(true);
+
+        fetch(`${server}/user/login`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }).then(resp => {
+            return resp.json();
+        }).then(data => {
+            loginDataHandler(data);
+        }).finally(async () => {
+            setIsSubmitting(false);
+        });
     }
 
     return (
@@ -41,12 +72,12 @@ const LoginForm = () => {
                     <Form.Control
                         id="floatingInputCustom"
                         type="text"
-                        placeholder="id"
+                        placeholder="email"
                         ref={inputIdRef}
                     />
                     <label htmlFor="floatingInputCustom">
-                        <Image src='/id-icon.png' width={20} height={20} alt='id' className={styles.idImg}/>
-                        ID
+                        <big><BiMailSend/>&nbsp;&nbsp;</big>
+                        E-Mail
                     </label>
                 </Form.Floating>
             </div>
@@ -65,9 +96,13 @@ const LoginForm = () => {
 
             {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}
 
-            <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
-                Submit
-            </Button>
+            <Container className='d-flex'>
+                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
+                    Submit
+                </Button>
+
+                {isSubmitting && <Spinner animation="border" variant="danger"/>}
+            </Container>
         </Form>
     );
 }

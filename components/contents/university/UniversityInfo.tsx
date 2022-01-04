@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Departments from "./Departments";
 import {Accordion} from "react-bootstrap";
 import Batches from "./Batches";
@@ -7,52 +7,52 @@ import {parseDeptData} from "../../../parseUtils/ParseDeptData";
 import {DeptInfoView} from "../../../models/University/Department";
 import {BatchInfoView} from "../../../models/University/Batch";
 import {parseBatchData} from "../../../parseUtils/ParseBatchData";
+import AuthContext from "../../../store/auth-context";
 
-const batches = ['2015', '2016', '2017', '2018']
 const server = 'http://localhost:3000';
 
 const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
+
+    const authCtx = useContext(AuthContext);
 
     const [versityName, setVersityName] = useState<string>();
     const [deptData, setDeptData] = useState<DeptInfoView[]>([]);
     const [batchData, setBatchData] = useState<BatchInfoView[]>([]);
 
-
     useEffect(() => {
-        fetch(`${server}/user/login`, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                id: "1-201",
-                password: "password"
-            })
-        }).then(resp => {
-            return resp.json();
-        }).then(data => {
-            console.log(data);
-            setVersityName(data.STUDENT_UNIVERSITY_NAME);
-            fetch(`${server}/uni/depts/${data.UNIVERSITY_ID}`, {
-                mode: 'cors',
-                method: 'get',
-                credentials: "include",
-            })
-                .then(resp => {
-                    return resp.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    let arr = parseDeptData(data);
-                    setDeptData(arr);
-                    let arr2 = parseBatchData(data);
-                    setBatchData(arr2);
-                })
+        
+        let uniName:string;
+        let uniId:number;
+        if(authCtx.loggedInAs === 'management') {
+            uniName = authCtx.loginData.managementRoles[0].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.managementRoles[0].UNIVERSITY_ID;
+        } else if(authCtx.loggedInAs === 'student') {
+            uniName = authCtx.loginData.studentRoles[0].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.studentRoles[0].UNIVERSITY_ID;
+        } else {
+            uniName = authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.teacherRoles[0].UNIVERSITY_ID;
+        }
+        
+        setVersityName(uniName);
+        fetch(`${server}/university/${uniId}/depts`, {
+            mode: 'cors',
+            method: 'get',
+            credentials: "include",
         })
-    }, [deptData,batchData]);
+            .then(resp => {
+                return resp.json();
+            })
+            .then(data => {
+                console.log(data);
+                let arr = parseDeptData(data);
+                setDeptData(arr);
+                let arr2 = parseBatchData(data);
+                setBatchData(arr2);
+            })
+    }, []);
 
-    const adminMode: boolean = props.mode === 'admin';
+    // const adminMode: boolean = props.mode === 'admin';
 
     return (
         <div className={`${styles.university} m-5 p-4 bg-secondary`}>

@@ -1,0 +1,57 @@
+$color-primary: #55c57a;
+$color-primary-light: #E6E6E6;
+$color-primary-dark: #39393A;
+
+$color-grey-dark: #777;
+$color-white: #fff;
+
+.body {
+  height: 100vh;
+  padding: 2rem;
+  position: relative;
+  background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)),
+  url(/background.jpg);
+
+  background-size: cover;
+  background-position: top;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .content {
+    margin-top: 10%;
+    margin-left: 30%;
+    width: 40%;
+    padding: 1.5rem;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    animation: moveInLeft 1s ease-out;
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.button {
+  width: 100%;
+  text-align: center;
+  border-radius: 1rem;
+}
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem);
+  }
+
+  80% {
+    transform: translateX(1rem);
+  }
+
+  100% {
+    opacity: 100;
+    transform: translate(0);
+  }
+}
