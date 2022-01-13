@@ -1,10 +1,18 @@
-import {Accordion} from "react-bootstrap";
+import {Accordion, Button} from "react-bootstrap";
 import React from "react";
 import {BatchInfoView} from "../../../models/University/Batch";
+import {useRouter} from "next/router";
 
-const BatchInfo: React.FC<{ batch: BatchInfoView }> = (props) => {
+const BatchInfo: React.FC<{ batch: BatchInfoView, userId: string }> = (props) => {
 
     const {batch} = props;
+    const router = useRouter();
+
+    const addSection = async (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        await router.push(`${props.userId}/addSecStudent`);
+    }
 
     return (
         <Accordion.Body>
@@ -17,6 +25,9 @@ const BatchInfo: React.FC<{ batch: BatchInfoView }> = (props) => {
                     <li key={Math.random().toString() + batch.batch_year}>
                         <b>{data.dept_name}:</b>&nbsp; {data.students_count}</li>)}
             </p>
+            <Button className='center-block' variant='info' onClick={addSection}>
+                Add Section & Student
+            </Button>
         </Accordion.Body>
     );
 }

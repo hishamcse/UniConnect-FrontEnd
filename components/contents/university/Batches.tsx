@@ -25,10 +25,11 @@ const Batches: React.FC<{ batches: BatchInfoView[], userId: string }> = (props) 
                 <h5 className='text-lg-left'>
                     <Accordion className='p-2'>
                         {props.batches.map((batch, i) => {
+                            let arr = new Uint32Array(10)
                             return (
-                                <Accordion.Item eventKey={`${i}`} key={i + batch.batch_name}>
-                                    <Accordion.Header>Batch {batch.batch_year}</Accordion.Header>
-                                    <BatchInfo batch={batch}/>
+                                <Accordion.Item eventKey={`${i}`} key={i + batch.batch_name + crypto.getRandomValues(arr)}>
+                                    <Accordion.Header>Batch {batch.batch_year} : {batch.batch_type}</Accordion.Header>
+                                    <BatchInfo batch={batch} userId={props.userId}/>
                                 </Accordion.Item>
                             )
                         })}

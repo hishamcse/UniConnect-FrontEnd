@@ -1,12 +1,10 @@
-import styles from './AddDeptBatch.module.scss';
 import React, {useRef, useState} from "react";
 import {useRouter} from "next/router";
+import styles from "./AddDeptBatch.module.scss";
 import {Button, Form} from "react-bootstrap";
 import {BsBuilding, BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 
-const deptValidity = (inp: string): boolean => inp.trim() !== '';
-
-const AddDepartment: React.FC<{ userId: string }> = (props) => {
+const AddSectionStudent: React.FC<{ userId: string }> = (props) => {
 
     const inputDeptIdRef = useRef<HTMLInputElement | null>(null);
     const inputDeptNameRef = useRef<HTMLInputElement | null>(null);
@@ -20,7 +18,7 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
         const deptId = inputDeptIdRef.current?.value;
         const deptName = inputDeptNameRef.current?.value;
 
-        if (!deptId || !deptName || !deptValidity(deptId) || !deptValidity(deptName)) {
+        if (!deptId || !deptName) {
             setFormValid(false);
             return;
         }
@@ -83,4 +81,4 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
     );
 }
 
-export default AddDepartment;
+export default AddSectionStudent;
