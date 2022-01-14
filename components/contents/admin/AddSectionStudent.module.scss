@@ -1,0 +1,17 @@
+$color-primary: #55c57a;
+$color-primary-light: #E6E6E6;
+$color-primary-dark: #39393A;
+
+$color-grey-dark: #777;
+$color-white: #fff;
+
+.body {
+  height: 100vh;
+  padding: 4rem;
+  position: relative;
+  background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)),
+  url(/background.jpg);
+
+  background-size: cover;
+  background-position: top;
+}

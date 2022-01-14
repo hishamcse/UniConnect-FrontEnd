@@ -1,11 +1,11 @@
-import {Batch, BatchInfoView} from "../models/University/Batch";
+import {Dept_Batch, BatchInfoView} from "../models/University/Batch";
 
 type BatchPair = {
     year: number;
     type: string;
 }
 
-export const parseBatchData = (arr: Batch[]) => {
+export const parseBatchData = (arr: Dept_Batch[]) => {
 
     let batch_types = ['ug', 'pg'];
     let batches: BatchPair[] = [];
@@ -38,6 +38,7 @@ export const parseBatchData = (arr: Batch[]) => {
     batches.forEach( pair => {
         let temp = arr.filter(data => data.YEAR === pair.year && data.BATCHOFSTYPE === pair.type);
         let info: BatchInfoView = {
+            batch_id: temp[0].BATCH_ID,
             batch_year: pair.year,
             batch_type: pair.type === 'ug' ? 'UnderGraduate' : 'PostGraduate',
             batch_name: temp[0].BATCH_NAME,

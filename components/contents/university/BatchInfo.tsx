@@ -11,7 +11,12 @@ const BatchInfo: React.FC<{ batch: BatchInfoView, userId: string }> = (props) =>
     const addSection = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`${props.userId}/addSecStudent`);
+        await router.push({
+            pathname: `${props.userId}/addSecStudent`,
+            query: {
+                batchId: batch.batch_id
+            }
+        });
     }
 
     return (
