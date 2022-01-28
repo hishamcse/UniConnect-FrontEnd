@@ -1,10 +1,13 @@
 import {Container, Nav, Offcanvas} from "react-bootstrap";
 import {BsFillCaretRightSquareFill, BsFillFilterCircleFill} from "react-icons/bs";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {useRouter} from "next/router";
+import styles from './StudentOptions.module.scss';
+import AuthContext from "../../../store/auth-context";
 
-const AdminOptions: React.FC<{ id: string }> = (props) => {
+const StudentOptions: React.FC<{ id: string }> = (props) => {
 
+    const authCtx = useContext(AuthContext);
     const [showSideBar, setShowSideBar] = useState(false);
 
     const handleCloseSideBar = () => setShowSideBar(false);
@@ -12,32 +15,32 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
 
     const router = useRouter();
 
-    const addDept = async (e: React.MouseEvent) => {
+    const newsFeed = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`${props.id}/addDept`);
+        await router.push(`/${authCtx.loginData.studentRoles[0].ID}`);
     }
 
-    const addBatch = async (e: React.MouseEvent) => {
+    const allGroups = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`${props.id}/addBatch`);
+        // await router.push(`${props.id}/addBatch`);
     }
 
     const universityInfo = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`${props.id}`);
+        await router.push(`${props.id}/uniInfo`);
     }
 
-    let modeName = 'Admin ';
+    let modeName = 'Student ';
 
     return (
         <Fragment>
             <h2 className='text-light'>
                 <BsFillFilterCircleFill onClick={toggleShowSideBar}/>
             </h2>
-            <Offcanvas className='bg-dark text-secondary' show={showSideBar}
+            <Offcanvas className={`${styles.background} text-light`} show={showSideBar}
                        onHide={handleCloseSideBar} scroll={true}>
                 <div className='text-lg-center'>
                     <Offcanvas.Header closeButton closeVariant='white'>
@@ -55,13 +58,13 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 University Info</b>
                             </Nav.Link>
-                            <Nav.Link><b onClick={addDept}>
+                            <Nav.Link><b onClick={newsFeed}>
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Add Department</b>
+                                NewsFeed</b>
                             </Nav.Link>
-                            <Nav.Link><b onClick={addBatch}>
+                            <Nav.Link><b onClick={allGroups}>
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Add Batch</b>
+                                All Groups</b>
                             </Nav.Link>
                         </Nav>
                     </Container>
@@ -71,4 +74,4 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
     );
 }
 
-export default AdminOptions;
+export default StudentOptions;

@@ -7,7 +7,6 @@ import LoginForm from "../components/login/LoginForm";
 import LayoutWrapper from "../components/ui/LayoutWrapper";
 import SignUpForm from "../components/signup/SignUpForm";
 import {useRouter} from "next/router";
-import AuthContextProvider from "../store/AuthContextProvider";
 
 const Home = () => {
 

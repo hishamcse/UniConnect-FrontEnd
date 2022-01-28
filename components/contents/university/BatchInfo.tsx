@@ -3,7 +3,7 @@ import React from "react";
 import {BatchInfoView} from "../../../models/University/Batch";
 import {useRouter} from "next/router";
 
-const BatchInfo: React.FC<{ batch: BatchInfoView, userId: string }> = (props) => {
+const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }> = (props) => {
 
     const {batch} = props;
     const router = useRouter();
@@ -30,9 +30,10 @@ const BatchInfo: React.FC<{ batch: BatchInfoView, userId: string }> = (props) =>
                     <li key={Math.random().toString() + batch.batch_year}>
                         <b>{data.dept_name}:</b>&nbsp; {data.students_count}</li>)}
             </p>
-            <Button className='center-block' variant='info' onClick={addSection}>
+            {props.mode==='management' &&
+                <Button className='center-block' variant='info' onClick={addSection}>
                 Add Section & Student
-            </Button>
+            </Button>}
         </Accordion.Body>
     );
 }

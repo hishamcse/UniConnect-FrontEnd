@@ -1,7 +1,8 @@
-import UserNavigation from "../../components/layout/UserNavigation";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
-import React from "react";
-import UniversityInfo from "../../components/contents/university/UniversityInfo";
+import React, {useContext, useEffect, useState} from "react";
+import AuthContext from "../../store/auth-context";
+import UniInfo from "./uniInfo";
+import Feed from "./feed";
 
 type User = {
     name: string;
@@ -10,12 +11,21 @@ type User = {
 }
 
 const UserPage: React.FC<{ userId: string }> = (props) => {
+
+    const authCtx = useContext(AuthContext);
+
+    const [mode,setMode] = useState('');
+
+    useEffect(() => {
+        setMode(authCtx.loggedInAs === 'management' ? 'admin' :
+            (authCtx.loggedInAs === 'student' ? 'student' :
+                'teacher'));
+    },[])
+
     return (
         <LayoutWrapper>
-            <UserNavigation id={props.userId} mode='admin'/>
-            <div className='text-center m-5 p-5'>
-                <UniversityInfo mode='admin' userId={props.userId}/>
-            </div>
+            {mode === 'admin' && <UniInfo userId={props.userId}/>}
+            {mode === 'student' && <Feed userId={props.userId}/>}
         </LayoutWrapper>
     );
 }

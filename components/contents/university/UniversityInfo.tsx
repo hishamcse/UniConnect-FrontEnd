@@ -63,13 +63,16 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
             });
     }, []);
 
+    const background = props.mode === 'admin' ? 'bg-secondary' :
+        (props.mode === 'student' ? styles['background-student'] : '');
+
     return (
-        <div className={`${styles.university} m-5 p-4 bg-secondary`}>
+        <div className={`${styles.university} m-5 p-4 ${background}`}>
             <h2>{versityName}</h2>
             <div className='p-2 mt-5'>
                 <Accordion flush>
-                    <Departments departments={deptData} userId={props.userId}/>
-                    <Batches batches={batchData} userId={props.userId}/>
+                    <Departments mode={props.mode} userId={props.userId} departments={deptData}/>
+                    <Batches mode={props.mode} userId={props.userId} batches={batchData}/>
                 </Accordion>
             </div>
         </div>

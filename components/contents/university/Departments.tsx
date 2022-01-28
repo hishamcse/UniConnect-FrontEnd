@@ -5,7 +5,7 @@ import DeptInfo from "./DeptInfo";
 import {useRouter} from "next/router";
 import {DeptInfoView} from "../../../models/University/Department";
 
-const Departments: React.FC<{ departments: DeptInfoView[], userId: string }> = (props) => {
+const Departments: React.FC<{ mode: string, userId: string, departments: DeptInfoView[] }> = (props) => {
 
     const router = useRouter();
 
@@ -36,10 +36,10 @@ const Departments: React.FC<{ departments: DeptInfoView[], userId: string }> = (
                         })}
                     </Accordion>
                 </h5><br/>
-                <Button className='btn-danger' onClick={addDept}>
+                {props.mode === 'admin' && <Button className='btn-danger' onClick={addDept}>
                     <BsFillPatchPlusFill/>&nbsp;
                     Add Department
-                </Button>
+                </Button>}
             </Accordion.Body>
         </Accordion.Item>
     );

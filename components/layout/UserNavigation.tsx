@@ -1,3 +1,4 @@
+import React, {useContext, useEffect, useState} from "react";
 import {Container, Nav, Navbar} from "react-bootstrap";
 import Image from "next/image";
 import {useRouter} from "next/router";
@@ -5,12 +6,17 @@ import {
     BsFillArrowRightCircleFill
 } from "react-icons/bs";
 import AdminOptions from "../contents/options/AdminOptions";
-import React, {useContext} from "react";
+import StudentOptions from "../contents/options/StudentOptions";
 import AuthContext from "../../store/auth-context";
+import styles from './UserNavigation.module.scss';
 
-const UserNavigation: React.FC<{ id: string, mode: string }> = (props) => {
+const UserNavigation: React.FC<{ id: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
+
+    const [modeText, setModeText] = useState<string>();
+    const [uniName, setUniName] = useState<string>();
+    const [theme, setTheme] = useState<'light'|'dark'|undefined>();
 
     const router = useRouter();
 
@@ -21,13 +27,28 @@ const UserNavigation: React.FC<{ id: string, mode: string }> = (props) => {
         await router.push('/');
     }
 
-    let modeText = (props.mode === 'admin') ? 'Admin Page' : 'User Page';
+    useEffect(() => {
+        let mode = (authCtx.loggedInAs === 'management') ? 'Admin View' :
+            (authCtx.loggedInAs === 'student' ? 'Student View': 'Teacher View');
+        setModeText(mode);
+
+        let uni = (authCtx.loggedInAs === 'management') ? authCtx.loginData.managementRoles[0].UNIVERSITY_NAME.split(',')[1] :
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].UNIVERSITY_NAME.split(',')[1]:
+                authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME.split(',')[1]);
+        setUniName(uni);
+
+        let theme = mode === 'Admin View' ? 'dark' :
+            (mode === 'Student View' ? styles.background : 'secondary');
+        // @ts-ignore
+        setTheme(theme);
+    }, []);
 
     return (
-        <Navbar collapseOnSelect bg='dark' variant='dark' expand='lg' fixed='top'>
+        <Navbar collapseOnSelect className={theme} bg={theme} variant={theme} expand='lg' fixed='top'>
             <Container>
                 <Nav.Link>
-                    <AdminOptions id={props.id} mode={props.mode}/>
+                    {modeText === 'Admin View' && <AdminOptions id={props.id}/>}
+                    {modeText === 'Student View' && <StudentOptions id={props.id}/>}
                 </Nav.Link>
 
                 <col className='col-1'/>
@@ -35,7 +56,7 @@ const UserNavigation: React.FC<{ id: string, mode: string }> = (props) => {
                 <Navbar.Brand className='ml-4 text-light'>
                     <h4>
                         <Image src='/title-icon.png' alt='uni' width='30' height='30'/>
-                        &nbsp;&nbsp;BUET
+                        &nbsp;&nbsp;{uniName}
                     </h4>
                 </Navbar.Brand>
 
@@ -43,7 +64,7 @@ const UserNavigation: React.FC<{ id: string, mode: string }> = (props) => {
 
                 <Navbar.Collapse id="navbarScroll">
                     <col className='col-4'/>
-                    <h5 className='text-secondary'>
+                    <h5 className='text-light'>
                         {modeText}
                     </h5>
                     <col className='col-4'/>

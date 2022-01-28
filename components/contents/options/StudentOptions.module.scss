@@ -1,10 +1,6 @@
 $color-primary-light: #372554;
-$color-primary-dark: #52528C;
+$color-primary-dark: #231123;
 
-.university {
-  border-radius: 2rem;
-}
-
-.background-student {
+.background {
   background: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8));
 }
