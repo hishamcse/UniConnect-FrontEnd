@@ -1,0 +1,44 @@
+$color-primary-light: #372554;
+$color-primary-dark: #52528C;
+$color-secondary-light: #BBCBCB;
+$color-secondary-dark: #9590A8;
+$color-footer: #634B66;
+
+@mixin common_style {
+  width: 60%;
+  margin: auto;
+}
+
+@mixin backgroundColor($color1, $color2) {
+  background: linear-gradient(to right bottom, rgba($color1, 0.8), rgba($color2, 0.8));
+}
+
+.university {
+  border-radius: 2rem;
+}
+
+.background-student {
+  @include backgroundColor($color-primary-light, $color-primary-dark);
+}
+
+.post {
+  @include backgroundColor($color-secondary-light, $color-secondary-dark);
+  padding: 1.5rem;
+  @include common_style;
+}
+
+.footer {
+  background: $color-footer;
+  padding: 1rem;
+  @include common_style;
+}
+
+.comments {
+  width: 100%;
+  @include common_style;
+}
+
+.hovering:hover {
+  cursor: pointer;
+  color: #7B6D8D;
+}

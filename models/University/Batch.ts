@@ -4,7 +4,7 @@ export type Dept_Batch = {
     BATCH_NAME: string;
     YEAR: number;
     BATCH_ID: number;
-    BATCHOFSTYPE: string;
+    BATCH_TYPE: string;
     SECTION_COUNT: number;
     STUDENT_COUNT: number;
 }

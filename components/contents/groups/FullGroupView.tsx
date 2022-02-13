@@ -1,17 +1,17 @@
 import React, {Fragment, useEffect, useState} from "react";
-import styles from "./NewsFeed.module.scss";
+import styles from '../posts/NewsFeed.module.scss'
 import {FeedInfoView} from "../../../models/NewsFeed";
 import {parseNewsFeedData} from "../../../parseUtils/ParseNewsFeedData";
-import PostCard from "./PostCard";
+import PostCard from "../posts/PostCard";
 
 const server = 'http://localhost:3000';
 
-const NewsFeed: React.FC<{ mode: string, userId: string }> = (props) => {
+const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
 
     const [feedData, setFeedData] = useState<FeedInfoView[]>([]);
 
     useEffect(() => {
-        fetch(`${server}/groups/all/posts`, {
+        fetch(`${server}/groups/posts/${props.groupId}/1/after/20/desc`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -32,7 +32,7 @@ const NewsFeed: React.FC<{ mode: string, userId: string }> = (props) => {
         <Fragment>
             <div className='m-4 p-4 text-lg-left'>
                 <div className={`${styles.university} ${background} p-3`}>
-                    <h2>Recent Posts From All Groups</h2>
+                    <h2>Recent Posts From {feedData[0]?.group}</h2>
                 </div>
 
                 <div className='m-5 text-lg-left'>
@@ -45,4 +45,4 @@ const NewsFeed: React.FC<{ mode: string, userId: string }> = (props) => {
     );
 }
 
-export default NewsFeed;
+export default FullGroupView;

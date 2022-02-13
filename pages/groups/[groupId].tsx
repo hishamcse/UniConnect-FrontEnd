@@ -1,21 +1,19 @@
-import LayoutWrapper from "../../components/ui/LayoutWrapper";
 import React, {useContext, useEffect, useState} from "react";
+import LayoutWrapper from "../../components/ui/LayoutWrapper";
 import AuthContext from "../../store/auth-context";
-import UniInfo from "./uniInfo";
-import Feed from "./feed";
+import UserNavigation from "../../components/layout/UserNavigation";
+import FullGroupView from "../../components/contents/groups/FullGroupView";
 
-type User = {
-    name: string;
+type Group = {
     id: number;
-    university: string
 }
 
-const UserPage: React.FC<{ userId: string }> = (props) => {
+const SingleGroup: React.FC<{ groupId: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
 
-    const [mode, setMode] = useState('');
-    const [userId, setUserId] = useState(props.userId);
+    const [mode,setMode] = useState('');
+    const [userId, setUserId] = useState<string>('');
 
     useEffect(() => {
         setMode(authCtx.loggedInAs === 'management' ? 'admin' :
@@ -24,32 +22,30 @@ const UserPage: React.FC<{ userId: string }> = (props) => {
         setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
             (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
                 authCtx.loginData.teacherRoles[0].ID.toString()))
-    },[])
+    },[]);
 
     return (
         <LayoutWrapper>
-            {mode === 'admin' && <UniInfo userId={userId}/>}
-            {mode === 'student' && <Feed userId={userId}/>}
+            <UserNavigation id={userId}/>
+            <div className='text-center m-5 p-5'>
+                <FullGroupView mode={mode} groupId={props.groupId}/>
+            </div>
         </LayoutWrapper>
     );
 }
 
 export async function getStaticPaths() {
 
-    let users: User[];
-    users = [{
-        name: 'Hisham',
+    let groups: Group[];
+    groups = [{
         id: 4,
-        university: 'BUET'
     }, {
-        name: 'Mihad',
         id: 8,
-        university: 'BUET'
     }];
 
-    const paramArr = users.map(user => ({
+    const paramArr = groups.map(grp => ({
         params: {
-            userId: user.id.toString()
+            groupId: grp.id.toString()
         }
     }))
 
@@ -61,13 +57,13 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: any) {
 
-    const userId = context.params.userId;
+    const groupId = context.params.groupId;
 
     return {
         props: {
-            userId
+            groupId
         }
     }
 }
 
-export default UserPage;
+export default SingleGroup;

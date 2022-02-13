@@ -1,17 +1,20 @@
 import styles from '../styles/Home.module.scss'
 import StartNavigation from "../components/layout/StartNavigation";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import StartPage from "../components/contents/startpage/StartPage";
 import StartBackground from "../components/backgrounds/StartBackground";
 import LoginForm from "../components/login/LoginForm";
 import LayoutWrapper from "../components/ui/LayoutWrapper";
 import SignUpForm from "../components/signup/SignUpForm";
 import {useRouter} from "next/router";
+import AuthContext from "../store/auth-context";
 
 const Home = () => {
 
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
+
+    const authCtx = useContext(AuthContext);
 
     const router = useRouter();
 

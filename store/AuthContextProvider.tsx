@@ -18,37 +18,48 @@ const calculateRemainingTime = (expirationTime: string | null) => {
     return expiredTime - nowTime;
 }
 
-const getStoredTokenAndTime = () => {
+const getStoredTokenTimeAndData = () => {
     if (typeof window !== "undefined") {
         const storedToken = localStorage.getItem('token');
         const storedExpirationTime = localStorage.getItem('expirationTime');
+        const loggedAs = localStorage.getItem('loggedInAs');
+        const storedData = localStorage.getItem('logindata');
 
         const remainingTime = calculateRemainingTime(storedExpirationTime);
 
         if (remainingTime <= 3600000) {
             localStorage.removeItem('token');
             localStorage.removeItem('expirationTime');
+            localStorage.removeItem('loggedInAs');
+            localStorage.removeItem('logindata');
             return null;
         }
 
         return {
             token: storedToken,
-            expirationTime: remainingTime
+            expirationTime: remainingTime,
+            loggedAs,
+            // @ts-ignore
+            storedData: JSON.parse(storedData)
         }
     }
 }
 
 const AuthContextProvider: React.FC = (props) => {
 
-    const storedData = getStoredTokenAndTime();
+    const storedData = getStoredTokenTimeAndData();
     let initToken;
+    let initLoggedAs = '';
     if (storedData) {
         initToken = storedData.token;
+        // @ts-ignore
+        initLoggedAs = storedData.loggedAs;
+        initLoginData = storedData.storedData;
     }
 
     const [token, setToken] = useState(initToken);
     const [loginData, setLoginData] = useState(initLoginData);
-    const [loggedInAs, setLoggedInAs] = useState('');
+    const [loggedInAs, setLoggedInAs] = useState(initLoggedAs);
 
     const isLoggedIn = !!token;
 
@@ -57,6 +68,8 @@ const AuthContextProvider: React.FC = (props) => {
         setLoginData(initLoginData);
         localStorage.removeItem('token');
         localStorage.removeItem('expirationTime')
+        localStorage.removeItem('loggedInAs');
+        localStorage.removeItem('logindata');
 
         if (logoutTimer) {
             clearTimeout(logoutTimer)
@@ -69,6 +82,7 @@ const AuthContextProvider: React.FC = (props) => {
             setLoginData(data);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationTime', expirationTime);
+            localStorage.setItem('logindata', JSON.stringify(data));
 
             const remainingTime = calculateRemainingTime(expirationTime);
 
@@ -78,6 +92,7 @@ const AuthContextProvider: React.FC = (props) => {
 
     const loggedInModeHandler = (mode: string) => {
         setLoggedInAs(mode);
+        localStorage.setItem('loggedInAs', mode);
     }
 
     useEffect(() => {

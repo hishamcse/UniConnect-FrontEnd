@@ -30,7 +30,7 @@ const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }>
                     <li key={Math.random().toString() + batch.batch_year}>
                         <b>{data.dept_name}:</b>&nbsp; {data.students_count}</li>)}
             </p>
-            {props.mode==='management' &&
+            {props.mode==='admin' &&
                 <Button className='center-block' variant='info' onClick={addSection}>
                 Add Section & Student
             </Button>}

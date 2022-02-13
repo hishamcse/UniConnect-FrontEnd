@@ -24,10 +24,10 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
         arr.forEach(data => {
             let pair = {
                 year: data.YEAR,
-                type: data.BATCHOFSTYPE
+                type: data.BATCH_TYPE
             };
 
-            if(sType === data.BATCHOFSTYPE && !pairIncludes(pair)) {
+            if(sType === data.BATCH_TYPE && !pairIncludes(pair)) {
                 batches.push(pair);
             }
         })
@@ -36,7 +36,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
     let allBatchDatas: BatchInfoView[] = [];
 
     batches.forEach( pair => {
-        let temp = arr.filter(data => data.YEAR === pair.year && data.BATCHOFSTYPE === pair.type);
+        let temp = arr.filter(data => data.YEAR === pair.year && data.BATCH_TYPE === pair.type);
         let info: BatchInfoView = {
             batch_id: temp[0].BATCH_ID,
             batch_year: pair.year,

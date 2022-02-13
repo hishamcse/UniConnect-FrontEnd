@@ -1,0 +1,56 @@
+$color-primary-light: #95d5b2;
+$color-primary-dark: #52b788;
+$color-secondary-light: #6c757d;
+$color-secondary-dark: #343a40;
+
+@mixin backgroundColor($color1, $color2) {
+  background: linear-gradient(to right bottom, rgba($color1, 0.8), rgba($color2, 0.8));
+}
+
+@mixin cardStyle {
+  border-radius: 1rem;
+  max-width: 100%;
+  margin-bottom: 3rem;
+  transition: all 0.5s;
+
+  &:hover {
+    transform: scale(1.03, 1.03);
+    transition: all 0.5s;
+  }
+}
+
+.heading {
+  border-radius: 2rem;
+}
+
+.flexbox {
+  display: flex;
+}
+
+.background-default {
+  @include backgroundColor($color-primary-light,$color-primary-dark);
+}
+
+.background-custom {
+  @include backgroundColor($color-primary-light,$color-primary-dark);
+}
+
+.defaultCard {
+  @include cardStyle;
+  @include backgroundColor($color-secondary-light,$color-secondary-dark);
+}
+
+.customCard {
+  @include cardStyle;
+  @include backgroundColor($color-secondary-light,$color-secondary-dark);
+}
+
+.button {
+  margin-left: 32%;
+  border-radius: 1rem;
+}
+
+.hovering:hover {
+  cursor: pointer;
+  color: #7B6D8D;
+}

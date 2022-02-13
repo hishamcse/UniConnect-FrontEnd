@@ -1,10 +1,33 @@
 $color-primary-light: #8499B1;
 $color-primary-dark: #7B6D8D;
+$color-secondary-light: #faf9f9;
+$color-secondary-dark: #edf2fb;
+
+@mixin backgroundColor($color1, $color2) {
+  background: linear-gradient(to right bottom, rgba($color1, 0.8), rgba($color2, 0.8));
+}
 
 .university {
   border-radius: 2rem;
 }
 
 .background-student {
-  background: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8));
+  @include backgroundColor($color-primary-light,$color-primary-dark);
+}
+
+.card {
+  border-radius: 1rem;
+  margin-bottom: 3rem;
+  transition: all 0.5s;
+
+  @include backgroundColor($color-secondary-light,$color-secondary-dark);
+
+  &:hover {
+    transform: scale(1.03, 1.03);
+  }
+}
+
+.hovering:hover {
+  cursor: pointer;
+  color: #7B6D8D;
 }

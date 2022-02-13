@@ -1,6 +1,6 @@
 import {Container, Nav, Offcanvas} from "react-bootstrap";
 import {BsFillCaretRightSquareFill, BsFillFilterCircleFill} from "react-icons/bs";
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import styles from './StudentOptions.module.scss';
 import AuthContext from "../../../store/auth-context";
@@ -9,6 +9,17 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
     const [showSideBar, setShowSideBar] = useState(false);
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        if(!props.id) {
+            setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
+                (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
+                    authCtx.loginData.teacherRoles[0].ID.toString()));
+        }else {
+            setUserId(props.id);
+        }
+    },[])
 
     const handleCloseSideBar = () => setShowSideBar(false);
     const toggleShowSideBar = () => setShowSideBar((s) => !s);
@@ -18,19 +29,19 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
     const newsFeed = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`/${authCtx.loginData.studentRoles[0].ID}`);
+        await router.push(`/${userId}`);
     }
 
     const allGroups = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        // await router.push(`${props.id}/addBatch`);
+        await router.push(`/${userId}/groups`);
     }
 
     const universityInfo = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        await router.push(`${props.id}/uniInfo`);
+        await router.push(`/${userId}/uniInfo`);
     }
 
     let modeName = 'Student ';
