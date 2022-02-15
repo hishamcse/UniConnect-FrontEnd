@@ -4,7 +4,7 @@ export const parseNewsFeedData = (arr: NewsFeed[]): FeedInfoView[] => {
     let allFeedData: FeedInfoView[] = [];
 
     arr.forEach(data => {
-        const text = `${data.TEXT?.split(' ').slice(0, 15).join(' ')}...`;
+        const text = `${data.TEXT?.split(' ').slice(0, 100).join(' ')}...`;
 
         allFeedData.push({
             title: data.TITLE,
@@ -17,7 +17,10 @@ export const parseNewsFeedData = (arr: NewsFeed[]): FeedInfoView[] => {
             posted_at: new Date(data.POSTED_AT).toLocaleString(),
             comment_count: data.COMMENT_COUNT,
             upvote: data.UPVOTE_COUNT,
-            downvote: data.DOWNVOTE_COUNT
+            downvote: data.DOWNVOTE_COUNT,
+            teacher : data.TEACHER,
+            student : data.STUDENT,
+            department_name : data.DEPARTMENT_NAME
         });
     });
 

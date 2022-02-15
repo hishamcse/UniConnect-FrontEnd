@@ -14,11 +14,13 @@ const DeptInfo: React.FC<{deptInfo: DeptInfoView}> = (props) => {
             <h6 className='text-secondary text-left'>Students:</h6>
             <p className='lead'>There are {department.total_students} students in this department</p>
             <h6 className='text-secondary text-left'>Students by batch:</h6>
-            <p className='lead'>
-                {department.students_by_year.map((data, i) =>
-                    <li key={i + data.year}><b>{data.year}:</b>&nbsp; {data.students_count}</li>)
-                }
-            </p>
+            <div className="p-2">
+                <div className='lead d-inline-flex flex-column text-left'>
+                    {department.students_by_year.map((data, i) =>
+                        <li key={i + data.year}><b>{data.year}:</b>&nbsp; {data.students_count}</li>)
+                    }
+                </div>
+            </div>
         </Accordion.Body>
     );
 }

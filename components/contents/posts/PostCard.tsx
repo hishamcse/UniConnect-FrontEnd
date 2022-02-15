@@ -6,7 +6,8 @@ import {useRouter} from "next/router";
 import AuthContext from "../../../store/auth-context";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import {RiGroupFill} from "react-icons/ri";
-import {BsFillCalendar2RangeFill, BsFillPersonFill, BsSignpost2} from "react-icons/bs";
+import {GiTeacher} from "react-icons/gi";
+import {BsFillCalendar2RangeFill, BsFillPersonFill, BsPersonLinesFill, BsSignpost2} from "react-icons/bs";
 
 const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = (props) => {
 
@@ -32,8 +33,9 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
     return (
         <Card key={index + Math.random().toString()} className={styles.card}>
             <Card.Body>
-                <Card.Title><h3>{item.title}</h3></Card.Title>
-                <Card.Subtitle className="mt-3 mb-2 text-success">
+                <Card.Title className = 'mx-5 my-2 py-2'><h3>{item.title}</h3></Card.Title>
+                <hr className = 'hr-mid'/>
+                <Card.Subtitle className="mt-3 mb-2 mx-2 text-success text-right">
                     <div>
                         <b><BsFillPersonFill/>&nbsp;&nbsp;
                             {item.posted_by}
@@ -41,7 +43,16 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
                     </div>
                 </Card.Subtitle>
 
-                <Card.Subtitle className="m-2 text-muted">
+                <Card.Subtitle className="mb-2 mx-2 text-dark text-right">
+                    <div>
+                        <b>
+                            {item.teacher ? <GiTeacher /> : <BsPersonLinesFill />}&nbsp;
+                            {`${item.teacher ? 'Teacher' : 'Student' }, ${item.department_name}`}
+                        </b>
+                    </div>
+                </Card.Subtitle>
+
+                <Card.Subtitle className="m-2 text-muted text-right">
                     <div>
                         <b><BsFillCalendar2RangeFill/>&nbsp;&nbsp;
                             {new Date(item.posted_at).toLocaleTimeString()
@@ -50,11 +61,11 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
                     </div>
                 </Card.Subtitle>
 
-                <Card.Subtitle className="m-2 text-muted">
+                <Card.Subtitle className="m-2 text-muted text-right">
                     <RiGroupFill/> {item.group}
                 </Card.Subtitle>
 
-                <Card.Text className='m-4'>
+                <Card.Text className='m-4 text-left px-5'>
                     <p className='lead'>
                         {item.content}
                         <p className='text-muted'>(Click <b className='text-info'>details</b> to see full post)</p>

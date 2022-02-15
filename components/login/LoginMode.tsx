@@ -43,7 +43,7 @@ const LoginMode = () => {
         else if(reqType === 'student') id = authData.studentRoles[0].ID;
         else id = authData.teacherRoles[0].ID;
 
-        fetch(`${server}/user/login/${reqType}/${id}`, {
+        fetch(`${server}/${reqType + 's'}/login/${id}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'

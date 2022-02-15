@@ -6,6 +6,8 @@ import AuthContext from "../../../../store/auth-context";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import {CommentView} from "../../../../models/Comment";
 import SingleComment from "../comments/SingleComment";
+import {GiTeacher} from "react-icons/gi";
+import {BsFillCalendar2RangeFill, BsFillPersonFill, BsPersonLinesFill} from "react-icons/bs";
 
 const server = 'http://localhost:3000';
 
@@ -30,7 +32,7 @@ const Post: React.FC<{ postData: SinglePostView }> = (props) => {
     const commentHandler = (e: any) => {
         e.preventDefault();
 
-        fetch(`${server}/groups/comments/${contentId}`, {
+        fetch(`${server}/comments/${contentId}`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -39,7 +41,6 @@ const Post: React.FC<{ postData: SinglePostView }> = (props) => {
                 return resp.json();
             })
             .then(data => {
-                console.log(data);
                 setComments(data);
                 setShowComment(true);
             });
@@ -49,15 +50,27 @@ const Post: React.FC<{ postData: SinglePostView }> = (props) => {
         <div>
             <Card className={`${styles.post}`}>
                 <Card.Body>
-                    <Card.Title><h3>{title}</h3></Card.Title>
-                    <Card.Subtitle className="mb-2 mt-2 text-success">
-                        <h5>Posted By : {posted_by}</h5>
+                    <Card.Title className = 'p-2' > <h2> {title}</h2></Card.Title>
+                    <Card.Subtitle className="mb-2 mt-2 text-success text-right">
+                        <b><BsFillPersonFill/>&nbsp;&nbsp;
+                            {posted_by}</b>
                     </Card.Subtitle>
-                    <Card.Subtitle className="mb-2 mt-2 text-muted">
-                        <h6>Posted At : {posted_at}</h6>
+
+                    <Card.Subtitle className="mb-2 mx-2 text-dark text-right">
+                        <div>
+                            <b>{props.postData?.TEACHER ? <GiTeacher /> : <BsPersonLinesFill />}&nbsp;&nbsp;
+                                {`${props.postData?.TEACHER ? 'Teacher' : 'Student' }, ${props.postData?.DEPARTMENT_NAME}`}</b>
+                        </div>
                     </Card.Subtitle>
+
+                    <Card.Subtitle className="mb-2 mt-2 text-muted text-right">
+                        <b><BsFillCalendar2RangeFill/>&nbsp;&nbsp;
+                            {posted_at}
+                        </b>
+                    </Card.Subtitle>
+
                     <Card.Text>
-                        <p className='mt-4 mb-4 text-lg-left'>
+                        <p className='mt-4 mb-4 text-lg-left text-left'>
                             {props.postData?.TEXT}
                         </p>
                     </Card.Text>
@@ -67,8 +80,8 @@ const Post: React.FC<{ postData: SinglePostView }> = (props) => {
             <div className={`${styles.footer} text-info`}>
                 <div className={`text-center d-inline-flex mb-3`}>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <h6>Upvote (0) :&nbsp;<b><BiUpvote className={styles.hovering}/></b></h6>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <h6>Downvote (0) :&nbsp;<BiDownvote className={styles.hovering}/></h6>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h6>Upvote ({props.postData?.UPVOTE_COUNT}) :&nbsp;<b><BiUpvote className={styles.hovering}/></b></h6>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h6>Downvote ({props.postData?.DOWNVOTE_COUNT}) :&nbsp;<BiDownvote className={styles.hovering}/></h6>&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
                 <br/>
                 <b className={styles.hovering} onClick={commentHandler}><u>View Comments</u></b>

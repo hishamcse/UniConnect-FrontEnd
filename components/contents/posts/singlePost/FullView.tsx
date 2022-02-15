@@ -23,7 +23,7 @@ const FullView: React.FC<{ mode: string, contentId: string }> = (props) => {
         }
 
         setVersityName(uniName);
-        fetch(`${server}/groups/post/${props.contentId}`, {
+        fetch(`${server}/posts/${props.contentId}`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",

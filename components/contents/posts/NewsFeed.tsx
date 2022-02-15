@@ -11,7 +11,7 @@ const NewsFeed: React.FC<{ mode: string, userId: string }> = (props) => {
     const [feedData, setFeedData] = useState<FeedInfoView[]>([]);
 
     useEffect(() => {
-        fetch(`${server}/groups/all/posts`, {
+        fetch(`${server}/posts/all`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",

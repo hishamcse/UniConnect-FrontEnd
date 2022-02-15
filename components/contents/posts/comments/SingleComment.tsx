@@ -1,13 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Card, Form, Image} from "react-bootstrap";
 import {CommentView} from "../../../../models/Comment";
 import styles from "../NewsFeed.module.scss";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
+import SingleReply from "./SingleReply";
+
+const server = 'http://localhost:3000';
 
 const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) => {
 
+    const [replies, setReplies] = useState<CommentView[]>([]);
+    const [showReplies, setShowReplies] = useState(false);
+
     const item = props.item;
     const index = props.index;
+
+    const repliesHandler = (e: any) => {
+        e.preventDefault();
+
+        fetch(`${server}/comments/${item.CONTENT_ID}`, {
+            mode: 'cors',
+            method: 'get',
+            credentials: "include",
+        })
+            .then(resp => {
+                return resp.json();
+            })
+            .then(data => {
+                if(data.length !== 0) {
+                    setReplies(data);
+                    setShowReplies(true);
+                }
+            });
+    }
 
     return (
         <Card key={index + Math.random().toString()} bg='light' className='p-2 mb-5 text-black'>
@@ -29,11 +54,9 @@ const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) =>
                     </div>
                 </Card.Subtitle>
 
-                <Card.Text className='mt-4 mb-4 d-flex'>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam perspiciatis quidem
-                        quis. A commodi culpa eligendi laborum pariatur saepe sint velit voluptatum. Ad distinctio
-                        dolores iure modi soluta, voluptas.
+                <Card.Text className='mt-4 mb-4 d-flex`'>
+                    <p className='text-left px-4'>
+                        {item.TEXT}
                     </p>
                 </Card.Text>
 
@@ -44,9 +67,13 @@ const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) =>
                         </h6>&nbsp;&nbsp;&nbsp;&nbsp;
                         <h6>Downvote ({item.DOWNVOTE}) :&nbsp;<BiDownvote className={styles.hovering}/></h6>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6 className={styles.hovering}><u>{item.REPLIES} replies</u></h6>
+                        <h6 className={styles.hovering} onClick={repliesHandler}><u>{item.REPLIES} replies</u></h6>
                     </div>
                     <br/>
+
+                    {showReplies &&
+                      replies.map((reply,index) =>
+                          <SingleReply key={index + Math.random().toString()} replyData={reply}/>)}
                 </div>
 
                 <Card.Text className='mt-2' style={{width: '100%'}}>

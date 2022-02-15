@@ -10,5 +10,9 @@ export type SinglePostView = {
     GROUP_NAME: string,
     COMMENT_COUNT: number,
     UPVOTE_COUNT: number,
-    DOWNVOTE_COUNT: number
+    DOWNVOTE_COUNT: number,
+    DOWN: string,
+    TEACHER: number,
+    STUDENT: number,
+    DEPARTMENT_NAME: string
 }

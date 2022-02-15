@@ -10,6 +10,9 @@ export type NewsFeed = {
     COMMENT_COUNT: number,
     UPVOTE_COUNT: number,
     DOWNVOTE_COUNT: number
+    TEACHER : boolean,
+    STUDENT : boolean,
+    DEPARTMENT_NAME : string
 }
 
 export type FeedInfoView = {
@@ -23,5 +26,8 @@ export type FeedInfoView = {
     posted_at: string,
     comment_count: number,
     upvote: number,
-    downvote: number
+    downvote: number,
+    teacher : boolean,
+    student : boolean,
+    department_name : string
 }

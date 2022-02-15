@@ -11,7 +11,7 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
     const [feedData, setFeedData] = useState<FeedInfoView[]>([]);
 
     useEffect(() => {
-        fetch(`${server}/groups/posts/${props.groupId}/1/after/20/desc`, {
+        fetch(`${server}/posts/${props.groupId}/1/after/20/desc`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -46,3 +46,52 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
 }
 
 export default FullGroupView;
+
+// <CTable align="middle" className="mb-3 border" hover responsive>
+//                     <CTableHead color="light">
+//                         <CTableRow>
+//                             <CTableHeaderCell className="text-center">
+//                                 <MdOutlineSubtitles/> Post Title
+//                             </CTableHeaderCell>
+//                             <CTableHeaderCell>
+//                                 <BiBookContent/> Content Preview</CTableHeaderCell>
+//                             <CTableHeaderCell className="text-center">
+//                                 <BsFillPersonFill/> Posted By
+//                             </CTableHeaderCell>
+//                             <CTableHeaderCell className="text-center">
+//                                 <RiGroupFill/> Group
+//                             </CTableHeaderCell>
+//                             <CTableHeaderCell>
+//                                 <BsFillCalendar2RangeFill/> Posted At
+//                             </CTableHeaderCell>
+//                         </CTableRow>
+//                     </CTableHead>
+//
+//                     <CTableBody>
+//                         {feedData.map((item, index) => (
+//                             <CTableRow v-for="item in tableItems" key={index + Math.random().toString()}>
+//                                 <CTableDataCell>
+//                                     <div><b>{item.title}</b></div>
+//                                     <div className="small text-medium-emphasis">
+//                                     </div>
+//                                 </CTableDataCell>
+//                                 <CTableDataCell>
+//                                     <div>
+//                                         <p>
+//                                             {item.content}
+//                                         </p>
+//                                     </div>
+//                                 </CTableDataCell>
+//                                 <CTableDataCell>
+//                                     <div>{item.posted_by}</div>
+//                                 </CTableDataCell>
+//                                 <CTableDataCell className="text-center">
+//                                     {item.group}
+//                                 </CTableDataCell>
+//                                 <CTableDataCell>
+//                                     <b>{item.posted_at}</b>
+//                                 </CTableDataCell>
+//                             </CTableRow>
+//                         ))}
+//                     </CTableBody>
+//                 </CTable>

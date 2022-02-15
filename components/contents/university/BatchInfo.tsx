@@ -25,11 +25,14 @@ const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }>
             <h6 className='text-secondary text-left'>Students:</h6>
             <p className='lead'>There are {batch.total_students} students in this batch</p>
             <h6 className='text-secondary text-left'>Students by Department:</h6>
-            <p className='lead'>
-                {batch.students_by_dept.map(data =>
-                    <li key={Math.random().toString() + batch.batch_year}>
-                        <b>{data.dept_name}:</b>&nbsp; {data.students_count}</li>)}
-            </p>
+            <div className="p-4">
+                <div className='lead d-inline-flex flex-column text-left'>
+                    {batch.students_by_dept.map(data =>
+                        <li className = 'p-1' key={Math.random().toString() + batch.batch_year}>
+                            <b>{data.dept_name}:</b>&nbsp; {data.students_count}</li>)}
+                </div>
+            </div>
+
             {props.mode==='admin' &&
                 <Button className='center-block' variant='info' onClick={addSection}>
                 Add Section & Student
