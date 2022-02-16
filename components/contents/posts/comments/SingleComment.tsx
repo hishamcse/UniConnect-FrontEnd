@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Button, Card, Form, Image} from "react-bootstrap";
+import React, {useRef, useState} from "react";
+import {Button, Card, Form, Image, Spinner} from "react-bootstrap";
 import {CommentView} from "../../../../models/Comment";
 import styles from "../NewsFeed.module.scss";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
@@ -11,6 +11,9 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
 
     const [replies, setReplies] = useState<CommentView[]>([]);
     const [showReplies, setShowReplies] = useState(false);
+    const [replyLoading, setReplyLoading] = useState<boolean>(false);
+
+    const newReply = useRef<HTMLTextAreaElement | null>(null);
 
     const item = props.item;
     const index = props.index;
@@ -42,9 +45,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
         voteHandler('Y');
     }
 
-    const repliesHandler = (e: any) => {
-        e.preventDefault();
-
+    const findReplies = () => {
         fetch(`${server}/comments/${item.CONTENT_ID}`, {
             mode: 'cors',
             method: 'get',
@@ -54,11 +55,41 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                 return resp.json();
             })
             .then(data => {
-                if (data.length !== 0) {
-                    setReplies(data);
-                    setShowReplies(true);
-                }
+                setReplies(data);
+                setShowReplies(true);
             });
+    }
+
+    const repliesHandler = (e: any) => {
+        e.preventDefault();
+        findReplies();
+    }
+
+    const postReplyHandler = (e: any) => {
+        e.preventDefault();
+
+        const replyStr = newReply.current?.value;
+        if (replyStr?.trim().length === 0) return;
+        setReplyLoading(true);
+
+        fetch(`${server}/comments/${item.CONTENT_ID}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                text: replyStr,
+            })
+        }).then(resp => {
+            return resp.json();
+        }).then(_ => {
+            props.updateComments();
+        }).finally(() => {
+            setReplyLoading(false);
+            // @ts-ignore
+            newReply.current.value = '';
+        });
     }
 
     return (
@@ -98,7 +129,8 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                         </h6>&nbsp;&nbsp;&nbsp;&nbsp;
                         <h6>Downvote ({item.DOWNVOTE}) :&nbsp;
                             {item.DOWN === 'Y' &&
-                                <b><BiDownvote className={`${styles.hovering} text-black`} onClick={downVoteHandler}/></b>}
+                                <b><BiDownvote className={`${styles.hovering} text-black`}
+                                               onClick={downVoteHandler}/></b>}
                             {item.DOWN !== 'Y' &&
                                 <b><BiDownvote className={`${styles.hovering}`} onClick={downVoteHandler}/></b>}
                         </h6>
@@ -106,21 +138,24 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                         <h6 className={styles.hovering} onClick={repliesHandler}><u>{item.REPLIES} replies</u></h6>
                     </div>
                     <br/>
-
-                    {showReplies &&
-                        replies.map((reply, index) =>
-                            <SingleReply key={index + Math.random().toString()} replyData={reply}/>)}
                 </div>
 
                 <Card.Text className='mt-2' style={{width: '100%'}}>
                     <Form>
                         <Form.Group className="mt-2 d-flex" controlId="formBasicEmail">
-                            <Form.Control as="textarea" rows={2} placeholder='reply to this comment'/>
+                            <Form.Control as="textarea" rows={2} placeholder='reply to this comment' ref={newReply}/>
                             &nbsp;&nbsp;
-                            <Button variant='outline-success'>comment</Button>
+                            <Button variant='outline-success' onClick={postReplyHandler}>comment</Button>
+                            {replyLoading && <Spinner animation="border" variant="info"/>}
                         </Form.Group>
                     </Form>
                 </Card.Text>
+
+                <div className='m-4'>
+                    {showReplies && replies.map((reply, index) =>
+                        <SingleReply key={index + Math.random().toString()} replyData={reply}
+                                     updateReplies={findReplies}/>)}
+                </div>
             </Card.Body>
         </Card>
     );

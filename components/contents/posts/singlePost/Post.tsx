@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {SinglePostView} from "../../../../models/SinglePost";
 import styles from './FullView.module.scss';
-import {Button, Card, Form} from "react-bootstrap";
+import {Button, Card, Form, Spinner} from "react-bootstrap";
 import AuthContext from "../../../../store/auth-context";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import {CommentView} from "../../../../models/Comment";
@@ -20,6 +20,9 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
     const [contentId, setContentId] = useState<number>();
     const [comments, setComments] = useState<CommentView[]>([]);
     const [showComment, setShowComment] = useState<boolean>(false);
+    const [commentLoading, setCommentLoading] = useState<boolean>(false);
+
+    const newComment = useRef<HTMLTextAreaElement | null>(null);
 
     useEffect(() => {
         setTitle(props.postData?.TITLE);
@@ -63,7 +66,7 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
             return resp.json();
         }).then(_ => {
             props.updatePost();
-        });
+        })
     }
 
     const upVoteHandler = (e: any) => {
@@ -74,6 +77,33 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
     const downVoteHandler = (e: any) => {
         e.preventDefault();
         voteHandler('Y');
+    }
+
+    const postCommentHandler = (e:any) => {
+        e.preventDefault();
+
+        const commentStr = newComment.current?.value;
+        if(commentStr?.trim().length === 0) return;
+        setCommentLoading(true);
+
+        fetch(`${server}/comments/${contentId}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                text: commentStr,
+            })
+        }).then(resp => {
+            return resp.json();
+        }).then(_ => {
+            if(showComment) findComments();
+        }).finally(() => {
+            setCommentLoading(false);
+            // @ts-ignore
+            newComment.current.value = '';
+        });
     }
 
     return (
@@ -128,9 +158,10 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
 
                 <Form>
                     <Form.Group className="mt-4 d-flex" controlId="formBasicEmail">
-                        <Form.Control as="textarea" rows={2} placeholder='Write your comment here'/>
+                        <Form.Control as="textarea" rows={2} placeholder='Write your comment here' ref={newComment}/>
                         &nbsp;&nbsp;
-                        <Button variant='info'>comment</Button>
+                        <Button variant='info' onClick={postCommentHandler}>comment</Button>
+                        {commentLoading && <Spinner animation="border" variant="info"/>}
                     </Form.Group>
                 </Form>
             </div>

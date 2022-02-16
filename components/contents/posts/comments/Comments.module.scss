@@ -1,0 +1,16 @@
+$color-primary-light: #f8edeb;
+$color-primary-dark: #e8e8e4;
+
+@mixin backgroundColor($color1, $color2) {
+  background: linear-gradient(to right bottom, rgba($color1, 0.8), rgba($color2, 0.8));
+}
+
+.reply {
+  border-radius: 2rem;
+  @include backgroundColor($color-primary-light,$color-primary-dark);
+}
+
+.hovering:hover {
+  cursor: pointer;
+  color: #7B6D8D;
+}
