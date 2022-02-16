@@ -20,7 +20,8 @@ export const parseNewsFeedData = (arr: NewsFeed[]): FeedInfoView[] => {
             downvote: data.DOWNVOTE_COUNT,
             teacher : data.TEACHER,
             student : data.STUDENT,
-            department_name : data.DEPARTMENT_NAME
+            department_name : data.DEPARTMENT_NAME,
+            down: data.DOWN
         });
     });
 

@@ -75,8 +75,14 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
                 <div className={`${styles.footer} text-info`}>
                     <div className='text-center d-inline-flex mb-3'>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>Upvote ({item.upvote}) :&nbsp;<b><BiUpvote/></b></h6>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>Downvote ({item.downvote}) :&nbsp;<BiDownvote/></h6>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6>Upvote ({item.upvote}) :&nbsp;
+                            {item.down === 'N' && <b><BiUpvote className='text-black'/></b>}
+                            {item.down !== 'N' && <b><BiUpvote/></b>}
+                        </h6>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6>Downvote ({item.downvote}) :&nbsp;
+                            {item.down === 'Y' && <b><BiDownvote className='text-black'/></b>}
+                            {item.down !== 'Y' && <b><BiDownvote/></b>}
+                        </h6>&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                     <br/>
                     <b>{item.comment_count} Comments</b>

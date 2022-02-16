@@ -13,16 +13,7 @@ const FullView: React.FC<{ mode: string, contentId: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
 
-    useEffect(() => {
-
-        let uniName: string;
-        if (authCtx.loggedInAs === 'student') {
-            uniName = authCtx.loginData.studentRoles[0].UNIVERSITY_NAME;
-        } else {
-            uniName = authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME;
-        }
-
-        setVersityName(uniName);
+    const findSinglePostData = () => {
         fetch(`${server}/posts/${props.contentId}`, {
             mode: 'cors',
             method: 'get',
@@ -34,6 +25,19 @@ const FullView: React.FC<{ mode: string, contentId: string }> = (props) => {
             .then(data => {
                 setSinglePostData(data);
             });
+    }
+
+    useEffect(() => {
+
+        let uniName: string;
+        if (authCtx.loggedInAs === 'student') {
+            uniName = authCtx.loginData.studentRoles[0].UNIVERSITY_NAME;
+        } else {
+            uniName = authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME;
+        }
+
+        setVersityName(uniName);
+        findSinglePostData();
     }, []);
 
     const background = props.mode === 'admin' ? 'bg-secondary' :
@@ -46,7 +50,7 @@ const FullView: React.FC<{ mode: string, contentId: string }> = (props) => {
                 <h3 className='text-light'>Post from : {singlePostData[0]?.GROUP_NAME}</h3>
             </div>
             <div>
-                <Post postData={singlePostData[0]}/>
+                <Post postData={singlePostData[0]} updatePost={findSinglePostData}/>
             </div>
         </Fragment>
     );

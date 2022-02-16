@@ -7,13 +7,40 @@ import SingleReply from "./SingleReply";
 
 const server = 'http://localhost:3000';
 
-const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) => {
+const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, index: number }> = (props) => {
 
     const [replies, setReplies] = useState<CommentView[]>([]);
     const [showReplies, setShowReplies] = useState(false);
 
     const item = props.item;
     const index = props.index;
+
+    const voteHandler = (down: string) => {
+        fetch(`${server}/votes/${props.item.CONTENT_ID}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                down: down,
+            })
+        }).then(resp => {
+            return resp.json();
+        }).then(_ => {
+            props.updateComments();
+        });
+    }
+
+    const upVoteHandler = (e: any) => {
+        e.preventDefault();
+        voteHandler('N');
+    }
+
+    const downVoteHandler = (e: any) => {
+        e.preventDefault();
+        voteHandler('Y');
+    }
 
     const repliesHandler = (e: any) => {
         e.preventDefault();
@@ -27,7 +54,7 @@ const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) =>
                 return resp.json();
             })
             .then(data => {
-                if(data.length !== 0) {
+                if (data.length !== 0) {
                     setReplies(data);
                     setShowReplies(true);
                 }
@@ -63,17 +90,26 @@ const SingleComment: React.FC<{ item: CommentView, index: number }> = (props) =>
                 <div className={`text-info`}>
                     <div className='d-flex'>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>Upvote ({item.UPVOTE}) :&nbsp;<b><BiUpvote className={styles.hovering}/></b>
+                        <h6>Upvote ({item.UPVOTE}) :&nbsp;
+                            {item.DOWN === 'N' &&
+                                <b><BiUpvote className={`${styles.hovering} text-black`} onClick={upVoteHandler}/></b>}
+                            {item.DOWN !== 'N' &&
+                                <b><BiUpvote className={`${styles.hovering}`} onClick={upVoteHandler}/></b>}
                         </h6>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6>Downvote ({item.DOWNVOTE}) :&nbsp;<BiDownvote className={styles.hovering}/></h6>
+                        <h6>Downvote ({item.DOWNVOTE}) :&nbsp;
+                            {item.DOWN === 'Y' &&
+                                <b><BiDownvote className={`${styles.hovering} text-black`} onClick={downVoteHandler}/></b>}
+                            {item.DOWN !== 'Y' &&
+                                <b><BiDownvote className={`${styles.hovering}`} onClick={downVoteHandler}/></b>}
+                        </h6>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <h6 className={styles.hovering} onClick={repliesHandler}><u>{item.REPLIES} replies</u></h6>
                     </div>
                     <br/>
 
                     {showReplies &&
-                      replies.map((reply,index) =>
-                          <SingleReply key={index + Math.random().toString()} replyData={reply}/>)}
+                        replies.map((reply, index) =>
+                            <SingleReply key={index + Math.random().toString()} replyData={reply}/>)}
                 </div>
 
                 <Card.Text className='mt-2' style={{width: '100%'}}>
