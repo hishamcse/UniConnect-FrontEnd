@@ -1,19 +1,24 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {SinglePostView} from "../../../../models/SinglePost";
 import styles from './FullView.module.scss';
-import {Button, Card, Form, Spinner} from "react-bootstrap";
+import {Button, Card, Dropdown, DropdownButton, Form, Spinner} from "react-bootstrap";
 import AuthContext from "../../../../store/auth-context";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import {CommentView} from "../../../../models/Comment";
 import SingleComment from "../comments/SingleComment";
 import {GiTeacher} from "react-icons/gi";
 import {BsFillCalendar2RangeFill, BsFillPersonFill, BsPersonLinesFill} from "react-icons/bs";
+import {FiSettings} from "react-icons/fi";
+import {IconButton} from "@mui/material";
+import {useRouter} from "next/router";
 
 const server = 'http://localhost:3000';
 
 const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (props) => {
 
     const authCtx = useContext(AuthContext);
+    const router = useRouter();
+
     const [title, setTitle] = useState<string>('');
     const [posted_by, setPostedBy] = useState<string>('');
     const [posted_at, setPostedAt] = useState<string>('');
@@ -26,7 +31,7 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
 
     useEffect(() => {
         setTitle(props.postData?.TITLE);
-        setPostedBy(props.postData?.ROLE_ID === authCtx.loginData.studentRoles[0]?.ID ? 'You' : props.postData?.POSTED_BY);
+        setPostedBy( props.postData?.POSTED_BY);
         setPostedAt(new Date(props.postData?.POSTED_AT).toDateString()
             + " , " + new Date(props.postData?.POSTED_AT).toLocaleTimeString());
         setContentId(props.postData?.CONTENT_ID);
@@ -79,11 +84,11 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
         voteHandler('Y');
     }
 
-    const postCommentHandler = (e:any) => {
+    const postCommentHandler = (e: any) => {
         e.preventDefault();
 
         const commentStr = newComment.current?.value;
-        if(commentStr?.trim().length === 0) return;
+        if (commentStr?.trim().length === 0) return;
         setCommentLoading(true);
 
         fetch(`${server}/comments/${contentId}`, {
@@ -98,7 +103,7 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
         }).then(resp => {
             return resp.json();
         }).then(_ => {
-            if(showComment) findComments();
+            if (showComment) findComments();
         }).finally(() => {
             setCommentLoading(false);
             // @ts-ignore
@@ -106,11 +111,50 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
         });
     }
 
+    const deletePostHandler = (e:any) => {
+        e.preventDefault();
+
+        fetch(`${server}/contents/delete/${contentId}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: null
+        }).then(resp => {
+            return resp.json();
+        }).then(data => {
+            if(data.message === 'success') router.back();
+        });
+    }
+
+    const showSettings = (props.postData?.STUDENT === authCtx.loginData.studentRoles[0]?.ID) ||
+        (props.postData?.TEACHER === authCtx.loginData.teacherRoles[0]?.ID);
+
     return (
         <div>
             <Card className={`${styles.post}`}>
                 <Card.Body>
-                    <Card.Title className='p-2'><h2> {title}</h2></Card.Title>
+                    <Card.Title className='p-2 text-center'>
+                        <h2>{title}</h2>
+                        {showSettings &&
+                            <div className='text-sm-right text-right'>
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="outline-light" size='sm'>
+                                        <IconButton aria-label="settings">
+                                            <FiSettings size='20px'/>
+                                        </IconButton>
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu variant="dark">
+                                        <Dropdown.Item onClick={deletePostHandler}>
+                                            delete
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>}
+                    </Card.Title>
+
                     <Card.Subtitle className="mb-2 mt-2 text-success text-right">
                         <b><BsFillPersonFill/>&nbsp;&nbsp;
                             {posted_by}</b>

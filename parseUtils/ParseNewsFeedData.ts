@@ -10,7 +10,6 @@ export const parseNewsFeedData = (arr: NewsFeed[]): FeedInfoView[] => {
             title: data.TITLE,
             content: text,
             posted_by: data.POSTED_BY,
-            role_id: data.ROLE_ID,
             content_id: data.CONTENT_ID,
             group_id: data.GROUP_ID,
             group: data.GROUP_NAME,

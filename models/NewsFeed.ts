@@ -2,7 +2,6 @@ export type NewsFeed = {
     CONTENT_ID: number,
     TITLE: string,
     TEXT: string,
-    ROLE_ID: number,
     POSTED_AT: string,
     POSTED_BY: string,
     GROUP_ID: number,
@@ -11,8 +10,8 @@ export type NewsFeed = {
     UPVOTE_COUNT: number,
     DOWNVOTE_COUNT: number,
     DOWN: string,
-    TEACHER : boolean,
-    STUDENT : boolean,
+    TEACHER : number,
+    STUDENT : number,
     DEPARTMENT_NAME : string
 }
 
@@ -20,7 +19,6 @@ export type FeedInfoView = {
     title: string,
     content: string,
     posted_by: string,
-    role_id: number,
     content_id: number,
     group_id: number,
     group: string,
@@ -28,8 +26,8 @@ export type FeedInfoView = {
     comment_count: number,
     upvote: number,
     downvote: number,
-    teacher : boolean,
-    student : boolean,
+    teacher : number,
+    student : number,
     department_name : string,
     down: string
 }

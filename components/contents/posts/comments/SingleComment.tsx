@@ -1,13 +1,18 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Button, Card, Form, Image, Spinner} from "react-bootstrap";
+import React, {useContext, useEffect, useRef, useState} from "react";
+import {Button, Card, Dropdown, Form, Image, Spinner} from "react-bootstrap";
 import {CommentView} from "../../../../models/Comment";
 import styles from "../Posts.module.scss";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import SingleReply from "./SingleReply";
+import AuthContext from "../../../../store/auth-context";
+import {IconButton} from "@mui/material";
+import {FiSettings} from "react-icons/fi";
 
 const server = 'http://localhost:3000';
 
 const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, index: number }> = (props) => {
+
+    const authCtx = useContext(AuthContext);
 
     const [replies, setReplies] = useState<CommentView[]>([]);
     const [showReplies, setShowReplies] = useState(false);
@@ -18,9 +23,9 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
     const item = props.item;
     const index = props.index;
 
-    useEffect(() => {
-        findReplies();
-    }, [])
+    // useEffect(() => {
+    //     findReplies();
+    // }, [])
 
     const voteHandler = (down: string) => {
         fetch(`${server}/votes/${props.item.CONTENT_ID}`, {
@@ -96,6 +101,26 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
         });
     }
 
+    const deleteCommentHandler = (e:any) => {
+        e.preventDefault();
+
+        fetch(`${server}/contents/delete/${props.item.CONTENT_ID}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: null
+        }).then(resp => {
+            return resp.json();
+        }).then(_ => {
+            props.updateComments();
+        });
+    }
+
+    const showSettings = (props.item?.ROLE_ID === authCtx.loginData.studentRoles[0]?.ID) ||
+        (props.item?.ROLE_ID === authCtx.loginData.teacherRoles[0]?.ID);
+
     return (
         <Card key={index + Math.random().toString()} bg='light' className='p-2 mb-5 text-black'>
             <Card.Body>
@@ -104,6 +129,22 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                         <Image src='/id-icon.png' width={25} height={25} alt='id'/>&nbsp;&nbsp;
                         {item.USERNAME}
                     </Card.Subtitle>
+                    {showSettings &&
+                        <div className='text-sm-right text-right'>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="outline-light" size='sm'>
+                                    <IconButton aria-label="settings">
+                                        <FiSettings size='20px'/>
+                                    </IconButton>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu variant="dark">
+                                    <Dropdown.Item onClick={deleteCommentHandler}>
+                                        delete
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>}
                 </div>
 
                 <Card.Subtitle className="mb-2 text-muted">
@@ -158,7 +199,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                 <div className='m-4'>
                     {showReplies && replies.map((reply, index) =>
                         <SingleReply key={index + Math.random().toString()} replyData={reply}
-                                     updateReplies={findReplies}/>)}
+                                     updateReplies={findReplies} updateComments={props.updateComments}/>)}
                 </div>
             </Card.Body>
         </Card>

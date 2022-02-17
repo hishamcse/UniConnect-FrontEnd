@@ -38,7 +38,8 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
                 <Card.Subtitle className="mt-3 mb-2 mx-2 text-success text-right">
                     <div>
                         <b><BsFillPersonFill/>&nbsp;&nbsp;
-                            {item.posted_by}
+                            {userId === (item.student ? item.student.toString() : item.teacher.toString()) && 'You'}
+                            {userId !== (item.student ? item.student.toString() : item.teacher.toString()) && item.posted_by}
                         </b>
                     </div>
                 </Card.Subtitle>

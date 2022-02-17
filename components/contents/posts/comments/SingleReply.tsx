@@ -1,12 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import {CommentView} from "../../../../models/Comment";
-import {Card, Image} from "react-bootstrap";
+import {Card, Dropdown, Image} from "react-bootstrap";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import styles from "./Comments.module.scss";
+import AuthContext from "../../../../store/auth-context";
+import {IconButton} from "@mui/material";
+import {FiSettings} from "react-icons/fi";
 
 const server = 'http://localhost:3000';
 
-const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void }> = (props) => {
+const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void, updateComments: () => void }> = (props) => {
+
+    const authCtx = useContext(AuthContext);
 
     const voteHandler = (down: string) => {
         fetch(`${server}/votes/${props.replyData.CONTENT_ID}`, {
@@ -35,6 +40,26 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void 
         voteHandler('Y');
     }
 
+    const deleteReplyHandler = (e:any) => {
+        e.preventDefault();
+
+        fetch(`${server}/contents/delete/${props.replyData.CONTENT_ID}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: null
+        }).then(resp => {
+            return resp.json();
+        }).then(_ => {
+            props.updateComments();
+        });
+    }
+
+    const showSettings = (props.replyData?.ROLE_ID === authCtx.loginData.studentRoles[0]?.ID) ||
+        (props.replyData?.ROLE_ID === authCtx.loginData.teacherRoles[0]?.ID);
+
     return (
         <Card className={`${styles.reply} border-3 m-2 p-3`}>
             <div className='d-flex'>
@@ -42,6 +67,22 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void 
                     <Image src='/id-icon.png' width={25} height={25} alt='id'/>&nbsp;&nbsp;
                     {props.replyData.USERNAME}
                 </Card.Subtitle>
+                {showSettings &&
+                    <div className='mx-2 text-sm-right text-right'>
+                        <Dropdown>
+                            <Dropdown.Toggle variant="outline-light" size='sm'>
+                                <IconButton aria-label="settings">
+                                    <FiSettings size='20px'/>
+                                </IconButton>
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu variant="dark">
+                                <Dropdown.Item onClick={deleteReplyHandler}>
+                                    delete
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>}
             </div>
 
             <Card.Subtitle className="mb-2 text-muted">
