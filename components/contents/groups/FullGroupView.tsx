@@ -1,14 +1,18 @@
 import React, {Fragment, useEffect, useState} from "react";
-import styles from '../posts/NewsFeed.module.scss'
+import styles from '../posts/Posts.module.scss'
 import {FeedInfoView} from "../../../models/NewsFeed";
 import {parseNewsFeedData} from "../../../parseUtils/ParseNewsFeedData";
 import PostCard from "../posts/PostCard";
+import {Button} from "react-bootstrap";
+import {useRouter} from "next/router";
 
 const server = 'http://localhost:3000';
 
 const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
 
     const [feedData, setFeedData] = useState<FeedInfoView[]>([]);
+
+    const router = useRouter();
 
     useEffect(() => {
         fetch(`${server}/posts/${props.groupId}/1/after/20/desc`, {
@@ -25,6 +29,15 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
             });
     }, []);
 
+    const addPostHandler = async (e:any) => {
+        e.preventDefault();
+
+        await router.push({
+            pathname: `/groups/${feedData[0].group_id}/addPost`,
+            query: {grp: feedData[0].group}
+        });
+    }
+
     const background = props.mode === 'admin' ? 'bg-secondary' :
         (props.mode === 'student' ? styles['background-student'] : '');
 
@@ -33,6 +46,12 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
             <div className='m-4 p-4 text-lg-left'>
                 <div className={`${styles.university} ${background} p-3`}>
                     <h2>Recent Posts From {feedData[0]?.group}</h2>
+                </div>
+
+                <div className='mt-5'>
+                    <Button variant='success' size='lg' onClick={addPostHandler}>
+                        Create Post In This Group
+                    </Button>
                 </div>
 
                 <div className='m-5 text-lg-left'>

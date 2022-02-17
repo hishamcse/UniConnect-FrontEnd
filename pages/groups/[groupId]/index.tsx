@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
-import LayoutWrapper from "../../components/ui/LayoutWrapper";
-import AuthContext from "../../store/auth-context";
-import UserNavigation from "../../components/layout/UserNavigation";
-import FullGroupView from "../../components/contents/groups/FullGroupView";
+import LayoutWrapper from "../../../components/ui/LayoutWrapper";
+import AuthContext from "../../../store/auth-context";
+import UserNavigation from "../../../components/layout/UserNavigation";
+import FullGroupView from "../../../components/contents/groups/FullGroupView";
 
 type Group = {
     id: number;

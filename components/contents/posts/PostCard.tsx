@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import styles from "./NewsFeed.module.scss";
+import styles from "./Posts.module.scss";
 import {FeedInfoView} from "../../../models/NewsFeed";
 import {Button, Card} from "react-bootstrap";
 import {useRouter} from "next/router";

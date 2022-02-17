@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import styles from "./NewsFeed.module.scss";
+import styles from "./Posts.module.scss";
 import {FeedInfoView} from "../../../models/NewsFeed";
 import {parseNewsFeedData} from "../../../parseUtils/ParseNewsFeedData";
 import PostCard from "./PostCard";

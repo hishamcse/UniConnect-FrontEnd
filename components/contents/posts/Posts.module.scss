@@ -31,3 +31,28 @@ $color-secondary-dark: #edf2fb;
   cursor: pointer;
   color: #7B6D8D;
 }
+
+.body {
+  height: 100vh;
+  padding: 4rem 8rem 10rem 4rem;
+  position: relative;
+  background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)),
+  url(/background.jpg);
+
+  background-size: cover;
+  background-position: top;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .content {
+    width: 55%;
+    height: 100%;
+    margin-left: 25%;
+    padding: 1.5rem;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    animation: moveInLeft 1s ease-out;
+  }
+}

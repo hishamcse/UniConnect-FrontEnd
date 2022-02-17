@@ -16,6 +16,15 @@ const SingleGroup: React.FC<{ type:string, groupData: GroupSummaryView }> = (pro
         await router.push(`/groups/${props.groupData.GROUP_ID}`);
     }
 
+    const addPostHandler = async (e:any) => {
+        e.preventDefault();
+
+        await router.push({
+            pathname: `/groups/${props.groupData.GROUP_ID}/addPost`,
+            query: {grp: props.groupData.NAME}
+        });
+    }
+
     return (
         <div className='m-2'>
             <Card className={`${cardStyle} text-light`}>
@@ -34,9 +43,12 @@ const SingleGroup: React.FC<{ type:string, groupData: GroupSummaryView }> = (pro
                 </CardActionArea>
 
                 <div className='bg-gradient'>
-                    <CardActions className={styles.button}>
-                        <Button variant='dark' onClick={visitGroupHandler}>
+                    <CardActions className={`${styles.button}`}>
+                        <Button variant='dark' onClick={visitGroupHandler} className='me-lg-auto'>
                             Visit Group
+                        </Button>
+                        <Button variant='dark' onClick={addPostHandler}>
+                            Post Here
                         </Button>
                     </CardActions>
                 </div>

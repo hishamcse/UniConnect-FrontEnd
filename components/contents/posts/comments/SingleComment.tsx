@@ -1,7 +1,7 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, Card, Form, Image, Spinner} from "react-bootstrap";
 import {CommentView} from "../../../../models/Comment";
-import styles from "../NewsFeed.module.scss";
+import styles from "../Posts.module.scss";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import SingleReply from "./SingleReply";
 
@@ -17,6 +17,10 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
 
     const item = props.item;
     const index = props.index;
+
+    useEffect(() => {
+        findReplies();
+    }, [])
 
     const voteHandler = (down: string) => {
         fetch(`${server}/votes/${props.item.CONTENT_ID}`, {
