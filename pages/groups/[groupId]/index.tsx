@@ -3,6 +3,7 @@ import LayoutWrapper from "../../../components/ui/LayoutWrapper";
 import AuthContext from "../../../store/auth-context";
 import UserNavigation from "../../../components/layout/UserNavigation";
 import FullGroupView from "../../../components/contents/groups/FullGroupView";
+import {useRouter} from "next/router";
 
 type Group = {
     id: number;
@@ -11,6 +12,7 @@ type Group = {
 const SingleGroup: React.FC<{ groupId: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
+    const router = useRouter();
 
     const [mode,setMode] = useState('');
     const [userId, setUserId] = useState<string>('');
@@ -28,7 +30,7 @@ const SingleGroup: React.FC<{ groupId: string }> = (props) => {
         <LayoutWrapper>
             <UserNavigation id={userId}/>
             <div className='text-center m-5 p-5'>
-                <FullGroupView mode={mode} groupId={props.groupId}/>
+                <FullGroupView mode={mode} groupId={props.groupId} groupName={router.query.grp}/>
             </div>
         </LayoutWrapper>
     );

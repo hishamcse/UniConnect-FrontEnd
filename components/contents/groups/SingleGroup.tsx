@@ -5,18 +5,23 @@ import {Button} from "react-bootstrap";
 import {GroupSummaryView} from "../../../models/GroupData";
 import {useRouter} from "next/router";
 
-const SingleGroup: React.FC<{ type:string, groupData: GroupSummaryView }> = (props) => {
+const SingleGroup: React.FC<{ type: string, groupData: GroupSummaryView }> = (props) => {
 
     const router = useRouter();
     const cardStyle = props.type === 'default' ? styles.defaultCard : styles.customCard;
 
+    if(props.type === 'custom') console.log(props.groupData)
+
     const visitGroupHandler = async (e: any) => {
         e.preventDefault();
 
-        await router.push(`/groups/${props.groupData.GROUP_ID}`);
+        await router.push({
+            pathname: `/groups/${props.groupData.GROUP_ID}`,
+            query: {grp: props.groupData.NAME}
+        });
     }
 
-    const addPostHandler = async (e:any) => {
+    const addPostHandler = async (e: any) => {
         e.preventDefault();
 
         await router.push({

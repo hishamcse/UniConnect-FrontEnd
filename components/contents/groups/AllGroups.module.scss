@@ -2,6 +2,8 @@ $color-primary-light: #95d5b2;
 $color-primary-dark: #52b788;
 $color-secondary-light: #6c757d;
 $color-secondary-dark: #343a40;
+$color-tertiary-light: #2d6a4f;
+$color-tertiary-dark: #1b4332;
 
 @mixin backgroundColor($color1, $color2) {
   background: linear-gradient(to right bottom, rgba($color1, 0.8), rgba($color2, 0.8));
@@ -42,7 +44,7 @@ $color-secondary-dark: #343a40;
 
 .customCard {
   @include cardStyle;
-  @include backgroundColor($color-secondary-light,$color-secondary-dark);
+  @include backgroundColor($color-tertiary-light,$color-tertiary-dark);
 }
 
 .button {
@@ -54,4 +56,29 @@ $color-secondary-dark: #343a40;
 .hovering:hover {
   cursor: pointer;
   color: #7B6D8D;
+}
+
+.body {
+  height: 100vh;
+  padding: 4rem 8rem 10rem 4rem;
+  position: relative;
+  background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)),
+  url(/background.jpg);
+
+  background-size: cover;
+  background-position: top;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .content {
+    width: 55%;
+    height: 100%;
+    margin-left: 25%;
+    padding: 1.5rem;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    animation: moveInLeft 1s ease-out;
+  }
 }

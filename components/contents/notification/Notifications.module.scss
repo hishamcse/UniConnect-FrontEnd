@@ -1,0 +1,33 @@
+$color-primary-light: #372554;
+$color-primary-dark: #231123;
+$color-contrast-light: #03071e;
+$color-contrast-dark: #370617;
+
+.background {
+  background: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8));
+}
+
+.modal {
+  background: linear-gradient(to right bottom, rgba($color-contrast-light, 0.8), rgba($color-contrast-dark, 0.8));
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2rem;
+}
+
+.card {
+  background: linear-gradient(to right bottom, rgba($color-contrast-light, 0.8), rgba($color-contrast-dark, 0.8));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hovering:hover {
+  cursor: pointer;
+  color: #7B6D8D;
+}

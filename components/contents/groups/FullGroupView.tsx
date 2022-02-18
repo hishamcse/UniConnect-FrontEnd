@@ -8,7 +8,7 @@ import {useRouter} from "next/router";
 
 const server = 'http://localhost:3000';
 
-const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
+const FullGroupView: React.FC<{ mode: string, groupId: string, groupName: string | string[] | undefined }> = (props) => {
 
     const [feedData, setFeedData] = useState<FeedInfoView[]>([]);
 
@@ -33,8 +33,8 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
         e.preventDefault();
 
         await router.push({
-            pathname: `/groups/${feedData[0].group_id}/addPost`,
-            query: {grp: feedData[0].group}
+            pathname: `/groups/${props.groupId}/addPost`,
+            query: {grp: props?.groupName || feedData[0]?.group}
         });
     }
 
@@ -45,7 +45,7 @@ const FullGroupView: React.FC<{ mode: string, groupId: string }> = (props) => {
         <Fragment>
             <div className='m-4 p-4 text-lg-left'>
                 <div className={`${styles.university} ${background} p-3`}>
-                    <h2>Recent Posts From {feedData[0]?.group}</h2>
+                    <h2>Recent Posts From {props?.groupName || feedData[0]?.group}</h2>
                 </div>
 
                 <div className='mt-5'>

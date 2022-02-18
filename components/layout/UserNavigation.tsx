@@ -2,13 +2,15 @@ import React, {useContext, useEffect, useState} from "react";
 import {Container, Nav, Navbar} from "react-bootstrap";
 import Image from "next/image";
 import {useRouter} from "next/router";
-import {
-    BsFillArrowRightCircleFill
-} from "react-icons/bs";
+import {BsFillArrowRightCircleFill} from "react-icons/bs";
 import AdminOptions from "../contents/options/AdminOptions";
-import StudentOptions from "../contents/options/StudentOptions";
+import UserOptions from "../contents/options/UserOptions";
 import AuthContext from "../../store/auth-context";
 import styles from './UserNavigation.module.scss';
+import {JoinRequest} from "../../models/JoinRequest";
+import Notifications from "../contents/notification/Notifications";
+
+const server = 'http://localhost:3000';
 
 const UserNavigation: React.FC<{ id: string }> = (props) => {
 
@@ -16,7 +18,25 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
 
     const [modeText, setModeText] = useState<string>();
     const [uniName, setUniName] = useState<string>();
-    const [theme, setTheme] = useState<'light'|'dark'|undefined>();
+    const [theme, setTheme] = useState<'light' | 'dark' | undefined>();
+    const [notificationCounter, setNotificationCounter] = useState(0);
+    const [notifications, setNotifications] = useState<JoinRequest[]>([]);
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    useEffect(() => {
+        fetch(`${server}/requests`, {
+            mode: 'cors',
+            method: 'get',
+            credentials: "include",
+        })
+            .then(resp => {
+                return resp.json();
+            })
+            .then(data => {
+                setNotificationCounter(data.length);
+                setNotifications(data);
+            });
+    }, [])
 
     const router = useRouter();
 
@@ -29,11 +49,11 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
 
     useEffect(() => {
         let mode = (authCtx.loggedInAs === 'management') ? 'Admin View' :
-            (authCtx.loggedInAs === 'student' ? 'Student View': 'Teacher View');
+            (authCtx.loggedInAs === 'student' ? 'Student View' : 'Teacher View');
         setModeText(mode);
 
         let uni = (authCtx.loggedInAs === 'management') ? authCtx.loginData.managementRoles[0].UNIVERSITY_NAME.split(',')[1] :
-            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].UNIVERSITY_NAME.split(',')[1]:
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].UNIVERSITY_NAME.split(',')[1] :
                 authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME.split(',')[1]);
         setUniName(uni);
 
@@ -43,12 +63,17 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
         setTheme(theme);
     }, []);
 
+    const showNotificationHandler = (e: any) => {
+        e.preventDefault();
+        setShowNotifications(true);
+    }
+
     return (
         <Navbar collapseOnSelect className={theme} bg={theme} variant={theme} expand='lg' fixed='top'>
             <Container>
                 <Nav.Link>
                     {modeText === 'Admin View' && <AdminOptions id={props.id}/>}
-                    {modeText === 'Student View' && <StudentOptions id={props.id}/>}
+                    {(modeText === 'Student View' || modeText === 'Teacher View') && <UserOptions id={props.id}/>}
                 </Nav.Link>
 
                 <col className='col-1'/>
@@ -69,7 +94,10 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
                     </h5>
                     <col className='col-4'/>
                     <Nav className='me-auto'>
-                        <Nav.Link><b>{props.id}</b></Nav.Link>&nbsp;
+                        <Nav.Link className='text-light' onClick={showNotificationHandler}>
+                            <Notifications notifications={notifications}/>
+                        </Nav.Link>&nbsp;&nbsp;&nbsp;
+
                         <Nav.Link onClick={logoutHandler}>
                             <b>Logout &nbsp;
                                 <BsFillArrowRightCircleFill/>

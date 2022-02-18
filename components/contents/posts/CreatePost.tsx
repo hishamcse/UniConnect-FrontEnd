@@ -49,7 +49,7 @@ const CreatePost: React.FC<{ grpId: string, grp_name: string | string[] | undefi
 
     const backHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        await router.push(`/groups/${props.grpId}`);
+        await router.back();
     }
 
     return (

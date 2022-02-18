@@ -12,6 +12,7 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
     const [customGroups, setCustomGroups] = useState<GroupSummaryView[]>([]);
 
     useEffect(() => {
+
         fetch(`${server}/groups/defaults`, {
             mode: 'cors',
             method: 'get',
@@ -36,6 +37,8 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
                 setCustomGroups(data);
             });
     }, [])
+
+    console.log(customGroups)
 
     return (
         <div className='m-5 p-3'>
@@ -65,12 +68,16 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
                 <h2>Custom Groups</h2>
             </div>
 
-            {customGroups.length ! == 0 &&
-                <div className='d-flex'>
-                    {customGroups.map((grp, index) =>
-                        <SingleGroup key={Math.random().toString() + index} groupData={grp} type='default'/>)
-                    }
-                </div>
+            {customGroups.length !== 0 &&
+                <Grid className={`mt-5 mb-5`} container alignItems='stretch' direction='row'>
+                    <Grid item className='row' xs>
+                        {customGroups.map((grp, index) =>
+                            <div className='col-md-4' key={Math.random().toString() + index}>
+                                <SingleGroup key={Math.random().toString() + index} groupData={grp} type='custom'/>
+                            </div>
+                        )}
+                    </Grid>
+                </Grid>
             }
 
             {customGroups.length === 0 &&

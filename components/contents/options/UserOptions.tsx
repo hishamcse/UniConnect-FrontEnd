@@ -2,10 +2,10 @@ import {Container, Nav, Offcanvas} from "react-bootstrap";
 import {BsFillCaretRightSquareFill, BsFillFilterCircleFill} from "react-icons/bs";
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import styles from './StudentOptions.module.scss';
+import styles from './UserOptions.module.scss';
 import AuthContext from "../../../store/auth-context";
 
-const StudentOptions: React.FC<{ id: string }> = (props) => {
+const UserOptions: React.FC<{ id: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
     const [showSideBar, setShowSideBar] = useState(false);
@@ -16,7 +16,7 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
             setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
                 (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
                     authCtx.loginData.teacherRoles[0].ID.toString()));
-        }else {
+        } else {
             setUserId(props.id);
         }
     },[])
@@ -42,6 +42,12 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
         e.preventDefault();
 
         await router.push(`/${userId}/uniInfo`);
+    }
+
+    const customGroup = async (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        await router.push('/groups/addCustom');
     }
 
     let modeName = 'Student ';
@@ -77,6 +83,10 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 All Groups</b>
                             </Nav.Link>
+                            <Nav.Link><b onClick={customGroup}>
+                                <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                Create Custom Group</b>
+                            </Nav.Link>
                         </Nav>
                     </Container>
                 </Offcanvas.Body>
@@ -85,4 +95,4 @@ const StudentOptions: React.FC<{ id: string }> = (props) => {
     );
 }
 
-export default StudentOptions;
+export default UserOptions;
