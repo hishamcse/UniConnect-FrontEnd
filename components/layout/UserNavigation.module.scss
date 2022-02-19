@@ -1,6 +1,12 @@
 $color-primary-light: #372554;
 $color-primary-dark: #231123;
+$color-secondary-light: #1b4332;
+$color-secondary-dark: #081c15;
 
-.background {
+.background-student {
   background: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8));
+}
+
+.background-teacher {
+  background: linear-gradient(to right bottom, rgba($color-secondary-light, 0.8), rgba($color-secondary-dark, 0.8));
 }

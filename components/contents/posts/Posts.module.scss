@@ -12,7 +12,11 @@ $color-secondary-dark: #edf2fb;
 }
 
 .background-student {
-  @include backgroundColor($color-primary-light,$color-primary-dark);
+  @include backgroundColor($color-primary-light, $color-primary-dark);
+}
+
+.background-teacher {
+  @include backgroundColor($color-primary-light, $color-primary-dark);
 }
 
 .card {
@@ -20,7 +24,7 @@ $color-secondary-dark: #edf2fb;
   margin-bottom: 3rem;
   transition: all 0.5s;
 
-  @include backgroundColor($color-secondary-light,$color-secondary-dark);
+  @include backgroundColor($color-secondary-light, $color-secondary-dark);
 
   &:hover {
     transform: scale(1.03, 1.03);

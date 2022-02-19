@@ -63,7 +63,7 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
     }, []);
 
     const background = props.mode === 'admin' ? 'bg-secondary' :
-        (props.mode === 'student' ? styles['background-student'] : '');
+        (props.mode === 'student' ? styles['background-student'] : styles['background-teacher']);
 
     return (
         <div className={`${styles.university} m-5 p-4 ${background}`}>

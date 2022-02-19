@@ -10,16 +10,19 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
     const authCtx = useContext(AuthContext);
     const [showSideBar, setShowSideBar] = useState(false);
     const [userId, setUserId] = useState('');
+    const [mode, setMode] = useState('');
 
     useEffect(() => {
-        if(!props.id) {
+        if (!props.id) {
             setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
                 (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
                     authCtx.loginData.teacherRoles[0].ID.toString()));
         } else {
             setUserId(props.id);
         }
-    },[])
+
+        setMode(authCtx.loggedInAs)
+    }, [])
 
     const handleCloseSideBar = () => setShowSideBar(false);
     const toggleShowSideBar = () => setShowSideBar((s) => !s);
@@ -50,8 +53,6 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
         await router.push('/groups/addCustom');
     }
 
-    let modeName = 'Student ';
-
     return (
         <Fragment>
             <h2 className='text-light'>
@@ -61,7 +62,7 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
                        onHide={handleCloseSideBar} scroll={true}>
                 <div className='text-lg-center'>
                     <Offcanvas.Header closeButton closeVariant='white'>
-                        <Offcanvas.Title>{modeName}&nbsp;{props.id}</Offcanvas.Title>
+                        <Offcanvas.Title>{mode}&nbsp;{props.id}</Offcanvas.Title>
                     </Offcanvas.Header>
                 </div>
                 <Offcanvas.Body>

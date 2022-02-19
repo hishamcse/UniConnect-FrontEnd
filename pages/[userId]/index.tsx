@@ -29,7 +29,7 @@ const UserPage: React.FC<{ userId: string }> = (props) => {
     return (
         <LayoutWrapper>
             {mode === 'admin' && <UniInfo userId={userId}/>}
-            {mode === 'student' && <Feed userId={userId}/>}
+            {(mode === 'student' || mode === 'teacher') && <Feed userId={userId}/>}
         </LayoutWrapper>
     );
 }

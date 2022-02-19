@@ -19,7 +19,6 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
     const [modeText, setModeText] = useState<string>();
     const [uniName, setUniName] = useState<string>();
     const [theme, setTheme] = useState<'light' | 'dark' | undefined>();
-    const [notificationCounter, setNotificationCounter] = useState(0);
     const [notifications, setNotifications] = useState<JoinRequest[]>([]);
     const [showNotifications, setShowNotifications] = useState(false);
 
@@ -33,7 +32,6 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
                 return resp.json();
             })
             .then(data => {
-                setNotificationCounter(data.length);
                 setNotifications(data);
             });
     }, [])
@@ -58,7 +56,7 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
         setUniName(uni);
 
         let theme = mode === 'Admin View' ? 'dark' :
-            (mode === 'Student View' ? styles.background : 'secondary');
+            (mode === 'Student View' ? styles['background-student'] : styles['background-teacher']);
         // @ts-ignore
         setTheme(theme);
     }, []);
@@ -94,9 +92,12 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
                     </h5>
                     <col className='col-4'/>
                     <Nav className='me-auto'>
-                        <Nav.Link className='text-light' onClick={showNotificationHandler}>
-                            <Notifications notifications={notifications}/>
-                        </Nav.Link>&nbsp;&nbsp;&nbsp;
+
+                        {modeText !== 'Admin View' &&
+                            <Nav.Link className='text-light' onClick={showNotificationHandler}>
+                                <Notifications notifications={notifications}/>
+                            </Nav.Link>
+                        }&nbsp;&nbsp;&nbsp;
 
                         <Nav.Link onClick={logoutHandler}>
                             <b>Logout &nbsp;
