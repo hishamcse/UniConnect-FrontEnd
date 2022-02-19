@@ -10,7 +10,7 @@ const SingleGroup: React.FC<{ type: string, groupData: GroupSummaryView }> = (pr
     const router = useRouter();
     const cardStyle = props.type === 'default' ? styles.defaultCard : styles.customCard;
 
-    if(props.type === 'custom') console.log(props.groupData)
+    if (props.type === 'custom') console.log(props.groupData)
 
     const visitGroupHandler = async (e: any) => {
         e.preventDefault();
@@ -26,6 +26,15 @@ const SingleGroup: React.FC<{ type: string, groupData: GroupSummaryView }> = (pr
 
         await router.push({
             pathname: `/groups/${props.groupData.GROUP_ID}/addPost`,
+            query: {grp: props.groupData.NAME}
+        });
+    }
+
+    const addMemberHandler = async (e: any) => {
+        e.preventDefault();
+
+        await router.push({
+            pathname: `/groups/${props.groupData.GROUP_ID}/addMember`,
             query: {grp: props.groupData.NAME}
         });
     }
@@ -55,6 +64,10 @@ const SingleGroup: React.FC<{ type: string, groupData: GroupSummaryView }> = (pr
                         <Button variant='dark' onClick={addPostHandler}>
                             Post Here
                         </Button>
+                        {props.groupData.MEMBER_ROLE === 'adm' &&
+                            <Button variant='dark' onClick={addMemberHandler}>
+                                Add Member
+                            </Button>}
                     </CardActions>
                 </div>
             </Card>
