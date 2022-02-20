@@ -48,7 +48,7 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
                 setDeptData(arr);
             });
 
-        fetch(`${server}/departments`, {
+        fetch(`${server}/batches`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",

@@ -9,7 +9,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
 
     let batch_types = ['ug', 'pg'];
     let batches: BatchPair[] = [];
-    arr.sort((a,b) => a.YEAR - b.YEAR);
+    arr.sort((a,b) => a.BATCH_YEAR - b.BATCH_YEAR);
 
     const pairIncludes = (pair: BatchPair) : boolean => {
         let flag: boolean = false;
@@ -23,7 +23,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
     batch_types.forEach(sType => {
         arr.forEach(data => {
             let pair = {
-                year: data.YEAR,
+                year: data.BATCH_YEAR,
                 type: data.BATCH_TYPE
             };
 
@@ -36,7 +36,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
     let allBatchDatas: BatchInfoView[] = [];
 
     batches.forEach( pair => {
-        let temp = arr.filter(data => data.YEAR === pair.year && data.BATCH_TYPE === pair.type);
+        let temp = arr.filter(data => data.BATCH_YEAR === pair.year && data.BATCH_TYPE === pair.type);
         let info: BatchInfoView = {
             batch_id: temp[0].BATCH_ID,
             batch_year: pair.year,
@@ -44,7 +44,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
             batch_name: temp[0].BATCH_NAME,
             students_by_dept: temp.map(item => {
                 return {
-                    dept_name: item.DEPARTMENT_NAME.split(',')[1],
+                    dept_name: item.DEPT_NAME,
                     students_count: item.STUDENT_COUNT
                 }
             }),

@@ -23,17 +23,19 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
     const [showNotifications, setShowNotifications] = useState(false);
 
     useEffect(() => {
-        fetch(`${server}/requests`, {
-            mode: 'cors',
-            method: 'get',
-            credentials: "include",
-        })
-            .then(resp => {
-                return resp.json();
+        if (authCtx.loggedInAs !== 'management') {
+            fetch(`${server}/requests`, {
+                mode: 'cors',
+                method: 'get',
+                credentials: "include",
             })
-            .then(data => {
-                setNotifications(data);
-            });
+                .then(resp => {
+                    return resp.json();
+                })
+                .then(data => {
+                    setNotifications(data);
+                });
+        }
     }, [])
 
     const router = useRouter();

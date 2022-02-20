@@ -5,14 +5,16 @@ import {Button, Form} from "react-bootstrap";
 import {BsCalendarCheck, BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 import ReactDatePicker from "react-datepicker";
 
+const server = 'http://localhost:3000';
+
 const batchNameValidity = (inp: string): boolean => inp.trim() !== '';
 
 const AddBatchNew: React.FC<{ userId: string }> = (props) => {
 
     const inputBatchNameRef = useRef<HTMLInputElement | null>(null);
-    const [formValid, setFormValid] = useState(true);
-
+    const [batchType, setBatchType] = useState<string>('');
     const [startDate, setStartDate] = useState(new Date());
+    const [formValid, setFormValid] = useState(true);
 
     const router = useRouter();
 
@@ -20,19 +22,46 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
         e.preventDefault();
 
         const batchName = inputBatchNameRef.current?.value;
+        const batchYear = startDate.getFullYear().toString();
 
-        if (!batchName || !batchNameValidity(batchName)) {
+        if (!batchName || !batchNameValidity(batchName) || !batchType || !batchYear) {
             setFormValid(false);
             return;
         }
 
         setFormValid(true);
-        await router.push(`/${props.userId}`);
+
+        fetch(`${server}/batches`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                type: batchType,
+                year: batchYear,
+                batchName: batchName,
+            })
+        }).then(resp => {
+            if (resp.status !== 200) throw new Error();
+            return resp.json();
+        }).then(async _ => {
+            await router.push(`/${props.userId}`);
+        }).catch(_ => {
+            console.log('sorry!! request failed');
+            setFormValid(false);
+        })
+
+        // await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         await router.push(`/${props.userId}`);
+    }
+
+    const changeBatchTypeHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+        setBatchType(e.target.value);
     }
 
     return (
@@ -60,6 +89,7 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
                         />
                     </Form.Floating>
                 </div>
+
                 <Form.Floating className="mb-4">
                     <Form.Control
                         id="floatingPasswordCustom"
@@ -71,6 +101,15 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
                         <BsFillSignpost2Fill/>&nbsp;
                         Batch Name
                     </label>
+                </Form.Floating>
+
+                <Form.Floating className="mb-2 d-flex">
+                    <Form.Control as='select' id="floatingCustom" className='p-2' onChange={changeBatchTypeHandler}
+                                  value={batchType}>
+                        <option key={Math.random()}>Batch Type</option>
+                        <option key={Math.random()} value='ug'>UG</option>
+                        <option key={Math.random()} value='pg'>PG</option>
+                    </Form.Control>
                 </Form.Floating>
 
                 {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}

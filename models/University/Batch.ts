@@ -1,8 +1,8 @@
 // data while fetching departments
 export type Dept_Batch = {
-    DEPARTMENT_NAME: string;
+    DEPT_NAME: string;
     BATCH_NAME: string;
-    YEAR: number;
+    BATCH_YEAR: number;
     BATCH_ID: number;
     BATCH_TYPE: string;
     SECTION_COUNT: number;
@@ -14,6 +14,7 @@ export type Batch = {
     BATCH_ID: number;
     BATCH_NAME: string;
     BATCH_YEAR: number;
+    DEPT_ID: number;
     DEPT_NAME: string;
     SECTION_COUNT: number;
     STUDENT_COUNT: number;

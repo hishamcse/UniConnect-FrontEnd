@@ -1,26 +1,27 @@
-import styles from './AddDeptBatch.module.scss';
 import React, {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
+import styles from "./AddSectionStudent.module.scss";
+import styles1 from "./AddDeptBatch.module.scss";
 import {Button, Form} from "react-bootstrap";
-import {BsBuilding, BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
+import {BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
+import {Batch} from "../../../models/University/Batch";
 
 const server = 'http://localhost:3000';
 
 const deptIdValidity = (inp: string): boolean => inp.length === 2 && Number.isInteger(parseInt(inp));
-const deptNameValidity = (inp: string): boolean => inp.length >= 10;
 
-const AddDepartment: React.FC<{ userId: string }> = (props) => {
+const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] | undefined }> = (props) => {
 
     const inputDeptIdRef = useRef<HTMLInputElement | null>(null);
-    const inputDeptNameRef = useRef<HTMLInputElement | null>(null);
-    const [deptCodes, setDeptCodes] = useState<string[]>([]);
+    const [batchData, setBatchData] = useState<Batch[]>([]);
     const [formValid, setFormValid] = useState(true);
-    const [deptCodeValid, setDeptCodeValid] = useState(true);
+    const [deptIdValid, setDeptIdValid] = useState(true);
 
     const router = useRouter();
 
     useEffect(() => {
-        fetch(`${server}/departments/deptcodes`, {
+
+        fetch(`${server}/batches/${props.batchId}`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -29,9 +30,7 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
                 return resp.json();
             })
             .then(data => {
-                if (data.deptCodes && data.deptCodes.length != 0) {
-                    setDeptCodes(data.deptCodes);
-                }
+                setBatchData(data);
             });
     }, [])
 
@@ -39,39 +38,31 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
         e.preventDefault();
 
         const deptId = inputDeptIdRef.current?.value?.trim();
-        const deptName = inputDeptNameRef.current?.value?.trim();
 
-        if (!deptId || !deptName || !deptIdValidity(deptId) || !deptNameValidity(deptName)) {
+        if (!deptId || !deptIdValidity(deptId)) {
             setFormValid(false);
             return;
         }
 
-        if (deptCodes.length !== 0 && deptCodes.map(code => code[0]).includes(deptId)) {
-            setDeptCodeValid(false);
-            return;
-        }
-
-        console.log(deptId, deptName)
-
-        fetch(`${server}/departments`, {
+        fetch(`${server}/batchdepts`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             body: JSON.stringify({
-                deptCode: deptId,
-                deptName: deptName
+                departmentId: deptId,
+                batchId: props?.batchId
             })
         }).then(resp => {
             if (resp.status !== 200) throw new Error();
             return resp.json();
         }).then(_ => {
-        }).catch(_ => {
-            console.log('sorry!! request failed')
-        }).finally(() => {
             setFormValid(true);
-            setDeptCodeValid(true);
+            setDeptIdValid(true);
+        }).catch(_ => {
+            setDeptIdValid(false);
+            console.log('sorry!! request failed');
         })
 
         await router.push(`/${props.userId}`);
@@ -84,7 +75,7 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
 
     const changeHandler = (e: any) => {
         e.preventDefault();
-        setDeptCodeValid(true);
+        setDeptIdValid(true);
         setFormValid(true);
     }
 
@@ -94,42 +85,30 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
                 <BsFillCaretLeftFill/>&nbsp;
                 Back
             </Button>
-            <Form className={styles.content} onSubmit={submitHandler}>
-                <div className={styles['form-header']}>
-                    <h3>Add Department</h3>
+
+            <Form className={styles1.content} onSubmit={submitHandler}>
+                <div className={styles1['form-header']}>
+                    <h3>Add Department For Batch {batchData[0]?.BATCH_YEAR} : {batchData[0]?.BATCH_NAME}</h3>
                 </div>
-                <div className={`${styles.id}`}>
+                <div className={`${styles1.id}`}>
                     <Form.Floating className="mb-4 mt-5">
                         <Form.Control
                             id="floatingInputCustom"
-                            type="text"
+                            type="number"
+                            min={1} max={100}
                             placeholder="for example: 02"
                             ref={inputDeptIdRef}
                             onChange={changeHandler}
                         />
                         <label htmlFor="floatingInputCustom">
                             <BsFillSignpost2Fill/>&nbsp;
-                            Department Code
+                                Department Id
                         </label>
                     </Form.Floating>
                 </div>
 
-                <Form.Floating className="mb-4">
-                    <Form.Control
-                        id="floatingPasswordCustom"
-                        type="text"
-                        placeholder="DeptName"
-                        ref={inputDeptNameRef}
-                        onChange={changeHandler}
-                    />
-                    <label htmlFor="floatingPasswordCustom">
-                        <BsBuilding/>&nbsp;
-                        Department FullName
-                    </label>
-                </Form.Floating>
-
-                {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}
-                {!deptCodeValid && <p className={styles['error-text']}>Department code already exists!!</p>}
+                {!formValid && <p className={styles['error-text']}>Dept Code is not valid!!</p>}
+                {!deptIdValid && <p className={styles['error-text']}>Department id does not exist!!</p>}
 
                 <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
                     Submit
@@ -139,4 +118,4 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
     );
 }
 
-export default AddDepartment;
+export default AddDepartmentBatch;

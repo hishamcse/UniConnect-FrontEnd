@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
 import AddSectionStudent from "../../components/contents/admin/AddSectionStudent";
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 const AddSecStudent: React.FC = (props) => {
     const router = useRouter();

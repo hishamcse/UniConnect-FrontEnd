@@ -3,21 +3,21 @@ import {useRouter} from "next/router";
 import styles from "./AddSectionStudent.module.scss";
 import styles1 from "./AddDeptBatch.module.scss";
 import {Button, Form} from "react-bootstrap";
-import {
-    BsBuilding,
-    BsFillCaretLeftFill,
-    BsFillPersonPlusFill,
-    BsFillSignpost2Fill
-} from "react-icons/bs";
+import {BsBuilding, BsFillCaretLeftFill, BsFillPersonPlusFill, BsFillSignpost2Fill} from "react-icons/bs";
 import {Batch} from "../../../models/University/Batch";
-import {parseBatchData} from "../../../parseUtils/ParseBatchData";
 
 const server = 'http://localhost:3000';
+
+type DeptData = {
+    deptId: number,
+    deptName: string
+}
 
 const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] | undefined }> = (props) => {
 
     const [batchData, setBatchData] = useState<Batch[]>([]);
-    const [deptName, setDeptName] = useState<string>('');
+    const [deptId, setDeptId] = useState<string>('');
+    const [secName, setSecName] = useState<string>('');
 
     const inputStudentCountRef = useRef<HTMLInputElement | null>(null);
     const [formValid, setFormValid] = useState(true);
@@ -34,8 +34,6 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
                 return resp.json();
             })
             .then(data => {
-                console.log(data)
-                parseBatchData([]);
                 setBatchData(data);
             });
     }, []);
@@ -43,20 +41,38 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const sectionCount = document.querySelectorAll('input[type=checkbox]:checked').length;
         const studentPerSec = inputStudentCountRef.current?.value;
 
-        if(batchData.length === 0 || !sectionCount || !studentPerSec) {
+        if (batchData.length === 0 || !studentPerSec || !secName) {
             setFormValid(false);
             return;
         }
 
-        console.log(batchData[0].BATCH_YEAR, batchData[0].DEPT_NAME, sectionCount, studentPerSec);
         setFormValid(true);
 
-        // post request will be here
+        fetch(`${server}/sections`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                batchId: props.batchId,
+                departmentId: deptId,
+                sectionName: secName,
+                studentCount: studentPerSec
+            })
+        }).then(resp => {
+            if (resp.status !== 200) throw new Error();
+            return resp.json();
+        }).then(async _ => {
+            await router.push(`/${props.userId}`);
+        }).catch(_ => {
+            console.log('sorry!! request failed');
+            setFormValid(false);
+        })
 
-        await router.push(`/${props.userId}`);
+        // await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -65,14 +81,24 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
     }
 
     const changeDeptHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
-        setDeptName(e.target.value);
+        setDeptId(e.target.value);
     }
 
-    const year = batchData.length !== 0 ? batchData[0].BATCH_YEAR : '';
-    const batchName = batchData.length !== 0 ? batchData[0].BATCH_NAME: '';
-    const depts = batchData.length !== 0 ? batchData.map(data => data.DEPT_NAME.split(',')[1]) : [];
-    const sectionCount = deptName.length !== 0 ?
-        batchData.find(data => data.DEPT_NAME.split(',')[1] === deptName)?.SECTION_COUNT : '';
+    const changeSectionNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
+        setSecName(e.target.value);
+    }
+
+    const year = batchData.length !== 0 ? batchData[0]?.BATCH_YEAR : '';
+    const batchName = batchData.length !== 0 ? batchData[0]?.BATCH_NAME : '';
+    const depts = batchData.length !== 0 ? batchData.map(data => {
+        const dept: DeptData = {
+            deptId: data.DEPT_ID,
+            deptName: data.DEPT_NAME
+        };
+        return dept;
+    }) : [];
+    const sectionCount = deptId.length !== 0 ?
+        batchData.find(data => data.DEPT_ID.toString() === deptId)?.SECTION_COUNT : '';
 
     return (
         <div className={styles.body}>
@@ -105,29 +131,28 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
                         <b><BsBuilding/></b>&nbsp;&nbsp;Departments
                     </Form.Label>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Form.Control as='select' onChange={changeDeptHandler} value={deptName}>
+                    <Form.Control as='select' onChange={changeDeptHandler} value={deptId}>
                         <option key={Math.random()}>Department</option>
-                        {depts.map(dept => <option key={Math.random()} value={dept}>{dept}</option>)}
+                        {depts.map(dept => <option key={Math.random()} value={dept.deptId}>{dept.deptName}</option>)}
                     </Form.Control>
                 </Form.Group>
 
                 <Form.Floating className="mb-2 d-flex">
                     <div className='d-flex m-3'>
                         <Form.Label className='d-flex'>
-                            <b><BsBuilding/></b>&nbsp;
-                            Section
-                        </Form.Label>&nbsp;&nbsp;&nbsp;&nbsp;
-                        {sectionCount && [...Array(5)].map((_, i) => {
-                            return (i + 1) <= sectionCount ? (<Form.Check
-                                inline
-                                label={String.fromCharCode(i + 65)}
-                                defaultChecked
-                                checked
-                            />) : (<Form.Check
-                                inline
-                                label={String.fromCharCode(i + 65)}
-                            />)
-                        })}
+                            <b><BsBuilding/></b>&nbsp;&nbsp;Available Section
+                        </Form.Label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Form.Control as='select' className='p-2' onChange={changeSectionNameHandler}
+                                      value={secName}>
+                            <option key={Math.random()}>Section</option>
+                            {sectionCount !== undefined && [...Array(6)].map((_, i) =>
+                                (i + 1) > sectionCount &&
+                                <option key={Math.random() + i} value={String.fromCharCode(i + 65)}>
+                                    {String.fromCharCode(i + 65)}
+                                </option>
+                            )}
+                        </Form.Control>
                     </div>
                 </Form.Floating>
 

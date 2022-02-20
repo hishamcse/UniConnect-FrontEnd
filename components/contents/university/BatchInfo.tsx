@@ -19,6 +19,17 @@ const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }>
         });
     }
 
+    const addBatchDept = async (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        await router.push({
+            pathname: `${props.userId}/addDeptBatch`,
+            query: {
+                batchId: batch.batch_id
+            }
+        });
+    }
+
     return (
         <Accordion.Body>
             <h5>Batch {batch.batch_year} : {batch.batch_name}</h5>
@@ -34,7 +45,12 @@ const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }>
             </div>
 
             {props.mode==='admin' &&
-                <Button className='center-block' variant='info' onClick={addSection}>
+                <Button className='center-block m-2' variant='success' onClick={addBatchDept}>
+                    Add Department to Batch
+                </Button>}
+
+            {props.mode==='admin' &&
+                <Button className='center-block m-2' variant='info' onClick={addSection}>
                 Add Section & Student
             </Button>}
         </Accordion.Body>

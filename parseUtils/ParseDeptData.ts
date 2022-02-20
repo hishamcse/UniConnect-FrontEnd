@@ -10,8 +10,8 @@ export const parseDeptData = (arr: Department[]): DeptInfoView[] => {
     depts.forEach(dept => {
         let temp = arr.filter(data => data.NAME === dept);
         let info: DeptInfoView = {
-            dept_short: dept.split(',')[1],
-            dept_full: dept.split(',')[0],
+            dept_short: dept,
+            dept_full: dept,
             faculties: temp[0].TEACHER_COUNT,
             students_by_year: temp.map(item => {
                 return {
