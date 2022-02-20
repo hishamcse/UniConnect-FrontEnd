@@ -30,7 +30,7 @@ const Departments: React.FC<{ mode: string, userId: string, departments: DeptInf
                             return (
                                 <Accordion.Item eventKey={`${i}`} key={i + dept.dept_short}>
                                     <Accordion.Header>{dept.dept_short}</Accordion.Header>
-                                    <DeptInfo deptInfo={dept}/>
+                                    <DeptInfo deptInfo={dept} userId={props.userId}/>
                                 </Accordion.Item>
                             )
                         })}
