@@ -30,12 +30,20 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
             credentials: "include",
         })
             .then(resp => {
+                if(resp.status !== 200){
+                    throw new Error("");
+                }
                 return resp.json();
             })
             .then(data => {
                 setNotificationCounter(data.length);
                 setNotifications(data);
-            });
+            })
+            .catch(err =>{
+                setNotifications([]);
+                setNotificationCounter(0);
+            })
+            ;
     }, [])
 
     const router = useRouter();

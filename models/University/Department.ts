@@ -24,5 +24,6 @@ export type DeptInfoView = {
     dept_full: string;
     faculties: number;
     students_by_year: StudentsByYear[];
-    total_students: number
+    total_students: number;
+    departmentId : number
 }

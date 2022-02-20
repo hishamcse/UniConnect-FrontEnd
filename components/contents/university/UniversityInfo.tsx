@@ -35,7 +35,7 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
         }
 
         setVersityName(uniName);
-        fetch(`${server}/university/${uniId}/depts`, {
+        fetch(`${server}/departments`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -48,7 +48,7 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
                 setDeptData(arr);
             });
 
-        fetch(`${server}/departments`, {
+        fetch(`${server}/batches`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",

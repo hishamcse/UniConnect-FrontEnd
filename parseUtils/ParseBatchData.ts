@@ -44,7 +44,7 @@ export const parseBatchData = (arr: Dept_Batch[]) => {
             batch_name: temp[0].BATCH_NAME,
             students_by_dept: temp.map(item => {
                 return {
-                    dept_name: item.DEPARTMENT_NAME.split(',')[1],
+                    dept_name: item.DEPARTMENT_NAME,
                     students_count: item.STUDENT_COUNT
                 }
             }),
