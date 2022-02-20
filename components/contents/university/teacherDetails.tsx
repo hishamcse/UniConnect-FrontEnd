@@ -8,7 +8,8 @@ interface TeacherItem  {
     ROLE_ID : number,
     FULL_NAME : string,
     RANK : string,
-    EMAIL : string
+    EMAIL : string,
+    GENERATED_PASS? : string
 }
 const server = 'http://localhost:3000';
 
@@ -18,6 +19,7 @@ const TeacherDetailsComp: React.FC<{ userId: string, departmentName : string, de
 
     const [teachers, setTeachers] = useState<TeacherItem[]>([]);
     const [fetching, setFetching] = useState<boolean>(false);
+    const [notClaimedOnly, setNotClaimedOnly] = useState<boolean>(false);
     
     const searchReq = (name : string)=>{
         
@@ -41,13 +43,13 @@ const TeacherDetailsComp: React.FC<{ userId: string, departmentName : string, de
         })
         .finally(()=>{
             setFetching(false);
-        })
+        }) 
     }
 
 
-    const loadData = (i : number, clear : boolean)=>{
+    const loadData = (i : number, clear : boolean, notClaimedOnly = false)=>{
         setFetching(true);
-        fetch(server + '/teachers/details/' + props.departmentId + '/' + i, {
+        fetch(server + '/teachers/details/' + props.departmentId + '/' + i + '/' + notClaimedOnly.toString(), {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -94,7 +96,19 @@ const TeacherDetailsComp: React.FC<{ userId: string, departmentName : string, de
                 <div className={styles.subTitleText}>
                 Teachers
                 </div>
+                {!notClaimedOnly && 
                 <SearchField fetching = {fetching} search={searchReq} loadData = {loadData} />
+                
+                }
+                <div className='p-2'>
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1" 
+                    checked = {notClaimedOnly} onClick = {()=>{
+                            loadData(0, true, !notClaimedOnly);
+                            setNotClaimedOnly(c => !c);
+
+                        }} disabled = {fetching}/>
+                    <label className="form-check-label"> &nbsp;Not claimed only</label>
+                </div>
                 <div className = {styles.listContainer}>
                     <ul className='list-group'>
                         {teachers.map(item => <TeacherItem item={item} key = {item.ROLE_ID} />)}
@@ -139,22 +153,11 @@ const SearchField : React.FC<{ search : (n : string) => void, loadData : (i : nu
     )
 }
 
+
 const TeacherItem : React.FC<{item : TeacherItem}> = ({item})=>{
     return (
         <li className = {styles.itemContainer + ' list-group-item' }>
-            {/* <div className={styles.itemTopContainer}>
-                Name: &nbsp; 
-                {props.item.FULL_NAME}, {props.item.RANK}
-            </div>
-            <div className={styles.itemBottomContainer}>
-                <div>
-                    Id : {props.item.ROLE_ID}
-                </div>
-            </div>
-            <div>
-            email:  {props.item.EMAIL}
-
-            </div> */}
+            
             <table className = {styles.itemTable}>
                 <tr className={styles.tableRow}>
                     <td className = {styles.firstColumn}>Name</td>
@@ -179,9 +182,16 @@ const TeacherItem : React.FC<{item : TeacherItem}> = ({item})=>{
                     <td className = {styles.firstColumn}>Email</td>
                     <td>{item.EMAIL}</td>
                 </tr>
+                
+                { item.GENERATED_PASS &&
+                <tr className={styles.tableRow}>
+                    <td className = {styles.firstColumn}>Generated Password</td>
+                    <td>{item.GENERATED_PASS}</td>
+                </tr>}
             </table>
         </li>
     )
 }
+
 
 export default TeacherDetailsComp;

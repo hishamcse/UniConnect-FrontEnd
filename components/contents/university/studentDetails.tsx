@@ -7,7 +7,8 @@ interface StudentItem  {
     FULL_NAME : string,
     EMAIL : string,
     SECTION_NAME : string,
-    SECTION_ROLL_NO : number
+    SECTION_ROLL_NO : number,
+    GENERATED_PASS? : string
 }
 interface sectionItem  {
     SECTION_NAME : string,
@@ -24,6 +25,7 @@ const StudentDetails: React.FC<{ userId: string, departmentName : string,
     const [fetching, setFetching] = useState<boolean>(false);
     const [sections, setSections] = useState<sectionItem[]>([]);
     const [inp, setInp] = useState<string>('');
+    const [notClaimedOnly, setNotClaimedOnly] = useState<boolean>(false);
 
 
     const [selectedSections, setSelectedSections] = useState<string[]>([]);
@@ -55,38 +57,8 @@ const StudentDetails: React.FC<{ userId: string, departmentName : string,
 
     }
 
-    // const searchReq = (name : string)=>{
-    //     setFetching(true);
-    //     fetch(server + `/students/search/${props.departmentId}/${props.batchId}/${name}`, {
-    //         mode: 'cors',
-    //         method: 'post',
-    //         credentials: "include",
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body : JSON.stringify({
-    //             sectionNames : selectedSections
-    //         })
-    //     })
-    //     .then(resp =>{
-    //         if(resp.status !== 200){
-    //             throw new Error(resp.statusText);
-    //         }
-    //         return resp.json();
-    //     })
-    //     .then(data =>{
-    //         setStudents(data);
-    //     })
-    //     .catch(err=>{
-    //         console.log(err);
-    //     })
-    //     .finally(()=>{
-    //         setFetching(false);
-    //     })
-    // }
 
-
-    const loadData = (i : number, clear : boolean, secNames : string[], ingnoreInp = false)=>{ 
+    const loadData = (i : number, clear : boolean, secNames : string[], ingnoreInp = false, revert = false)=>{ 
 
         setFetching(true);
         fetch(server + `/students/${props.departmentId}/${props.batchId}/${i}/${inp.trim().length == 0 ? 'placeholder' : inp.trim()}`, {
@@ -98,7 +70,8 @@ const StudentDetails: React.FC<{ userId: string, departmentName : string,
             },
             body : JSON.stringify({
                 sectionNames : secNames,
-                useName : (inp.trim().length >= 3) && (!ingnoreInp)
+                useName : (inp.trim().length >= 3) && (!ingnoreInp),
+                notClaimedOnly : revert ?  !notClaimedOnly : notClaimedOnly 
             })
         })
         .then(resp =>{
@@ -139,10 +112,25 @@ const StudentDetails: React.FC<{ userId: string, departmentName : string,
                 Students - Year {props.batchYear}
                 </div>
                 <div>
-                    <SectionList setStudents={setStudents} loadData={loadData} fetching = {fetching} selected={selectedSections} setSelected = {setSelectedSections} sections={sections} />
+                    <SectionList setStudents={setStudents} loadData={loadData} fetching = {fetching} 
+                    selected={selectedSections} setSelected = {setSelectedSections} sections={sections} />
                     {/* {sections.map(s => s.STUDENT_COUNT)} */}
                 </div>
-                <SearchField loadData={loadData} inp = {inp} setInp = {setInp} selected={selectedSections} fetching = {fetching}  />
+                {!notClaimedOnly && 
+                    <SearchField loadData={loadData} inp = {inp} setInp = {setInp} 
+                    selected={selectedSections} fetching = {fetching}  />
+                }
+                
+                <div className='p-2'>
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1" 
+                    checked = {notClaimedOnly} onClick = {()=>{
+                            setNotClaimedOnly(c =>{
+                                loadData(0, true, selectedSections, true, true);
+                                return !c;
+                            });
+                        }} disabled = {fetching}/>
+                    <label className="form-check-label"> &nbsp;Not claimed only</label>
+                </div>
                 <div className = {styles.listContainer}>
                     <StudentList loadData={loadData} selected = {selectedSections} fetching = {fetching} students = {students} />
                 </div>
@@ -167,7 +155,7 @@ const StudentList : React.FC<{
             <div className='list-group-item text-center'>
                 <button className={'btn btn-primary'} disabled={fetching} onClick={()=>{
                     if(fetching) return;
-                    loadData(students[students.length-1].ROLE_ID, false,selected );
+                    loadData(students[students.length-1].ROLE_ID, false,selected);
                 }}>Load More</button>
             </div>
             } 
@@ -256,7 +244,6 @@ const SearchField : React.FC<{
                 <button className={'btn btn-primary ' + styles.buttonItem} 
                 disabled = {(props.inp.trim().length < 3) || props.fetching} onClick = {()=>props.loadData(0,true,props.selected)}> Search </button>
                 <button className={'btn btn-secondary '  + styles.buttonItem} disabled = {props.fetching} onClick = {()=>{
-                        // props.loadData(0, true, []);
                         props.setInp('');
                         props.loadData(0, true, props.selected, true);
                     }} > Clear </button>
@@ -295,6 +282,11 @@ const StudentItem : React.FC<{item : StudentItem}> = ({item})=>{
                     <td className = {styles.firstColumn}>Roll No</td>
                     <td>{item.SECTION_ROLL_NO}</td>
                 </tr>
+                { item.GENERATED_PASS &&
+                <tr className={styles.tableRow}>
+                    <td className = {styles.firstColumn}>Generated Password</td>
+                    <td>{item.GENERATED_PASS}</td>
+                </tr>}
             </table>
         </li>
     )

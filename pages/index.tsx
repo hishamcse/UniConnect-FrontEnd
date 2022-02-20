@@ -9,6 +9,8 @@ import SignUpForm from "../components/signup/SignUpForm";
 import {useRouter} from "next/router";
 import AuthContext from "../store/auth-context";
 import StudentDetails from '../components/contents/university/studentDetails';
+import TeacherDetails from '../components/contents/university/teacherDetails';
+
 
 const Home = () => {
 
@@ -29,6 +31,12 @@ const Home = () => {
 
         await router.push('/signup');
     }
+
+    // return(
+    //     <div>
+    //         <TeacherDetails departmentId='1' departmentName='Computer Sciend and Engineering' userId='23773'  />
+    //     </div>
+    // )
 
     return(
         <div>
