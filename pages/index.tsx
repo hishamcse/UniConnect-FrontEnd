@@ -30,11 +30,11 @@ const Home = () => {
         await router.push('/signup');
     }
 
-    // return(
-    //     <div>
-    //         <StudentDetails batchId='9' batchYear={2018} departmentId = {'12'} departmentName = {'Computer Science And Technology'} userId = {'1'} />
-    //     </div>
-    // )
+    return(
+        <div>
+            <StudentDetails batchId='1' batchYear={2018} departmentId = {'1'} departmentName = {'Computer Science And Technology'} userId = {'1'} />
+        </div>
+    )
 
     return (
         <LayoutWrapper>

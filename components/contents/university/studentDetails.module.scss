@@ -62,6 +62,7 @@ $color-white: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
     // margin-bottom: 10px;
 }
 // .tableRow{
@@ -80,4 +81,17 @@ $color-white: #fff;
 .buttonItem{
     width: 90px;
     margin: 10px;
+}
+.sectionListContainer{
+    // display: flex;
+    width: 500px;
+    // background-color: red;
+    // justify-content: space-around;
+}
+.sectionItemContainer{
+    // background-color: red;
+    width: 250px;
+    // border: 1px solid black;
+    display: inline-block;
+    padding: 5px;
 }
