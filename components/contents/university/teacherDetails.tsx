@@ -9,7 +9,7 @@ interface TeacherItem  {
     FULL_NAME : string,
     RANK : string,
     EMAIL : string,
-    GENERATED_PASS? : string
+    TOKEN? : string
 }
 const server = 'http://localhost:3000';
 
@@ -183,10 +183,10 @@ const TeacherItem : React.FC<{item : TeacherItem}> = ({item})=>{
                     <td>{item.EMAIL}</td>
                 </tr>
                 
-                { item.GENERATED_PASS &&
+                { item.TOKEN &&
                 <tr className={styles.tableRow}>
                     <td className = {styles.firstColumn}>Generated Password</td>
-                    <td>{item.GENERATED_PASS}</td>
+                    <td>{item.TOKEN}</td>
                 </tr>}
             </table>
         </li>

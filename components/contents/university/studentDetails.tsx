@@ -8,7 +8,7 @@ interface StudentItem  {
     EMAIL : string,
     SECTION_NAME : string,
     SECTION_ROLL_NO : number,
-    GENERATED_PASS? : string
+    TOKEN? : string
 }
 interface sectionItem  {
     SECTION_NAME : string,
@@ -282,10 +282,10 @@ const StudentItem : React.FC<{item : StudentItem}> = ({item})=>{
                     <td className = {styles.firstColumn}>Roll No</td>
                     <td>{item.SECTION_ROLL_NO}</td>
                 </tr>
-                { item.GENERATED_PASS &&
+                { item.TOKEN &&
                 <tr className={styles.tableRow}>
                     <td className = {styles.firstColumn}>Generated Password</td>
-                    <td>{item.GENERATED_PASS}</td>
+                    <td>{item.TOKEN}</td>
                 </tr>}
             </table>
         </li>
