@@ -5,12 +5,13 @@ import SearchTeacher from "./SearchTeacher";
 import TeacherItem from "./TeacherItem";
 import {BsFillCaretLeftFill} from "react-icons/bs";
 import {Button} from "react-bootstrap";
+import {Teacher} from "../../../../models/University/Teacher";
 
 const server = 'http://localhost:3000';
 
 const TeacherDetails: React.FC<{ userId: string, departmentName: string, departmentId: string }> = (props) => {
 
-    const [teachers, setTeachers] = useState<TeacherItem[]>([]);
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
     const [fetching, setFetching] = useState<boolean>(false);
     const [notClaimedOnly, setNotClaimedOnly] = useState<boolean>(false);
 
@@ -75,7 +76,7 @@ const TeacherDetails: React.FC<{ userId: string, departmentName: string, departm
 
     const backHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        await router.push(`/${props.userId}`);
+        await router.back();
     }
 
     return (

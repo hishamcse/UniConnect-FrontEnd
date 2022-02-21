@@ -46,13 +46,13 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
             if (resp.status !== 200) throw new Error();
             return resp.json();
         }).then(async _ => {
-            await router.push(`/${props.userId}`);
+            // await router.push(`/${props.userId}`);
         }).catch(_ => {
             console.log('sorry!! request failed');
             setFormValid(false);
         })
 
-        // await router.push(`/${props.userId}`);
+        await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {

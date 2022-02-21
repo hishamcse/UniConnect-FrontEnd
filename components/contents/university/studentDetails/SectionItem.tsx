@@ -1,13 +1,15 @@
 import React, {useState} from "react";
 import styles from './StudentDetails.module.scss';
+import {Section} from "../../../../models/University/Section";
+import {Student} from "../../../../models/University/Student";
 
 const SectionItem: React.FC<{
-    item: sectionItem
+    item: Section
     selected: string[],
     setSelected: (s: string[]) => void,
     fetching: boolean,
     loadData: (n: number, clear: boolean, na: string[]) => void,
-    setStudents: (arr: StudentItem[]) => void
+    setStudents: (arr: Student[]) => void
 }> = ({item, selected, setSelected, fetching, loadData, setStudents}) => {
 
     const [tik, setTik] = useState<boolean>(false);

@@ -6,6 +6,8 @@ import StudentList from "./StudentList";
 import {BsFillCaretLeftFill} from "react-icons/bs";
 import {Button} from "react-bootstrap";
 import {useRouter} from "next/router";
+import {Student} from "../../../../models/University/Student";
+import {Section} from "../../../../models/University/Section";
 
 const server = 'http://localhost:3000';
 
@@ -13,9 +15,9 @@ const StudentDetails: React.FC<{
     userId: string, departmentName: string, departmentId: string, batchId: string, batchYear: string
 }> = (props) => {
 
-    const [students, setStudents] = useState<StudentItem[]>([]);
+    const [students, setStudents] = useState<Student[]>([]);
     const [fetching, setFetching] = useState<boolean>(false);
-    const [sections, setSections] = useState<sectionItem[]>([]);
+    const [sections, setSections] = useState<Section[]>([]);
     const [inp, setInp] = useState<string>('');
     const [notClaimedOnly, setNotClaimedOnly] = useState<boolean>(false);
 
@@ -90,7 +92,7 @@ const StudentDetails: React.FC<{
 
     const backHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        await router.push(`/${props.userId}`);
+        await router.back();
     }
 
     return (

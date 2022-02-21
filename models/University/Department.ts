@@ -23,8 +23,7 @@ type StudentsByYear = {
 
 // data for UI view
 export type DeptInfoView = {
-    dept_short: string;
-    dept_full: string;
+    dept: string;
     departmentId : number
     faculties: number;
     students_by_year: StudentsByYear[];

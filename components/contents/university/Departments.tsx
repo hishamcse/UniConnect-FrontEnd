@@ -28,9 +28,9 @@ const Departments: React.FC<{ mode: string, userId: string, departments: DeptInf
                     <Accordion className='p-2'>
                         {props.departments.map((dept, i) => {
                             return (
-                                <Accordion.Item eventKey={`${i}`} key={i + dept.dept_short}>
-                                    <Accordion.Header>{dept.dept_short}</Accordion.Header>
-                                    <DeptInfo deptInfo={dept} userId={props.userId}/>
+                                <Accordion.Item eventKey={`${i}`} key={i + Math.random()}>
+                                    <Accordion.Header>{dept.dept}</Accordion.Header>
+                                    <DeptInfo mode={props.mode} deptInfo={dept} userId={props.userId}/>
                                 </Accordion.Item>
                             )
                         })}

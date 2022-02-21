@@ -1,7 +1,8 @@
 import React from "react";
 import styles from './TeacherDetails.module.scss';
+import {Teacher} from "../../../../models/University/Teacher";
 
-const TeacherItem: React.FC<{ item: TeacherItem }> = ({item}) => {
+const TeacherItem: React.FC<{ item: Teacher }> = ({item}) => {
 
     return (
         <li className={styles.itemContainer + ' list-group-item'}>
@@ -31,10 +32,10 @@ const TeacherItem: React.FC<{ item: TeacherItem }> = ({item}) => {
                     <td>{item.EMAIL}</td>
                 </tr>
 
-                {item.GENERATED_PASS &&
+                {item.TOKEN &&
                     <tr className={styles.tableRow}>
-                        <td className={styles.firstColumn}>Generated Password</td>
-                        <td>{item.GENERATED_PASS}</td>
+                        <td className={styles.firstColumn}>Generated Token</td>
+                        <td>{item.TOKEN}</td>
                     </tr>}
             </table>
         </li>
