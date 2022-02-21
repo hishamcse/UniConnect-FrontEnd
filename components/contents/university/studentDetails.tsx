@@ -284,7 +284,7 @@ const StudentItem : React.FC<{item : StudentItem}> = ({item})=>{
                 </tr>
                 { item.TOKEN &&
                 <tr className={styles.tableRow}>
-                    <td className = {styles.firstColumn}>Generated Password</td>
+                    <td className = {styles.firstColumn}>Generated Token</td>
                     <td>{item.TOKEN}</td>
                 </tr>}
             </table>
