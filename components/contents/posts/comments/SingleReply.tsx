@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {CommentView} from "../../../../models/Comment";
 import {Card, Dropdown, Image} from "react-bootstrap";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
@@ -12,8 +12,11 @@ const server = 'http://localhost:3000';
 const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void, updateComments: () => void }> = (props) => {
 
     const authCtx = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
 
     const voteHandler = (down: string) => {
+        setLoading(true);
+
         fetch(`${server}/votes/${props.replyData.CONTENT_ID}`, {
             method: 'post',
             headers: {
@@ -27,6 +30,8 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
             return resp.json();
         }).then(_ => {
             props.updateReplies();
+        }).finally(() => {
+            setLoading(false);
         });
     }
 
@@ -43,6 +48,8 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
     const deleteReplyHandler = (e:any) => {
         e.preventDefault();
 
+        setLoading(true);
+
         fetch(`${server}/contents/delete/${props.replyData.CONTENT_ID}`, {
             method: 'post',
             headers: {
@@ -54,6 +61,8 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
             return resp.json();
         }).then(_ => {
             props.updateComments();
+        }).finally(() => {
+            setLoading(false);
         });
     }
 

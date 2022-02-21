@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useRouter} from "next/router";
 import styles from "./AddSectionStudent.module.scss";
 import styles1 from "./AddDeptBatch.module.scss";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsFillCaretLeftFill} from "react-icons/bs";
 
 const server = 'http://localhost:3000';
@@ -10,11 +10,15 @@ const server = 'http://localhost:3000';
 const AddTeacher: React.FC<{ userId: string, deptId: string | string[] | undefined, deptName: string | string[] | undefined }> = (props) => {
 
     const [rank, setRank] = useState<string>('');
+    const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const router = useRouter();
 
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setLoading(true);
 
         fetch(`${server}/teachers/create`, {
             method: 'post',
@@ -26,15 +30,16 @@ const AddTeacher: React.FC<{ userId: string, deptId: string | string[] | undefin
                 departmentId: props.deptId,
                 rank: rank
             })
-        }).then(resp => {
+        }).then(async resp => {
             if (resp.status !== 200) throw new Error();
+            else await router.push(`/${props.userId}`);
             return resp.json();
         }).then(_ => {
         }).catch(_ => {
-            console.log('sorry!! request failed');
+            setReqSuccess(false);
+        }).finally(() => {
+            setLoading(false);
         })
-
-        await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -44,6 +49,8 @@ const AddTeacher: React.FC<{ userId: string, deptId: string | string[] | undefin
 
     const changeRankHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
         setRank(e.target.value);
+        setReqSuccess(true);
+        setLoading(false);
     }
 
     return (
@@ -73,9 +80,12 @@ const AddTeacher: React.FC<{ userId: string, deptId: string | string[] | undefin
                     </Form.Group>
                 </div>
 
-                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
+                {!reqSuccess && <p className='text-danger'>Server failed to process request!!</p>}
+
+                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+                {loading && <Spinner animation='border' variant='danger'/>}
             </Form>
         </div>
     );

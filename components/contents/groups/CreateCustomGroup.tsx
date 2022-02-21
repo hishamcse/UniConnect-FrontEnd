@@ -15,6 +15,7 @@ const CreateCustomGroup: React.FC = (props) => {
     const [lengthInvalid, setLengthInvalid] = useState(false);
     const [memberInvalid, setMemberInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const router = useRouter();
 
@@ -64,16 +65,20 @@ const CreateCustomGroup: React.FC = (props) => {
                     body: JSON.stringify({
                         newMembers: members
                     })
-                }).then(resp => {
+                }).then(async resp => {
+                    if(resp.status !== 200) throw new Error();
+                    else await router.back();
                     return resp.json();
                 }).then(_ => {
+                }).catch(_ => {
+                    setReqSuccess(false);
+                }).finally(() => {
+                    setLoading(false);
                 })
             }
         }).finally(() => {
             setLoading(false);
         })
-
-        await router.back();
     }
 
     const hideErrorHandler = () => {
@@ -131,7 +136,9 @@ const CreateCustomGroup: React.FC = (props) => {
                 {memberInvalid && <p className='text-danger'>
                     Warning!! You must have to enter valid number as member ids</p>}
 
-                <Button className={`${styles.button} mb-2`} variant="info" size="lg" type='submit'>
+                {!reqSuccess && <p className='text-danger'>Server failed to process request!!</p>}
+
+                <Button className={`${styles.button} mb-2`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
 

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {Button, Card, Dropdown, Form, Image, Spinner} from "react-bootstrap";
 import {CommentView} from "../../../../models/Comment";
 import styles from "../Posts.module.scss";
@@ -17,17 +17,16 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
     const [replies, setReplies] = useState<CommentView[]>([]);
     const [showReplies, setShowReplies] = useState(false);
     const [replyLoading, setReplyLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
 
     const newReply = useRef<HTMLTextAreaElement | null>(null);
 
     const item = props.item;
     const index = props.index;
 
-    // useEffect(() => {
-    //     findReplies();
-    // }, [])
-
     const voteHandler = (down: string) => {
+        setLoading(true);
+
         fetch(`${server}/votes/${props.item.CONTENT_ID}`, {
             method: 'post',
             headers: {
@@ -41,6 +40,8 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
             return resp.json();
         }).then(_ => {
             props.updateComments();
+        }).finally(() => {
+            setLoading(false);
         });
     }
 
@@ -81,6 +82,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
         if (replyStr?.trim().length === 0) return;
         setReplyLoading(true);
 
+        setLoading(true);
         fetch(`${server}/comments/${item.CONTENT_ID}`, {
             method: 'post',
             headers: {
@@ -95,6 +97,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
         }).then(_ => {
             props.updateComments();
         }).finally(() => {
+            setLoading(false);
             setReplyLoading(false);
             // @ts-ignore
             newReply.current.value = '';
@@ -104,6 +107,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
     const deleteCommentHandler = (e:any) => {
         e.preventDefault();
 
+        setLoading(true);
         fetch(`${server}/contents/delete/${props.item.CONTENT_ID}`, {
             method: 'post',
             headers: {
@@ -115,6 +119,8 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
             return resp.json();
         }).then(_ => {
             props.updateComments();
+        }).finally(() => {
+            setLoading(false);
         });
     }
 
@@ -190,7 +196,7 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
                         <Form.Group className="mt-2 d-flex" controlId="formBasicEmail">
                             <Form.Control as="textarea" rows={2} placeholder='reply to this comment' ref={newReply}/>
                             &nbsp;&nbsp;
-                            <Button variant='outline-success' onClick={postReplyHandler}>comment</Button>
+                            <Button variant='outline-success' onClick={postReplyHandler} disabled={loading}>comment</Button>
                             {replyLoading && <Spinner animation="border" variant="info"/>}
                         </Form.Group>
                     </Form>

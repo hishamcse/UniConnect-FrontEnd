@@ -1,11 +1,13 @@
 import {Accordion, Button} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
 import {DeptInfoView} from "../../../models/University/Department";
 import {useRouter} from "next/router";
 
 const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string }> = (props) => {
 
     const router = useRouter();
+
+    const [disable, setDisable] = useState(false);
 
     const department: DeptInfoView = props.deptInfo;
 
@@ -26,7 +28,10 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
     const studentDetailsHandler = async (e: any) => {
         e.preventDefault();
 
-        if(!e.target.value) return;
+        const batchId = e.target.closest('Button').value?.split(' ')[0];
+        const year = e.target.closest('Button').value?.split(' ')[1];
+
+        setDisable(true);
 
         if(router.isReady) {
             await router.push({
@@ -34,16 +39,19 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
                 query: {
                     deptId: `${props.deptInfo.departmentId}`,
                     dept: `${props.deptInfo.dept}`,
-                    batchId: `${e?.target.value?.split(' ')[0]}`,
-                    year: `${e?.target.value?.split(' ')[1]}`
+                    batchId: batchId,
+                    year: year
                 }
             });
         }
+
+        setDisable(false);
     }
 
     const addTeacherHandler = async (e: any) => {
         e.preventDefault();
 
+        setDisable(true);
         if(router.isReady) {
             await router.push({
                 pathname: `${props.userId}/addFaculty`,
@@ -53,6 +61,7 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
                 }
             });
         }
+        setDisable(false);
     }
 
     return (
@@ -74,7 +83,7 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
                     {department.students_by_year.map((data, i) =>
                         <Button key={i + Math.random()} variant='outline-success' className='m-2'
                                 onClick={studentDetailsHandler}
-                                value={data.batch_id + " " + data.batch_year}>
+                                value={data.batch_id + " " + data.batch_year} disabled={disable}>
                             <b>{data.batch_name} {data.batch_year} :</b>&nbsp; {data.students_count}
                         </Button>
                     )}

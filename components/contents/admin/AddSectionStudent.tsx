@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
 import styles from "./AddSectionStudent.module.scss";
 import styles1 from "./AddDeptBatch.module.scss";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsBuilding, BsFillCaretLeftFill, BsFillPersonPlusFill, BsFillSignpost2Fill} from "react-icons/bs";
 import {Batch} from "../../../models/University/Batch";
 
@@ -21,6 +21,8 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
 
     const inputStudentCountRef = useRef<HTMLInputElement | null>(null);
     const [formValid, setFormValid] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const router = useRouter();
 
@@ -49,6 +51,7 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
         }
 
         setFormValid(true);
+        setLoading(true);
 
         fetch(`${server}/sections`, {
             method: 'post',
@@ -62,17 +65,18 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
                 sectionName: secName,
                 studentCount: studentPerSec
             })
-        }).then(resp => {
+        }).then(async resp => {
             if (resp.status !== 200) throw new Error();
+            else await router.push(`/${props.userId}`);
             return resp.json();
         }).then(async _ => {
-            // await router.push(`/${props.userId}`);
+            setFormValid(true);
         }).catch(_ => {
-            console.log('sorry!! request failed');
+            setReqSuccess(false);
             setFormValid(false);
+        }).finally(() => {
+            setLoading(false);
         })
-
-        await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -82,10 +86,23 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
 
     const changeDeptHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
         setDeptId(e.target.value);
+        setFormValid(true);
+        setReqSuccess(true);
+        setLoading(false);
     }
 
     const changeSectionNameHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
         setSecName(e.target.value);
+        setFormValid(true);
+        setReqSuccess(true);
+        setLoading(false);
+    }
+
+    const changeStudentCountHandler = (e: any) => {
+        e.preventDefault();
+        setFormValid(true);
+        setReqSuccess(true);
+        setLoading(false);
     }
 
     const year = batchData.length !== 0 ? batchData[0]?.BATCH_YEAR : '';
@@ -167,15 +184,19 @@ const AddSectionStudent: React.FC<{ userId: string, batchId: string | string[] |
                             min='1'
                             max='70'
                             ref={inputStudentCountRef}
+                            onChange={changeStudentCountHandler}
                         />
                     </div>
                 </Form.Floating>
 
                 {!formValid && <p className={styles1['error-text']}>Inputs are not valid!!</p>}
+                {!reqSuccess && <p className={styles['error-text']}>Server failed to process request!!</p>}
 
-                <Button className={`${styles1.button} mb-4`} variant="info" size="lg" type='submit'>
+                <Button className={`${styles1.button} mb-4`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+
+                {loading && <Spinner animation='border' variant='danger'/>}
             </Form>
         </div>
     );

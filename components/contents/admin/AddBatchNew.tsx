@@ -1,7 +1,7 @@
 import styles from './AddDeptBatch.module.scss';
 import React, {useRef, useState} from "react";
 import {useRouter} from "next/router";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsCalendarCheck, BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 import ReactDatePicker from "react-datepicker";
 
@@ -15,6 +15,7 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
     const [batchType, setBatchType] = useState<string>('');
     const [startDate, setStartDate] = useState(new Date());
     const [formValid, setFormValid] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
@@ -30,6 +31,7 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
         }
 
         setFormValid(true);
+        setLoading(true);
 
         fetch(`${server}/batches`, {
             method: 'post',
@@ -42,17 +44,18 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
                 year: batchYear,
                 batchName: batchName,
             })
-        }).then(resp => {
+        }).then(async resp => {
             if (resp.status !== 200) throw new Error();
+            else await router.push(`/${props.userId}`);
             return resp.json();
-        }).then(async _ => {
-            // await router.push(`/${props.userId}`);
+        }).then(_ => {
         }).catch(_ => {
-            console.log('sorry!! request failed');
             setFormValid(false);
+        }).finally(() => {
+            setLoading(false);
         })
 
-        await router.push(`/${props.userId}`);
+        // await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -112,11 +115,13 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
                     </Form.Control>
                 </Form.Floating>
 
-                {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}
+                {!formValid && <p className={styles['error-text']}>Inputs are not valid or server failed to load request!!</p>}
 
-                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
+                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+
+                {loading && <Spinner animation='border' variant='danger'/>}
             </Form>
         </div>
     );

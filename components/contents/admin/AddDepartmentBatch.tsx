@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
 import styles from "./AddSectionStudent.module.scss";
 import styles1 from "./AddDeptBatch.module.scss";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 import {Batch} from "../../../models/University/Batch";
 
@@ -14,8 +14,10 @@ const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] 
 
     const inputDeptIdRef = useRef<HTMLInputElement | null>(null);
     const [batchData, setBatchData] = useState<Batch[]>([]);
-    const [formValid, setFormValid] = useState(true);
     const [deptIdValid, setDeptIdValid] = useState(true);
+    const [formValid, setFormValid] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const router = useRouter();
 
@@ -44,6 +46,8 @@ const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] 
             return;
         }
 
+        setLoading(true);
+
         fetch(`${server}/batchdepts`, {
             method: 'post',
             headers: {
@@ -54,18 +58,18 @@ const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] 
                 departmentId: deptId,
                 batchId: props?.batchId
             })
-        }).then(resp => {
+        }).then(async resp => {
             if (resp.status !== 200) throw new Error();
+            else await router.push(`/${props.userId}`);
             return resp.json();
         }).then(_ => {
             setFormValid(true);
             setDeptIdValid(true);
         }).catch(_ => {
-            setDeptIdValid(false);
-            console.log('sorry!! request failed');
+            setReqSuccess(false);
+        }).finally(() => {
+            setLoading(false);
         })
-
-        await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -77,6 +81,8 @@ const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] 
         e.preventDefault();
         setDeptIdValid(true);
         setFormValid(true);
+        setReqSuccess(true);
+        setLoading(false);
     }
 
     return (
@@ -109,10 +115,13 @@ const AddDepartmentBatch: React.FC<{ userId: string, batchId: string | string[] 
 
                 {!formValid && <p className={styles['error-text']}>Dept Code is not valid!!</p>}
                 {!deptIdValid && <p className={styles['error-text']}>Department id does not exist!!</p>}
+                {!reqSuccess && <p className={styles['error-text']}>Server failed to process request!!</p>}
 
-                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
+                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+
+                {loading && <Spinner animation='border' variant='danger'/>}
             </Form>
         </div>
     );

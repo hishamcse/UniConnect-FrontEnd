@@ -1,7 +1,7 @@
 import styles from './AddDeptBatch.module.scss';
 import React, {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsBuilding, BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 
 const server = 'http://localhost:3000';
@@ -14,8 +14,10 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
     const inputDeptIdRef = useRef<HTMLInputElement | null>(null);
     const inputDeptNameRef = useRef<HTMLInputElement | null>(null);
     const [deptCodes, setDeptCodes] = useState<string[]>([]);
-    const [formValid, setFormValid] = useState(true);
     const [deptCodeValid, setDeptCodeValid] = useState(true);
+    const [formValid, setFormValid] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const router = useRouter();
 
@@ -51,7 +53,7 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
             return;
         }
 
-        console.log(deptId, deptName)
+        setLoading(true);
 
         fetch(`${server}/departments`, {
             method: 'post',
@@ -63,18 +65,18 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
                 deptCode: deptId,
                 deptName: deptName
             })
-        }).then(resp => {
+        }).then(async resp => {
             if (resp.status !== 200) throw new Error();
+            else await router.push(`/${props.userId}`);
             return resp.json();
-        }).then(_ => {
+        }).then(async _ => {
         }).catch(_ => {
-            console.log('sorry!! request failed')
+            setReqSuccess(false);
         }).finally(() => {
             setFormValid(true);
             setDeptCodeValid(true);
+            setLoading(false);
         })
-
-        await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -86,6 +88,8 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
         e.preventDefault();
         setDeptCodeValid(true);
         setFormValid(true);
+        setReqSuccess(true);
+        setLoading(false);
     }
 
     return (
@@ -130,10 +134,13 @@ const AddDepartment: React.FC<{ userId: string }> = (props) => {
 
                 {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}
                 {!deptCodeValid && <p className={styles['error-text']}>Department code already exists!!</p>}
+                {!reqSuccess && <p className={styles['error-text']}>Server failed to process request!!</p>}
 
-                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
+                <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+
+                {loading && <Spinner animation='border' variant='danger'/>}
             </Form>
         </div>
     );

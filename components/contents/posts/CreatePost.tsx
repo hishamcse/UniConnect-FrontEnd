@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 import {useRouter} from "next/router";
 import styles from "./Posts.module.scss";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import {BsFillCaretLeftFill, BsFillSignpost2Fill} from "react-icons/bs";
 import {CgDetailsMore} from "react-icons/cg"
 
@@ -11,6 +11,8 @@ const CreatePost: React.FC<{ grpId: string, grp_name: string | string[] | undefi
 
     const inputTitleRef = useRef<HTMLTextAreaElement | null>(null);
     const inputBodyRef = useRef<HTMLTextAreaElement | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [reqSuccess, setReqSuccess] = useState(true);
 
     const [invalid,setInvalid] = useState(false);
 
@@ -28,6 +30,7 @@ const CreatePost: React.FC<{ grpId: string, grp_name: string | string[] | undefi
         }
 
         setInvalid(false);
+        setLoading(true);
 
         fetch(`${server}/posts/${props.grpId}`, {
             method: 'post',
@@ -39,12 +42,16 @@ const CreatePost: React.FC<{ grpId: string, grp_name: string | string[] | undefi
                 title: title,
                 text: text
             })
-        }).then(resp => {
+        }).then(async resp => {
+            if (resp.status !== 200) throw new Error();
+            else await router.push(`/groups/${props.grpId}`);
             return resp.json();
         }).then(_ => {
+        }).catch(_ => {
+            setReqSuccess(false);
+        }).finally(() => {
+            setLoading(false);
         })
-
-        await router.push(`/groups/${props.grpId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {
@@ -93,10 +100,13 @@ const CreatePost: React.FC<{ grpId: string, grp_name: string | string[] | undefi
                 </Form.Group>
 
                 {invalid && <p className='text-danger'>Warning!! Empty title or content</p>}
+                {!reqSuccess && <p className='text-danger'>Server failed to process request!!</p>}
 
-                <Button className={`${styles.button} mb-2`} variant="info" size="lg" type='submit'>
+                <Button className={`${styles.button} mb-2`} variant="info" size="lg" type='submit' disabled={loading}>
                     Submit
                 </Button>
+
+                {loading && <Spinner animation='border' variant='secondary'/>}
             </Form>
         </div>
     )
