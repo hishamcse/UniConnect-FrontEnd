@@ -1,14 +1,14 @@
 
 <p align="center">
- <img width="80px" 
+ <img width="200px" 
       style="border-radius:50%" src="https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/logo.png"  alt="UniConnect"/>
 </p>
 
-<h2 align="center"> UniConnect FrontEnd</h2>
+<h1 align="center"> UniConnect FrontEnd</h1><br />
 
  <p align="center">
    This is the frontend of CSE 216 database term project <b>UniConnect</b> By Syed Jarullah Hisham (1805004) & Abdur Rafi (1805008).
-   To see database and backend, please use this link: &nbsp;&nbsp; [UniConnect Backend](https://github.com/abdur-rafi/UniConnect-backend)
+   To see database and backend, please use this link: &nbsp;&nbsp; [UniConnect Backend] (https://github.com/abdur-rafi/UniConnect-backend)
   </p>
 
 ## Configuring frontend:
