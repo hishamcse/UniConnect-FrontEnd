@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import styles from './TeacherDetails.module.scss';
 import SearchTeacher from "./SearchTeacher";
-import TeacherItem from "./TeacherItem";
+import TeacherItemC from "./TeacherItem";
 import {BsFillCaretLeftFill} from "react-icons/bs";
 import {Button} from "react-bootstrap";
 import {Teacher} from "../../../../models/University/Teacher";
+
 
 const server = 'http://localhost:3000';
 
@@ -84,7 +85,7 @@ const TeacherDetails: React.FC<{ userId: string, departmentName: string, departm
 
             <div className={styles.container}>
 
-                <div className='d-flex mb-2'>
+                <div className={styles.buttonContainer}>
                     <Button variant='outline-danger' onClick={backHandler}>
                         <BsFillCaretLeftFill/>&nbsp;
                         Back
@@ -113,7 +114,7 @@ const TeacherDetails: React.FC<{ userId: string, departmentName: string, departm
 
                 <div className={styles.listContainer}>
                     <ul className='list-group'>
-                        {teachers.map(item => <TeacherItem item={item} key={item.ROLE_ID}/>)}
+                        {teachers.map(item => <TeacherItemC item={item} key={item.ROLE_ID}/>)}
                         {teachers.length >= 30 &&
                             <div className='list-group-item text-center'>
                                 <button className={'btn btn-primary'} disabled={fetching} onClick={() => {

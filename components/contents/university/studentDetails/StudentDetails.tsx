@@ -9,6 +9,9 @@ import {useRouter} from "next/router";
 import {Student} from "../../../../models/University/Student";
 import {Section} from "../../../../models/University/Section";
 
+import {sectionItem} from "../../../../models/University/Section";
+import {StudentItem} from "../../../../models/University/Student";
+
 const server = 'http://localhost:3000';
 
 const StudentDetails: React.FC<{
@@ -99,7 +102,7 @@ const StudentDetails: React.FC<{
         <div className={styles.body}>
 
             <div className={styles.container}>
-                <div className='d-flex mb-2'>
+                <div className={styles.buttonContainer}>
                     <Button variant='outline-danger' onClick={backHandler}>
                         <BsFillCaretLeftFill/>&nbsp;
                         Back
