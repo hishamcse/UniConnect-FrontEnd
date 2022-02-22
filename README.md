@@ -17,7 +17,7 @@
    3. use terminal inside the project and run <b>'npm install'</b>
    4. ensure backend is configured and running correctly on "http://localhost:3000" (note the port number)
    5. using the terminal inside project, run <b>'npm run dev'</b> and that's it. This project should work perfectly now on "http://localhost:3001"
-   6. (optional) in case of production build, run <b>'next build'</b>. after build is finished, run <b>'next start'</b>
+   6. (optional) in case of production build, run <b>'npm run build'</b>. after build is finished, run <b>'npm start'</b>
 
 ## Languages, Tools and Frameworks:
     frontend: typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
