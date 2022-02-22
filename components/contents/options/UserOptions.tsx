@@ -53,6 +53,12 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
 
     const router = useRouter();
 
+    const roleHandler = async (e: any) => {
+        e.preventDefault();
+
+        await router.push('/login');
+    }
+
     const newsFeed = async (e: React.MouseEvent) => {
         e.preventDefault();
 
@@ -110,6 +116,10 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
                 <Offcanvas.Body>
                     <Container className='text-secondary'>
                         <Nav>
+                            <Nav.Link><b onClick={roleHandler}>
+                                <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                Change Role</b>
+                            </Nav.Link>
                             <Nav.Link><b onClick={universityInfo}>
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 University Info</b>
