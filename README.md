@@ -7,8 +7,8 @@
 <h1 align="center"> UniConnect FrontEnd</h1><br />
 
  <p align="center">
-   This is the frontend of CSE 216 database term project <b>UniConnect</b> By Syed Jarullah Hisham (1805004) & Abdur Rafi (1805008).
-   To see database and backend, please use this link: &nbsp;&nbsp; [UniConnect Backend] (https://github.com/abdur-rafi/UniConnect-backend)
+   This is the frontend of CSE 216 database term project <b>UniConnect</b> By Syed Jarullah Hisham (1805004) & Abdur Rafi (1805008). <br />
+   <b>To see database and backend, please use this link:&nbsp;&nbsp;[UniConnect Backend](https://github.com/abdur-rafi/UniConnect-backend) </b>
   </p>
 
 ## Configuring frontend:
