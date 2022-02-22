@@ -9,8 +9,6 @@ import {useRouter} from "next/router";
 import {Student} from "../../../../models/University/Student";
 import {Section} from "../../../../models/University/Section";
 
-import {sectionItem} from "../../../../models/University/Section";
-import {StudentItem} from "../../../../models/University/Student";
 
 const server = 'http://localhost:3000';
 
