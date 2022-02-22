@@ -97,8 +97,7 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
             {!doneFetchingCustoms &&
                 <div className='m-5 p-5'>
                     <Spinner animation='border'/>
-                </div>
-            }
+                </div>}
 
             {customGroups.length === 0 && doneFetchingCustoms &&
                 <div className='m-5 p-5'>
