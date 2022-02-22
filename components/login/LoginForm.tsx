@@ -54,9 +54,12 @@ const LoginForm = () => {
                 password: password
             })
         }).then(resp => {
+            if(resp.status !== 200) throw new Error();
             return resp.json();
         }).then(data => {
             loginDataHandler(data);
+        }).catch(_ => {
+            setFormValid(false);
         }).finally(async () => {
             setIsSubmitting(false);
         });
@@ -94,13 +97,13 @@ const LoginForm = () => {
                 </label>
             </Form.Floating>
 
-            {!formValid && <p className={styles['error-text']}>Inputs are not valid!!</p>}
+            {!formValid &&
+                <p className={styles['error-text']}>Server processing failed!! Check inputs</p>}
 
             <Container className='d-flex'>
                 <Button className={`${styles.button} mb-4`} variant="info" size="lg" type='submit'>
                     Submit
                 </Button>
-
                 {isSubmitting && <Spinner animation="border" variant="danger"/>}
             </Container>
         </Form>

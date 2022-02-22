@@ -50,7 +50,7 @@ $color-secondary-dark: #edf2fb;
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .content {
     width: 55%;
-    height: 100%;
+    //height: 100%;
     margin-left: 25%;
     padding: 1.5rem;
     border-radius: 20px;

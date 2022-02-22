@@ -1,16 +1,37 @@
 import {Container, Nav, Offcanvas} from "react-bootstrap";
 import {BsFillCaretRightSquareFill, BsFillFilterCircleFill} from "react-icons/bs";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {ManagementSummary} from "../../../models/University/Management";
+import AuthContext from "../../../store/auth-context";
+import ManagementInfo from "./ManagementInfo";
+
+const server = 'http://localhost:3000';
 
 const ManagementOptions: React.FC<{ id: string }> = (props) => {
 
     const [showSideBar, setShowSideBar] = useState(false);
+    const [managementView, setManagementView] = useState<ManagementSummary[]>([]);
 
     const handleCloseSideBar = () => setShowSideBar(false);
     const toggleShowSideBar = () => setShowSideBar((s) => !s);
 
     const router = useRouter();
+    const authCtx = useContext(AuthContext);
+
+    useEffect(() => {
+        fetch(`${server}/user/info`, {
+            mode: 'cors',
+            method: 'get',
+            credentials: "include",
+        })
+            .then(resp => {
+                return resp.json();
+            })
+            .then(data => {
+                if (authCtx.loggedInAs === 'management') setManagementView(data);
+            });
+    }, [])
 
     const addDept = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -30,8 +51,6 @@ const ManagementOptions: React.FC<{ id: string }> = (props) => {
         await router.push(`${props.id}`);
     }
 
-    let modeName = 'Management ';
-
     return (
         <Fragment>
             <h2 className='text-light'>
@@ -41,7 +60,10 @@ const ManagementOptions: React.FC<{ id: string }> = (props) => {
                        onHide={handleCloseSideBar} scroll={true}>
                 <div className='text-lg-center'>
                     <Offcanvas.Header closeButton closeVariant='white'>
-                        <Offcanvas.Title>{modeName}&nbsp;{props.id}</Offcanvas.Title>
+                        <Offcanvas.Title>
+                            <ManagementInfo MANAGEMENT_ID={managementView[0]?.MANAGEMENT_ID}
+                            UNIVERSITY_NAME={managementView[0]?.UNIVERSITY_NAME}/>
+                        </Offcanvas.Title>
                     </Offcanvas.Header>
                 </div>
                 <Offcanvas.Body>

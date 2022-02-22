@@ -17,12 +17,13 @@ $color-white: #fff;
   justify-content: center;
   align-items: center;
 }
-.titleContainer{
+
+.titleContainer {
   font-size: 35px;
   text-align: center;
 }
 
-.container{
+.container {
   background-color: rgba(255, 255, 255, 0.5);
   padding: 40px;
   border-radius: 20px;
@@ -31,75 +32,60 @@ $color-white: #fff;
   align-items: center;
 }
 
-.listContainer{
+.listContainer {
   height: 500px;
   width: 500px;
-  // border: 1px black solid;
-  // overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.subTitleText{
+.subTitleText {
   margin: 10px;
   font-size: 20px;
   text-align: center;
 }
-.itemBottomContainer{
+
+.itemBottomContainer {
   display: flex;
   justify-content: space-between;
 }
-.firstColumn{
+
+.firstColumn {
   width: 180px;
 }
-.searchField{
+
+.searchField {
   width: 500px;
-  // margin-bottom: 10px;
 }
-.fieldContainer{
-  // background-color: red;
-  // width: 500px;
+
+.fieldContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  // margin-bottom: 10px;
 }
-// .tableRow{
-//     border-bottom: 10px;
-// }
-// .itemTable{
-//     // border: 1px solid black;
-//     td, tr{
-//         border-bottom: 2px solid black;
-//     }
-// }
-.buttonsContainer{
+
+.buttonsContainer {
   display: flex;
   justify-content: center;
 }
-.buttonItem{
+
+.buttonItem {
   width: 90px;
   margin: 10px;
 }
-.sectionListContainer{
-  // display: flex;
+
+.sectionListContainer {
   width: 500px;
-  // background-color: red;
-  // justify-content: space-around;
 }
-.sectionItemContainer{
-  // background-color: red;
+
+.sectionItemContainer {
   width: 250px;
-  // border: 1px solid black;
   display: inline-block;
   padding: 5px;
 }
 
-.buttonContainer{
+.buttonContainer {
   position: absolute;
-  // border: 1px solid black;
-  // height: 200px;
   top: 100px;
   left: 100px;
-  
 }

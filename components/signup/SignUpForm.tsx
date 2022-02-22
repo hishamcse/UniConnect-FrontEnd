@@ -120,6 +120,7 @@ const SignUpForm = () => {
 
         const parts = startDate.toLocaleDateString().split('/');
         const newDateString = [parts[1], parts[0], parts[2]].join('/');
+        console.log(newDateString);
 
         fetch(`${server}/user/signup`, {
             method: 'post',

@@ -7,7 +7,6 @@ import {BsFillCaretLeftFill} from "react-icons/bs";
 import {Button} from "react-bootstrap";
 import {Teacher} from "../../../../models/University/Teacher";
 
-
 const server = 'http://localhost:3000';
 
 const TeacherDetails: React.FC<{ userId: string, departmentName: string, departmentId: string }> = (props) => {

@@ -6,3 +6,12 @@ export interface Student {
     SECTION_ROLL_NO : number,
     TOKEN? : string
 }
+
+export interface StudentSummary {
+    ROLE_ID: number,
+    BATCH_YEAR: number,
+    DEPARTMENT_NAME: string,
+    SECTION_NAME: string,
+    SECTION_ROLL_NO: number,
+    UNIVERSITY_NAME: string
+}

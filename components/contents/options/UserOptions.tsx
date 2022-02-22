@@ -4,6 +4,12 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import styles from './UserOptions.module.scss';
 import AuthContext from "../../../store/auth-context";
+import StudentInfo from "./StudentInfo";
+import TeacherInfo from "./TeacherInfo";
+import {StudentSummary} from "../../../models/University/Student";
+import {TeacherSummary} from "../../../models/University/Teacher";
+
+const server = 'http://localhost:3000';
 
 const UserOptions: React.FC<{ id: string }> = (props) => {
 
@@ -11,6 +17,8 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
     const [showSideBar, setShowSideBar] = useState(false);
     const [userId, setUserId] = useState('');
     const [mode, setMode] = useState('');
+    const [studentView, setStudentView] = useState<StudentSummary[]>([]);
+    const [teacherView, setTeacherView] = useState<TeacherSummary[]>([]);
 
     useEffect(() => {
         if (!props.id) {
@@ -24,6 +32,20 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
         }
 
         setMode(authCtx.loggedInAs)
+
+        fetch(`${server}/user/info`, {
+            mode: 'cors',
+            method: 'get',
+            credentials: "include",
+        })
+            .then(resp => {
+                return resp.json();
+            })
+            .then(data => {
+                if (authCtx.loggedInAs === 'student') setStudentView(data);
+                else if (authCtx.loggedInAs === 'teacher') setTeacherView(data);
+            });
+
     }, [])
 
     const handleCloseSideBar = () => setShowSideBar(false);
@@ -62,11 +84,29 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
             </h2>
             <Offcanvas className={`${styles.background} text-light`} show={showSideBar}
                        onHide={handleCloseSideBar} scroll={true}>
+
                 <div className='text-lg-center'>
-                    <Offcanvas.Header closeButton closeVariant='white'>
-                        <Offcanvas.Title>{mode}&nbsp;{props.id}</Offcanvas.Title>
+                    <Offcanvas.Header closeButton closeVariant='white' style={{alignItems: "baseline"}}>
+                        <Offcanvas.Title>
+
+                            {mode === 'student' &&
+                                <StudentInfo BATCH_YEAR={studentView[0]?.BATCH_YEAR}
+                                             DEPARTMENT_NAME={studentView[0]?.DEPARTMENT_NAME}
+                                             ROLE_ID={studentView[0]?.ROLE_ID} SECTION_NAME={studentView[0]?.SECTION_NAME}
+                                             SECTION_ROLL_NO={studentView[0]?.SECTION_ROLL_NO}
+                                             UNIVERSITY_NAME={studentView[0]?.UNIVERSITY_NAME}
+                                />}
+
+                            {mode === 'teacher' &&
+                                <TeacherInfo ROLE_ID={teacherView[0]?.ROLE_ID}
+                                             DEPARTMENT_NAME={teacherView[0]?.DEPARTMENT_NAME}
+                                             UNIVERSITY_NAME={teacherView[0]?.UNIVERSITY_NAME}
+                                />}
+
+                        </Offcanvas.Title>
                     </Offcanvas.Header>
                 </div>
+
                 <Offcanvas.Body>
                     <Container className='text-secondary'>
                         <Nav>

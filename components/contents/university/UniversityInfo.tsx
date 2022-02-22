@@ -22,18 +22,14 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
     useEffect(() => {
 
         let uniName: string;
-        let uniId: number;
         const order = parseInt(authCtx.loggedOrder);
 
         if (authCtx.loggedInAs === 'management') {
             uniName = authCtx.loginData.managementRoles[order].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.managementRoles[order].UNIVERSITY_ID;
         } else if (authCtx.loggedInAs === 'student') {
             uniName = authCtx.loginData.studentRoles[order].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.studentRoles[order].UNIVERSITY_ID;
         } else {
             uniName = authCtx.loginData.teacherRoles[order].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.teacherRoles[order].UNIVERSITY_ID;
         }
 
         setVersityName(uniName);
@@ -47,7 +43,6 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
             })
             .then(data => {
                 console.log(data);
-
                 let arr = parseDeptData(data);
                 setDeptData(arr);
             });
