@@ -10,9 +10,13 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
 
     const [defaultGroups, setDefaultGroups] = useState<GroupSummaryView[]>([]);
     const [customGroups, setCustomGroups] = useState<GroupSummaryView[]>([]);
+    const [doneFetchingDefaults, setDoneFetchingDefaults] = useState<boolean>(false);
+    const [doneFetchingCustoms, setDoneFetchingCustoms] = useState<boolean>(false);
 
     useEffect(() => {
 
+        setDoneFetchingDefaults(false);
+        setDoneFetchingCustoms(false);
         fetch(`${server}/groups/defaults`, {
             mode: 'cors',
             method: 'get',
@@ -23,7 +27,9 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
             })
             .then(data => {
                 setDefaultGroups(data);
-            });
+            })
+            .finally(()=>setDoneFetchingDefaults(true));
+            ;
 
         fetch(`${server}/groups/custom`, {
             mode: 'cors',
@@ -35,7 +41,7 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
             })
             .then(data => {
                 setCustomGroups(data);
-            });
+            }).finally(()=>setDoneFetchingCustoms(true));
     }, [])
 
     console.log(customGroups)
@@ -57,8 +63,14 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
                     </Grid>
                 </Grid>
             }
+            {
+                !doneFetchingDefaults && 
+                <div className='m-5 p-5'>
+                    <h4>Loading</h4>
+                </div>
+            }
 
-            {defaultGroups.length === 0 &&
+            {defaultGroups.length === 0 && doneFetchingDefaults &&
                 <div className='m-5 p-5'>
                     <h4>There is no default group to show</h4>
                 </div>
@@ -80,7 +92,15 @@ const AllGroups: React.FC<{ mode: string, userId: string }> = (props) => {
                 </Grid>
             }
 
-            {customGroups.length === 0 &&
+            
+            {
+                !doneFetchingCustoms && 
+                <div className='m-5 p-5'>
+                    <h4>Loading</h4>
+                </div>
+            }
+
+            {customGroups.length === 0 && doneFetchingCustoms &&
                 <div className='m-5 p-5'>
                     <h4>There is no custom group to show</h4>
                 </div>
