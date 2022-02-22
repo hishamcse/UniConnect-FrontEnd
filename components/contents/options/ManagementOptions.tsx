@@ -3,7 +3,7 @@ import {BsFillCaretRightSquareFill, BsFillFilterCircleFill} from "react-icons/bs
 import React, {Fragment, useState} from "react";
 import {useRouter} from "next/router";
 
-const AdminOptions: React.FC<{ id: string }> = (props) => {
+const ManagementOptions: React.FC<{ id: string }> = (props) => {
 
     const [showSideBar, setShowSideBar] = useState(false);
 
@@ -30,7 +30,7 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
         await router.push(`${props.id}`);
     }
 
-    let modeName = 'Admin ';
+    let modeName = 'Management ';
 
     return (
         <Fragment>
@@ -47,10 +47,6 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
                 <Offcanvas.Body>
                     <Container className='text-secondary'>
                         <Nav>
-                            <Nav.Link><b>
-                                <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Update Account Info</b>
-                            </Nav.Link>
                             <Nav.Link><b onClick={universityInfo}>
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 University Info</b>
@@ -71,4 +67,4 @@ const AdminOptions: React.FC<{ id: string }> = (props) => {
     );
 }
 
-export default AdminOptions;
+export default ManagementOptions;

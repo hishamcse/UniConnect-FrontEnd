@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
-import AddBatchNew from "../../components/contents/admin/AddBatchNew";
+import AddBatchNew from "../../components/contents/management/AddBatchNew";
 
 const AddBatch = () => {
 

@@ -72,7 +72,7 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
             <div className='text-center p-2'>
                 <Button variant='dark' className='lead' onClick={teacherDetailsHandler}>Faculty Details</Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {props.mode === 'admin' &&
+                {props.mode === 'management' &&
                     <Button variant='danger' className='lead' onClick={addTeacherHandler}>Add Faculty</Button>}
             </div>
             <h6 className='text-secondary text-left'>Students:</h6>
@@ -81,7 +81,7 @@ const DeptInfo: React.FC<{ mode: string, deptInfo: DeptInfoView, userId: string 
             <div className="p-2">
                 <div className='lead d-inline-flex flex-column text-left'>
                     {department.students_by_year.map((data, i) =>
-                        <Button key={i + Math.random()} variant='outline-success' className='m-2'
+                        data.batch_id !== null && <Button key={i + Math.random()} variant='outline-success' className='m-2'
                                 onClick={studentDetailsHandler}
                                 value={data.batch_id + " " + data.batch_year} disabled={disable}>
                             <b>{data.batch_name} {data.batch_year} :</b>&nbsp; {data.students_count}

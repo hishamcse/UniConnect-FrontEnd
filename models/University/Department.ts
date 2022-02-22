@@ -1,4 +1,4 @@
-// data while fetching 'id/depts'
+// data while fetching departments
 export type Department = {
     DEPARTMENT_ID: number;
     NAME: string;

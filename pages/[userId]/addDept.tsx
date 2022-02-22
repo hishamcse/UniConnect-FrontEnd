@@ -1,4 +1,4 @@
-import AddDepartment from "../../components/contents/admin/AddDepartment";
+import AddDepartment from "../../components/contents/management/AddDepartment";
 import {useRouter} from "next/router";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
 import React from "react";

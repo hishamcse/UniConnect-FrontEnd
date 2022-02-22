@@ -36,7 +36,7 @@ const Departments: React.FC<{ mode: string, userId: string, departments: DeptInf
                         })}
                     </Accordion>
                 </h5><br/>
-                {props.mode === 'admin' && <Button className='btn-danger' onClick={addDept}>
+                {props.mode === 'management' && <Button className='btn-danger' onClick={addDept}>
                     <BsFillPatchPlusFill/>&nbsp;
                     Add Department
                 </Button>}

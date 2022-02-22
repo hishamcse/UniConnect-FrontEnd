@@ -3,7 +3,7 @@ import {Container, Nav, Navbar} from "react-bootstrap";
 import Image from "next/image";
 import {useRouter} from "next/router";
 import {BsFillArrowRightCircleFill} from "react-icons/bs";
-import AdminOptions from "../contents/options/AdminOptions";
+import ManagementOptions from "../contents/options/ManagementOptions";
 import UserOptions from "../contents/options/UserOptions";
 import AuthContext from "../../store/auth-context";
 import styles from './UserNavigation.module.scss';
@@ -48,16 +48,19 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
     }
 
     useEffect(() => {
-        let mode = (authCtx.loggedInAs === 'management') ? 'Admin View' :
+        let mode = (authCtx.loggedInAs === 'management') ? 'Management View' :
             (authCtx.loggedInAs === 'student' ? 'Student View' : 'Teacher View');
         setModeText(mode);
 
-        let uni = (authCtx.loggedInAs === 'management') ? authCtx.loginData.managementRoles[0].UNIVERSITY_NAME.split(',')[1] :
-            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].UNIVERSITY_NAME.split(',')[1] :
-                authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME.split(',')[1]);
+        const order = parseInt(authCtx.loggedOrder);
+
+        let uni = (authCtx.loggedInAs === 'management') ?
+            authCtx.loginData.managementRoles[order].UNIVERSITY_NAME.split(',')[1] :
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[order].UNIVERSITY_NAME.split(',')[1] :
+                authCtx.loginData.teacherRoles[order].UNIVERSITY_NAME.split(',')[1]);
         setUniName(uni);
 
-        let theme = mode === 'Admin View' ? 'dark' :
+        let theme = mode === 'Management View' ? 'dark' :
             (mode === 'Student View' ? styles['background-student'] : styles['background-teacher']);
         // @ts-ignore
         setTheme(theme);
@@ -72,7 +75,7 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
         <Navbar collapseOnSelect className={theme} bg={theme} variant={theme} expand='lg' fixed='top'>
             <Container>
                 <Nav.Link>
-                    {modeText === 'Admin View' && <AdminOptions id={props.id}/>}
+                    {modeText === 'Management View' && <ManagementOptions id={props.id}/>}
                     {(modeText === 'Student View' || modeText === 'Teacher View') && <UserOptions id={props.id}/>}
                 </Nav.Link>
 
@@ -95,7 +98,7 @@ const UserNavigation: React.FC<{ id: string }> = (props) => {
                     <col className='col-4'/>
                     <Nav className='me-auto'>
 
-                        {modeText !== 'Admin View' &&
+                        {modeText !== 'Management View' &&
                             <Nav.Link className='text-light' onClick={showNotificationHandler}>
                                 <Notifications notifications={notifications}/>
                             </Nav.Link>

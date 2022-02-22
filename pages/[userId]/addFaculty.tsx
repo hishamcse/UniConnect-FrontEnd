@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
 import React from "react";
-import AddTeacher from "../../components/contents/admin/AddTeacher";
+import AddTeacher from "../../components/contents/management/AddTeacher";
 
 const AddFaculty: React.FC = (props) => {
     const router = useRouter();

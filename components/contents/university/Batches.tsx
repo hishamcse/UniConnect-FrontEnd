@@ -36,7 +36,7 @@ const Batches: React.FC<{ mode: string, userId: string, batches: BatchInfoView[]
                         })}
                     </Accordion>
                 </h5><br/>
-                {props.mode === 'admin' && <Button className='btn-danger' onClick={addBatch}>
+                {props.mode === 'management' && <Button className='btn-danger' onClick={addBatch}>
                     <BsFillPatchPlusFill/>&nbsp;
                     Add Batch
                 </Button>}

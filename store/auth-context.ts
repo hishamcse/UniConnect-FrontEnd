@@ -7,7 +7,9 @@ export type AuthContextObj = {
     login: (token: string, expirationTime: string, data: LoginData) => void;
     loginData: LoginData;
     loggedInAs: string;
+    loggedOrder: string;
     setLoggedInAs: (mode: string) => void;
+    setLoggedInOrder: (order: string) => void;
     logout: () => void;
 }
 
@@ -23,7 +25,10 @@ const AuthContext = React.createContext<AuthContextObj>({
         managementRoles: []
     },
     loggedInAs: '',
+    loggedOrder: '',
     setLoggedInAs: () => {
+    },
+    setLoggedInOrder: () => {
     },
     logout: () => {
     }

@@ -13,7 +13,7 @@ const UniInfo: React.FC<{ userId: string }> = (props) => {
     const [mode,setMode] = useState('');
 
     useEffect(() => {
-        setMode(authCtx.loggedInAs === 'management' ? 'admin' :
+        setMode(authCtx.loggedInAs === 'management' ? 'management' :
             (authCtx.loggedInAs === 'student' ? 'student' :
                 'teacher'));
     },[]);

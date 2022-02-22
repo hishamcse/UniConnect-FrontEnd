@@ -21,9 +21,10 @@ const Notifications: React.FC<{ notifications: JoinRequest[] }> = (props) => {
     const [request, setRequest] = useState<JoinRequest>();
 
     useEffect(() => {
-        setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
-            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
-                authCtx.loginData.teacherRoles[0].ID.toString()));
+        const loggedOrder = parseInt(authCtx.loggedOrder);
+        setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[loggedOrder].ID.toString() :
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[loggedOrder].ID.toString() :
+                authCtx.loginData.teacherRoles[loggedOrder].ID.toString()));
     }, [])
 
     const handleCloseSideBar = () => setShowSideBar(false);

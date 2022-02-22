@@ -47,15 +47,18 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
 
     const upVoteHandler = (e: any) => {
         e.preventDefault();
+        if(loading) return;
         voteHandler('N');
     }
 
     const downVoteHandler = (e: any) => {
         e.preventDefault();
+        if(loading) return;
         voteHandler('Y');
     }
 
     const findReplies = () => {
+        setLoading(true);
         fetch(`${server}/comments/${item.CONTENT_ID}`, {
             mode: 'cors',
             method: 'get',
@@ -67,7 +70,9 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
             .then(data => {
                 setReplies(data);
                 setShowReplies(true);
-            });
+            }).finally(() => {
+                setLoading(false);
+        });
     }
 
     const repliesHandler = (e: any) => {
@@ -124,8 +129,8 @@ const SingleComment: React.FC<{ item: CommentView, updateComments: () => void, i
         });
     }
 
-    const showSettings = (props.item?.ROLE_ID === authCtx.loginData.studentRoles[0]?.ID) ||
-        (props.item?.ROLE_ID === authCtx.loginData.teacherRoles[0]?.ID);
+    const showSettings = (props.item?.ROLE_ID === authCtx.loginData.studentRoles[parseInt(authCtx.loggedOrder)]?.ID) ||
+        (props.item?.ROLE_ID === authCtx.loginData.teacherRoles[parseInt(authCtx.loggedOrder)]?.ID);
 
     return (
         <Card key={index + Math.random().toString()} bg='light' className='p-2 mb-5 text-black'>

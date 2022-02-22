@@ -1,7 +1,7 @@
 import React from "react";
 import {useRouter} from "next/router";
 import LayoutWrapper from "../../components/ui/LayoutWrapper";
-import AddDepartmentBatch from "../../components/contents/admin/AddDepartmentBatch";
+import AddDepartmentBatch from "../../components/contents/management/AddDepartmentBatch";
 
 const AddDeptBatch: React.FC = (props) => {
     const router = useRouter();

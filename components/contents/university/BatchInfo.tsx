@@ -44,12 +44,12 @@ const BatchInfo: React.FC<{ mode:string, batch: BatchInfoView, userId: string }>
                 </div>
             </div>
 
-            {props.mode==='admin' &&
+            {props.mode==='management' &&
                 <Button className='center-block m-2' variant='success' onClick={addBatchDept}>
                     Add Department to Batch
                 </Button>}
 
-            {props.mode==='admin' &&
+            {props.mode==='management' &&
                 <Button className='center-block m-2' variant='info' onClick={addSection}>
                 Add Section & Student
             </Button>}

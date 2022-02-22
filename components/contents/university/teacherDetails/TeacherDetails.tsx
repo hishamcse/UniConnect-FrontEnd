@@ -92,7 +92,7 @@ const TeacherDetails: React.FC<{ userId: string, departmentName: string, departm
                 </div>
 
                 <div className={styles.titleContainer}>
-                    {props.departmentName.replaceAll('%20', ' ')}
+                    {props.departmentName?.replaceAll('%20', ' ')}
                 </div>
                 <div className={styles.subTitleText}>
                     Teachers

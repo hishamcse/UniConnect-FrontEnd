@@ -54,8 +54,6 @@ const AddBatchNew: React.FC<{ userId: string }> = (props) => {
         }).finally(() => {
             setLoading(false);
         })
-
-        // await router.push(`/${props.userId}`);
     }
 
     const backHandler = async (e: React.FormEvent) => {

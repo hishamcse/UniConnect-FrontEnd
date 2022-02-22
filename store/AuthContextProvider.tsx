@@ -23,6 +23,7 @@ const getStoredTokenTimeAndData = () => {
         const storedToken = localStorage.getItem('token');
         const storedExpirationTime = localStorage.getItem('expirationTime');
         const loggedAs = localStorage.getItem('loggedInAs');
+        const loggedOrder = localStorage.getItem('order');
         const storedData = localStorage.getItem('logindata');
 
         const remainingTime = calculateRemainingTime(storedExpirationTime);
@@ -31,6 +32,7 @@ const getStoredTokenTimeAndData = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('expirationTime');
             localStorage.removeItem('loggedInAs');
+            localStorage.removeItem('order');
             localStorage.removeItem('logindata');
             return null;
         }
@@ -38,7 +40,7 @@ const getStoredTokenTimeAndData = () => {
         return {
             token: storedToken,
             expirationTime: remainingTime,
-            loggedAs,
+            loggedAs, loggedOrder,
             // @ts-ignore
             storedData: JSON.parse(storedData)
         }
@@ -50,16 +52,20 @@ const AuthContextProvider: React.FC = (props) => {
     const storedData = getStoredTokenTimeAndData();
     let initToken;
     let initLoggedAs = '';
+    let initLoggedOrder = '';
     if (storedData) {
         initToken = storedData.token;
         // @ts-ignore
         initLoggedAs = storedData.loggedAs;
+        // @ts-ignore
+        initLoggedOrder = storedData.loggedOrder;
         initLoginData = storedData.storedData;
     }
 
     const [token, setToken] = useState(initToken);
     const [loginData, setLoginData] = useState(initLoginData);
     const [loggedInAs, setLoggedInAs] = useState(initLoggedAs);
+    const [loggedOrder, setLoggedOrder] = useState(initLoggedOrder);
 
     const isLoggedIn = !!token;
 
@@ -69,6 +75,7 @@ const AuthContextProvider: React.FC = (props) => {
         localStorage.removeItem('token');
         localStorage.removeItem('expirationTime')
         localStorage.removeItem('loggedInAs');
+        localStorage.removeItem('order');
         localStorage.removeItem('logindata');
 
         if (logoutTimer) {
@@ -95,6 +102,11 @@ const AuthContextProvider: React.FC = (props) => {
         localStorage.setItem('loggedInAs', mode);
     }
 
+    const loggedInOrderHandler = (order: string) => {
+        setLoggedOrder(order);
+        localStorage.setItem('order', order);
+    }
+
     useEffect(() => {
         if (storedData) {
             logoutTimer = setTimeout(logoutHandler, storedData.expirationTime);
@@ -102,7 +114,8 @@ const AuthContextProvider: React.FC = (props) => {
     }, [storedData, logoutHandler])
 
     const val: AuthContextObj = {
-        token, isLoggedIn, login: loginHandler, loginData, loggedInAs, setLoggedInAs: loggedInModeHandler, logout: logoutHandler
+        token, isLoggedIn, login: loginHandler, loginData, loggedInAs, loggedOrder,
+        setLoggedInAs: loggedInModeHandler, setLoggedInOrder: loggedInOrderHandler ,logout: logoutHandler
     }
 
     return (

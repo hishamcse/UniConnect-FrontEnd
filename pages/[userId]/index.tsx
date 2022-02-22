@@ -15,21 +15,23 @@ const UserPage: React.FC<{ userId: string }> = (props) => {
     const authCtx = useContext(AuthContext);
 
     const [mode, setMode] = useState('');
-    const [userId, setUserId] = useState(props.userId);
+    const [id, setId] = useState('');
 
     useEffect(() => {
-        setMode(authCtx.loggedInAs === 'management' ? 'admin' :
+        setMode(authCtx.loggedInAs === 'management' ? 'management' :
             (authCtx.loggedInAs === 'student' ? 'student' :
                 'teacher'));
-        setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
-            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
-                authCtx.loginData.teacherRoles[0].ID.toString()))
+
+        const order = parseInt(authCtx.loggedOrder);
+        setId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[order]?.ID.toString() :
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[order]?.ID.toString() :
+                authCtx.loginData.teacherRoles[order]?.ID.toString()))
     },[])
 
     return (
         <LayoutWrapper>
-            {mode === 'admin' && <UniInfo userId={userId}/>}
-            {(mode === 'student' || mode === 'teacher') && <Feed userId={userId}/>}
+            {mode === 'management' && <UniInfo userId={id}/>}
+            {(mode === 'student' || mode === 'teacher') && <Feed userId={id}/>}
         </LayoutWrapper>
     );
 }

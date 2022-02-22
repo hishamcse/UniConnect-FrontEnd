@@ -17,8 +17,8 @@ const PostCard: React.FC<{ mode: string, item: FeedInfoView, index: number }> = 
     const [userId, setUserId] = useState<string>();
 
     useEffect(() => {
-        setUserId(authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
-            authCtx.loginData.teacherRoles[0].ID.toString());
+        setUserId(authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[parseInt(authCtx.loggedOrder)].ID.toString() :
+            authCtx.loginData.teacherRoles[parseInt(authCtx.loggedOrder)].ID.toString());
     }, []);
 
     const item = props.item;

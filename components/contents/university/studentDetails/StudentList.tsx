@@ -1,8 +1,9 @@
 import React from "react";
 import StudentItem from "./StudentItem";
+import {Student} from "../../../../models/University/Student";
 
 const StudentList: React.FC<{
-    students: StudentItem[],
+    students: Student[],
     fetching: boolean,
     loadData: (n: number, c: boolean, st: string[]) => void,
     selected: string[]

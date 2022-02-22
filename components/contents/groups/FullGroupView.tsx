@@ -38,7 +38,7 @@ const FullGroupView: React.FC<{ mode: string, groupId: string, groupName: string
         });
     }
 
-    const background = props.mode === 'admin' ? 'bg-secondary' :
+    const background = props.mode === 'management' ? 'bg-secondary' :
         (props.mode === 'student' ? styles['background-student'] : styles['background-teacher']);
 
     return (

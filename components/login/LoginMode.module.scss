@@ -18,9 +18,19 @@ $color-white: #fff;
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .content {
-    margin-top: 10%;
-    margin-left: 30%;
+    padding: 1.5rem;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    animation: moveInLeft 1s ease-out;
+  }
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .claimFormContent {
     width: 40%;
+    margin-left: 30%;
     padding: 1.5rem;
     border-radius: 20px;
     -webkit-backdrop-filter: blur(10px);

@@ -12,13 +12,14 @@ const Groups: React.FC = () => {
     const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        setMode(authCtx.loggedInAs === 'management' ? 'admin' :
+        setMode(authCtx.loggedInAs === 'management' ? 'management' :
             (authCtx.loggedInAs === 'student' ? 'student' :
                 'teacher'));
 
-        setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
-            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
-                authCtx.loginData.teacherRoles[0].ID.toString()));
+        const order = parseInt(authCtx.loggedOrder);
+        setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[order].ID.toString() :
+            (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[order].ID.toString() :
+                authCtx.loginData.teacherRoles[order].ID.toString()));
     }, []);
 
     return (

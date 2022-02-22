@@ -30,17 +30,19 @@ const FullView: React.FC<{ mode: string, contentId: string }> = (props) => {
     useEffect(() => {
 
         let uniName: string;
+        const order = parseInt(authCtx.loggedOrder);
+
         if (authCtx.loggedInAs === 'student') {
-            uniName = authCtx.loginData.studentRoles[0].UNIVERSITY_NAME;
+            uniName = authCtx.loginData.studentRoles[order].UNIVERSITY_NAME;
         } else {
-            uniName = authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME;
+            uniName = authCtx.loginData.teacherRoles[order].UNIVERSITY_NAME;
         }
 
         setVersityName(uniName);
         findSinglePostData();
     }, []);
 
-    const background = props.mode === 'admin' ? 'bg-secondary' :
+    const background = props.mode === 'management' ? 'bg-secondary' :
         (props.mode === 'student' ? styles['background-student'] : '');
 
     return (

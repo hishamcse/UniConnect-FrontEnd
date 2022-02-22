@@ -8,13 +8,13 @@ const Feed: React.FC<{ userId: string }> = (props) => {
 
     const authCtx = useContext(AuthContext);
 
-    const [mode,setMode] = useState('');
+    const [mode, setMode] = useState('');
 
     useEffect(() => {
-        setMode(authCtx.loggedInAs === 'management' ? 'admin' :
+        setMode(authCtx.loggedInAs === 'management' ? 'management' :
             (authCtx.loggedInAs === 'student' ? 'student' :
                 'teacher'));
-    },[]);
+    }, []);
 
     return (
         <LayoutWrapper>

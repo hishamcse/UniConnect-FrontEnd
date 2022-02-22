@@ -14,9 +14,11 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
 
     useEffect(() => {
         if (!props.id) {
-            setUserId(authCtx.loggedInAs === 'management' ? authCtx.loginData.managementRoles[0].ID.toString() :
-                (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[0].ID.toString() :
-                    authCtx.loginData.teacherRoles[0].ID.toString()));
+            const order = parseInt(authCtx.loggedOrder);
+            setUserId(authCtx.loggedInAs === 'management' ?
+                authCtx.loginData.managementRoles[order].ID.toString() :
+                (authCtx.loggedInAs === 'student' ? authCtx.loginData.studentRoles[order].ID.toString() :
+                    authCtx.loginData.teacherRoles[order].ID.toString()));
         } else {
             setUserId(props.id);
         }
@@ -68,10 +70,6 @@ const UserOptions: React.FC<{ id: string }> = (props) => {
                 <Offcanvas.Body>
                     <Container className='text-secondary'>
                         <Nav>
-                            <Nav.Link><b>
-                                <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Update Account Info</b>
-                            </Nav.Link>
                             <Nav.Link><b onClick={universityInfo}>
                                 <BsFillCaretRightSquareFill/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 University Info</b>

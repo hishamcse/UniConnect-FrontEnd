@@ -23,19 +23,21 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
 
         let uniName: string;
         let uniId: number;
+        const order = parseInt(authCtx.loggedOrder);
+
         if (authCtx.loggedInAs === 'management') {
-            uniName = authCtx.loginData.managementRoles[0].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.managementRoles[0].UNIVERSITY_ID;
+            uniName = authCtx.loginData.managementRoles[order].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.managementRoles[order].UNIVERSITY_ID;
         } else if (authCtx.loggedInAs === 'student') {
-            uniName = authCtx.loginData.studentRoles[0].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.studentRoles[0].UNIVERSITY_ID;
+            uniName = authCtx.loginData.studentRoles[order].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.studentRoles[order].UNIVERSITY_ID;
         } else {
-            uniName = authCtx.loginData.teacherRoles[0].UNIVERSITY_NAME;
-            uniId = authCtx.loginData.teacherRoles[0].UNIVERSITY_ID;
+            uniName = authCtx.loginData.teacherRoles[order].UNIVERSITY_NAME;
+            uniId = authCtx.loginData.teacherRoles[order].UNIVERSITY_ID;
         }
 
         setVersityName(uniName);
-        fetch(`${server}/university/${uniId}/depts`, {
+        fetch(`${server}/departments`, {
             mode: 'cors',
             method: 'get',
             credentials: "include",
@@ -62,7 +64,7 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
             });
     }, []);
 
-    const background = props.mode === 'admin' ? 'bg-secondary' :
+    const background = props.mode === 'management' ? 'bg-secondary' :
         (props.mode === 'student' ? styles['background-student'] : styles['background-teacher']);
 
     return (

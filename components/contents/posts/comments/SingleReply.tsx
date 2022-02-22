@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {CommentView} from "../../../../models/Comment";
-import {Card, Dropdown, Image} from "react-bootstrap";
+import {Card, Dropdown, Image, Spinner} from "react-bootstrap";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import styles from "./Comments.module.scss";
 import AuthContext from "../../../../store/auth-context";
@@ -37,16 +37,19 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
 
     const upVoteHandler = (e: any) => {
         e.preventDefault();
+        if(loading) return;
         voteHandler('N');
     }
 
     const downVoteHandler = (e: any) => {
         e.preventDefault();
+        if(loading) return;
         voteHandler('Y');
     }
 
     const deleteReplyHandler = (e:any) => {
         e.preventDefault();
+        if(loading) return;
 
         setLoading(true);
 
@@ -66,8 +69,8 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
         });
     }
 
-    const showSettings = (props.replyData?.ROLE_ID === authCtx.loginData.studentRoles[0]?.ID) ||
-        (props.replyData?.ROLE_ID === authCtx.loginData.teacherRoles[0]?.ID);
+    const showSettings = (props.replyData?.ROLE_ID === authCtx.loginData.studentRoles[parseInt(authCtx.loggedOrder)]?.ID) ||
+        (props.replyData?.ROLE_ID === authCtx.loginData.teacherRoles[parseInt(authCtx.loggedOrder)]?.ID);
 
     return (
         <Card className={`${styles.reply} border-3 m-2 p-3`}>
@@ -128,6 +131,10 @@ const SingleReply: React.FC<{ replyData: CommentView, updateReplies: () => void,
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
                 <br/>
+            </div>
+
+            <div>
+                {loading && <Spinner animation='border' variant='danger'/>}
             </div>
         </Card>
     )

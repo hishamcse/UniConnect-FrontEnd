@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import {SinglePostView} from "../../../../models/SinglePost";
 import styles from './FullView.module.scss';
-import {Button, Card, Dropdown, DropdownButton, Form, Spinner} from "react-bootstrap";
+import {Button, Card, Dropdown, Form, Spinner} from "react-bootstrap";
 import AuthContext from "../../../../store/auth-context";
 import {BiDownvote, BiUpvote} from "react-icons/bi";
 import {CommentView} from "../../../../models/Comment";
@@ -128,8 +128,8 @@ const Post: React.FC<{ postData: SinglePostView, updatePost: () => void }> = (pr
         });
     }
 
-    const showSettings = (props.postData?.STUDENT === authCtx.loginData.studentRoles[0]?.ID) ||
-        (props.postData?.TEACHER === authCtx.loginData.teacherRoles[0]?.ID);
+    const showSettings = (props.postData?.STUDENT === authCtx.loginData.studentRoles[parseInt(authCtx.loggedOrder)]?.ID) ||
+        (props.postData?.TEACHER === authCtx.loginData.teacherRoles[parseInt(authCtx.loggedOrder)]?.ID);
 
     return (
         <div>
