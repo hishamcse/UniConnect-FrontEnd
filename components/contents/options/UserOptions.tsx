@@ -6,8 +6,8 @@ import styles from './UserOptions.module.scss';
 import AuthContext from "../../../store/auth-context";
 import {StudentSummary} from "../../../models/University/Student";
 import {TeacherSummary} from "../../../models/University/Teacher";
-import {TeacherInfo} from "./TeacherInfo";
-import {StudentInfo} from "./StudentInfo";
+import StudentInfo from "./StudentInfo";
+import TeacherInfo from "./TeacherInfo";
 
 const server = 'http://localhost:3000';
 
