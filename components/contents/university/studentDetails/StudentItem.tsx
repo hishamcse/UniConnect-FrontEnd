@@ -2,11 +2,13 @@ import React from "react";
 import styles from './StudentDetails.module.scss';
 import {Card, CardContent} from "@mui/material";
 
+import {StudentItem} from "../../../../models/University/Student";
+
 const StudentItem: React.FC<{ item: StudentItem }> = ({item}) => {
 
     return (
-        <Card>
-            <CardContent>
+        // <Card>
+        //     <CardContent>
                 <li className={styles.itemContainer + ' list-group-item'}>
 
                     <table className={styles.itemTable}>
@@ -21,7 +23,7 @@ const StudentItem: React.FC<{ item: StudentItem }> = ({item}) => {
 
                         </tr>
 
-                        <tr className={styles.tableRow}>
+                    <tr className={styles.tableRow}>
                             <td className={styles.firstColumn}>Email</td>
                             <td>{item.EMAIL}</td>
                         </tr>
@@ -35,15 +37,15 @@ const StudentItem: React.FC<{ item: StudentItem }> = ({item}) => {
                             <td className={styles.firstColumn}>Roll No</td>
                             <td>{item.SECTION_ROLL_NO}</td>
                         </tr>
-                        {item.GENERATED_PASS &&
+                        {item.TOKEN &&
                             <tr className={styles.tableRow}>
-                                <td className={styles.firstColumn}>Generated Password</td>
-                                <td>{item.GENERATED_PASS}</td>
+                                <td className={styles.firstColumn}>Token</td>
+                                <td>{item.TOKEN}</td>
                             </tr>}
                     </table>
                 </li>
-            </CardContent>
-        </Card>
+        //     </CardContent>
+        // </Card>
     )
 }
 

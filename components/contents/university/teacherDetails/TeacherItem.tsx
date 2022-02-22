@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './TeacherDetails.module.scss';
+import {TeacherItem} from "../../../../models/University/Teacher";
 
 const TeacherItem: React.FC<{ item: TeacherItem }> = ({item}) => {
 
@@ -31,10 +32,10 @@ const TeacherItem: React.FC<{ item: TeacherItem }> = ({item}) => {
                     <td>{item.EMAIL}</td>
                 </tr>
 
-                {item.GENERATED_PASS &&
+                {item.TOKEN &&
                     <tr className={styles.tableRow}>
-                        <td className={styles.firstColumn}>Generated Password</td>
-                        <td>{item.GENERATED_PASS}</td>
+                        <td className={styles.firstColumn}>Token</td>
+                        <td>{item.TOKEN}</td>
                     </tr>}
             </table>
         </li>

@@ -44,6 +44,8 @@ const UniversityInfo: React.FC<{ mode: string, userId: string }> = (props) => {
                 return resp.json();
             })
             .then(data => {
+                console.log(data);
+
                 let arr = parseDeptData(data);
                 setDeptData(arr);
             });

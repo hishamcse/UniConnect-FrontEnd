@@ -1,5 +1,8 @@
 import React from "react";
-import StudentItem from "./StudentItem";
+
+import {StudentItem} from "../../../../models/University/Student";
+
+import StudentItemC from "./StudentItem";
 
 const StudentList: React.FC<{
     students: StudentItem[],
@@ -17,7 +20,7 @@ const StudentList: React.FC<{
 
     return (
         <ul className='list-group'>
-            {students.map(item => <StudentItem item={item} key={item.ROLE_ID}/>)}
+            {students.map(item => <StudentItemC item={item} key={item.ROLE_ID}/>)}
             {students.length >= 30 &&
                 <div className='list-group-item text-center'>
                     <button className={'btn btn-primary'} disabled={fetching} onClick={loadDataHandler}>Load More

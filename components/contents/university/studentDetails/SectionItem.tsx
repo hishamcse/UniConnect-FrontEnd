@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import styles from './StudentDetails.module.scss';
+import {sectionItem} from "../../../../models/University/Section";
+import {StudentItem} from "../../../../models/University/Student";
 
 const SectionItem: React.FC<{
     item: sectionItem
