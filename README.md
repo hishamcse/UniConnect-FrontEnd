@@ -12,6 +12,7 @@
       * [Production Build](#build)
    * [Languages, Tools and Frameworks](#tools)
    * [ERD](#erd)
+   * [Database](#database)
    * [Features](#features)
    * [Contributors](#contribute)
    * [Supervisor](#super)
@@ -56,6 +57,11 @@ typescript, nodejs, oracledb, express
 
 ## ERD<a name="erd"></a>
 [ERD](https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg)
+
+## Database<a name="database"></a>
+* [Tables](https://github.com/abdur-rafi/UniConnect-backend/tree/master/Database/Tables)
+* [PL SQL Functions](https://github.com/abdur-rafi/UniConnect-backend/tree/master/Database/PL%20SQL%20Functions)
+* [Triggers](https://github.com/abdur-rafi/UniConnect-backend/tree/master/Database/Triggers)
 
 ## Features:<a name="features"></a>
 1. signup for an account 
