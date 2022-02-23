@@ -7,6 +7,7 @@
 <h1 align="center"> UniConnect FrontEnd</h1><br />
 
 <!--  <p align="center"> -->
+## Overview
    This is the frontend of CSE 216 database term project <b>UniConnect</b> By <b>Syed Jarullah Hisham (1805004)</b> & <b>Abdur Rafi (1805008)</b> <br />
    <b>To see database and backend, please use this link: </b> [UniConnect Backend](https://github.com/abdur-rafi/UniConnect-backend)
 <!--   </p> -->
@@ -38,8 +39,11 @@ that's it. This project should work perfectly now on "http://localhost:3001"
      npm start
 
 ## Languages, Tools and Frameworks:
-frontend: typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
-backend: typescript, nodejs, oracledb, express
+### frontend:
+typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
+
+### backend: 
+typescript, nodejs, oracledb, express
 
 ## Features:
 1. signup for an account 
@@ -67,7 +71,7 @@ backend: typescript, nodejs, oracledb, express
    * [Abdur Rafi (1805008)](https://github.com/abdur-rafi)
 
 ## Supervisor:
-   * Dr. Abu Sayed Md. Latiful Hoque <br />
+   * [Dr. Abu Sayed Md. Latiful Hoque](https://cse.buet.ac.bd/faculty_list/detail/asmlatifulhoque) <br />
      Professor <br />
      Department Of Computer Science And Engineering <br />
      Bangladesh University Of Engineering and Technology
