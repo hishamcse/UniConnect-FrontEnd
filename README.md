@@ -27,9 +27,12 @@
      npm run dev
 
 that's it. This project should work perfectly now on "http://localhost:3001"
-   6. (optional) in case of production build, run 
-   
+
+ ### Production build
+   6. (optional) in case of production build, run
+
      npm run build
+
    7. (optional) after build is finished, run 
 
      npm start
