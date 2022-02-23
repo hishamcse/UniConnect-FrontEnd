@@ -55,7 +55,7 @@ typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
 typescript, nodejs, oracledb, express
 
 ## ERD<a name="erd"></a>
-[ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg")
+[ERD](https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg)
 
 ## Features:<a name="features"></a>
 1. signup for an account 
@@ -89,4 +89,4 @@ typescript, nodejs, oracledb, express
      Bangladesh University Of Engineering and Technology
      
 
-#### Other details will be updated soon
+#### A video demonstrating all these will be added very soon
