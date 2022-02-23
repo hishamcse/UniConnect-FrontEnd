@@ -13,14 +13,61 @@
 
 ## Configuring frontend:
    1. clone this repository or download the repository as zip and unzip it
-   2. typescript should be installed if not already installed. to install typescript globally, run <b>"npm install -g typescript"</b>
-   3. use terminal inside the project and run <b>'npm install'</b>
+   2. typescript should be installed if not already installed. to install typescript globally, run 
+   
+     npm install -g typescript
+
+   3. use terminal inside the project and run 
+     
+     npm install
+
    4. ensure backend is configured and running correctly on "http://localhost:3000" (note the port number)
-   5. using the terminal inside project, run <b>'npm run dev'</b> and that's it. This project should work perfectly now on "http://localhost:3001"
-   6. (optional) in case of production build, run <b>'npm run build'</b>. after build is finished, run <b>'npm start'</b>
+   5. using the terminal inside project, run 
+
+     npm run dev
+
+that's it. This project should work perfectly now on "http://localhost:3001"
+   6. (optional) in case of production build, run 
+   
+     npm run build
+   7. (optional) after build is finished, run 
+
+     npm start
 
 ## Languages, Tools and Frameworks:
-    frontend: typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
-    backend: typescript, nodejs, oracledb, express
+frontend: typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
+backend: typescript, nodejs, oracledb, express
+
+## Features:
+1. signup for an account 
+2. login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
+3. having a management role of an university, 
+      * one can create new department in a university
+      * assign any batch with that department
+      * create new student and add them at appropriate batch and department
+      * create new teacher in a department
+      * see the details of the profiles of all students and teacher of his university
+4. having a student or teacher role,
+   * one will be added to default groups accordingly
+   * default groups will be those matching his department, batch, university and roles. 
+      For example- a student of BUET CSE 2018 Section A will be added to the groups -> BUET, BUET-UG, CSE-UG, CSE-ALL, Batch 2018, CSE-18, CSE-18-A and so on
+   * one can also make custom groups where he can request other members to join his created group
+   * members requested to join the custom group will be notified which will come as a notification whenever he will log in
+   * requested members can <b>accept or decline</b> the invitation to join the group
+   * in a group, the members of that group can post, comment, reply and 
+   also cast their upvote and downvote. Thus, the discussion between the members will go on
+   * there is also a newsfeed feature. after logging in, a student or teacher can see recent posts from different groups where he is added
+   * lastly he can also view the details of students and teachers of various departments and can also search profile by entering their names
+
+## Contributors:
+   * [Syed Jarullah Hisham (1805004)](https://hishamcse.github.io/)
+   * [Abdur Rafi (1805008)](https://github.com/abdur-rafi)
+
+## Supervisor:
+   * Dr. Abu Sayed Md. Latiful Hoque <br />
+     Professor <br />
+     Department Of Computer Science And Engineering <br />
+     Bangladesh University Of Engineering and Technology
+     
 
 #### Other details will be updated soon
