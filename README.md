@@ -8,7 +8,7 @@
 
 ### table of contents
    * [Overview](#overview)
-   * [Configuring frontend](#frontend)
+   * [Configuring frontend](#configuring-frontend)
       * [Production Build](#build)
    * [Languages, Tools and Frameworks](#tools)
    * [ERD](#erd)
@@ -21,7 +21,7 @@
    This is the frontend of CSE 216 database term project <b>UniConnect</b> By <b>Syed Jarullah Hisham (1805004)</b> & <b>Abdur Rafi (1805008)</b> <br />
    <b>To see database and backend, please use this link: </b> [UniConnect Backend](https://github.com/abdur-rafi/UniConnect-backend)
 
-## Configuring frontend<a name="frontend"></a>
+## Configuring frontend<a name="configuring-frontend"></a>
    1. clone this repository or download the repository as zip and unzip it
    2. typescript should be installed if not already installed. to install typescript globally, run 
    
@@ -55,7 +55,7 @@ typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
 typescript, nodejs, oracledb, express
 
 ## ERD<a name="erd"></a>
-![ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg")
+[ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg")
 
 ## Features:<a name="features"></a>
 1. signup for an account 
