@@ -6,13 +6,22 @@
 
 <h1 align="center"> UniConnect FrontEnd</h1><br />
 
-<!--  <p align="center"> -->
-## Overview
+### table of contents
+   * [Overview](#overview)
+   * [Configuring frontend](#frontend)
+      * [Production Build](#build)
+   * [Languages, Tools and Frameworks](#tools)
+   * [ERD](#erd)
+   * [Features](#features)
+   * [Contributors](#contribute)
+   * [Supervisor](#super)
+
+
+## Overview<a name="overview"></a>
    This is the frontend of CSE 216 database term project <b>UniConnect</b> By <b>Syed Jarullah Hisham (1805004)</b> & <b>Abdur Rafi (1805008)</b> <br />
    <b>To see database and backend, please use this link: </b> [UniConnect Backend](https://github.com/abdur-rafi/UniConnect-backend)
-<!--   </p> -->
 
-## Configuring frontend:
+## Configuring frontend<a name="frontend"></a>
    1. clone this repository or download the repository as zip and unzip it
    2. typescript should be installed if not already installed. to install typescript globally, run 
    
@@ -29,7 +38,7 @@
 
 that's it. This project should work perfectly now on "http://localhost:3001"
 
- ### Production build
+ ### Production build<a name="build"></a>
    6. (optional) in case of production build, run
 
      npm run build
@@ -38,17 +47,17 @@ that's it. This project should work perfectly now on "http://localhost:3001"
 
      npm start
 
-## Languages, Tools and Frameworks:
+## Languages, Tools and Frameworks:<a name="tools"></a>
 ### frontend:
 typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
 
 ### backend: 
 typescript, nodejs, oracledb, express
 
-## ERD
-![ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/tree/master/public/erd.svg")
+## ERD<a name="erd"></a>
+![ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg")
 
-## Features:
+## Features:<a name="features"></a>
 1. signup for an account 
 2. login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
 3. having a management role of an university, 
@@ -69,11 +78,11 @@ typescript, nodejs, oracledb, express
    * there is also a newsfeed feature. after logging in, a student or teacher can see recent posts from different groups where he is added
    * lastly he can also view the details of students and teachers of various departments and can also search profile by entering their names
 
-## Contributors:
+## Contributors:<a name="contribute"></a>
    * [Syed Jarullah Hisham (1805004)](https://hishamcse.github.io/)
    * [Abdur Rafi (1805008)](https://github.com/abdur-rafi)
 
-## Supervisor:
+## Supervisor:<a name="super"></a>
    * [Dr. Abu Sayed Md. Latiful Hoque](https://cse.buet.ac.bd/faculty_list/detail/asmlatifulhoque) <br />
      Professor <br />
      Department Of Computer Science And Engineering <br />
