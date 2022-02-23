@@ -45,6 +45,9 @@ typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
 ### backend: 
 typescript, nodejs, oracledb, express
 
+## ERD
+![ERD]("https://github.com/hishamcse/UniConnect-FrontEnd/tree/master/public/erd.svg")
+
 ## Features:
 1. signup for an account 
 2. login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
