@@ -69,11 +69,11 @@ typescript, nodejs, oracledb, express
 * signup for an account 
 * login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
 * having a management role of an university, 
-      * one can create new department in a university
-      * assign any batch with that department
-      * create new student and add them at appropriate batch and department
-      * create new teacher in a department
-      * see the details of the profiles of all students and teacher of his university
+   * one can create new department in a university
+   * assign any batch with that department
+   * create new student and add them at appropriate batch and department
+   * create new teacher in a department
+   * see the details of the profiles of all students and teacher of his university
 * having a student or teacher role,
    * one will be added to default groups accordingly
    * default groups will be those matching his department, batch, university and roles. 
