@@ -15,6 +15,7 @@
    * [Database](#database)
    * [Features](#features)
    * [Video Demonstration](#video-demonstration)
+   * [API Reference](#api-reference)
    * [Contributors](#contribute)
    * [Supervisor](#super)
 
@@ -57,7 +58,7 @@ typescript, reactjs, nextjs, scss, react-bootstrap, material ui, core ui
 typescript, nodejs, oracledb, express
 
 ## ERD<a name="erd"></a>
-[ERD](https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg)
+* [ERD](https://github.com/hishamcse/UniConnect-FrontEnd/blob/master/public/erd.svg)
 
 ## Database<a name="database"></a>
 * [Tables](https://github.com/abdur-rafi/UniConnect-backend/tree/master/Database/Tables)
@@ -65,15 +66,15 @@ typescript, nodejs, oracledb, express
 * [Triggers](https://github.com/abdur-rafi/UniConnect-backend/tree/master/Database/Triggers)
 
 ## Features:<a name="features"></a>
-1. signup for an account 
-2. login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
-3. having a management role of an university, 
+* signup for an account 
+* login as one of these three roles - management, student, teacher. One can also claim role in case he has roleid and token provided by admin 
+* having a management role of an university, 
       * one can create new department in a university
       * assign any batch with that department
       * create new student and add them at appropriate batch and department
       * create new teacher in a department
       * see the details of the profiles of all students and teacher of his university
-4. having a student or teacher role,
+* having a student or teacher role,
    * one will be added to default groups accordingly
    * default groups will be those matching his department, batch, university and roles. 
       For example- a student of BUET CSE 2018 Section A will be added to the groups -> BUET, BUET-UG, CSE-UG, CSE-ALL, Batch 2018, CSE-18, CSE-18-A and so on
@@ -87,6 +88,9 @@ typescript, nodejs, oracledb, express
    
 ## Video Demonstration:<a name="video-demonstration"></a>
    * [Demo (Youtube)](https://www.youtube.com/watch?v=zL0V96N6PM8)
+
+## API Reference:<a name="api-reference"></a>
+   * [Full API Reference](https://documenter.getpostman.com/view/15751570/UVkqqZyg)
 
 ## Contributors:<a name="contribute"></a>
    * [Syed Jarullah Hisham (1805004)](https://hishamcse.github.io/)
